@@ -843,6 +843,10 @@ static VALUE
  na_cond_or(VALUE obj1, VALUE obj2)
 { return na_compare_func( obj1, obj2, Or_Funcs ); }
 
+/* method: self.xor other */
+static VALUE
+ na_cond_xor(VALUE obj1, VALUE obj2)
+{ return na_compare_func( obj1, obj2, XorFuncs ); }
 
 
 
@@ -1504,14 +1508,19 @@ void Init_na_funcs(void)
   rb_define_method(cNArray, "not",  na_not, 0);
 
   rb_define_method(cNArray, "<=>", na_compare, 1);
-  rb_define_method(cNArray, "==",  na_equal, 1);
+  rb_define_method(cNArray, "eq",  na_equal, 1);
   rb_define_method(cNArray, "ne",  na_not_equal, 1);
   rb_define_method(cNArray, ">",   na_greater_than, 1);
+  rb_define_method(cNArray, "gt",  na_greater_than, 1);
   rb_define_method(cNArray, ">=",  na_greater_equal, 1);
+  rb_define_method(cNArray, "ge",  na_greater_equal, 1);
   rb_define_method(cNArray, "<",   na_less_than, 1);
+  rb_define_method(cNArray, "lt",  na_less_than, 1);
   rb_define_method(cNArray, "<=",  na_less_equal, 1);
+  rb_define_method(cNArray, "le",  na_less_equal, 1);
   rb_define_method(cNArray, "and", na_cond_and, 1);
   rb_define_method(cNArray, "or",  na_cond_or, 1);
+  rb_define_method(cNArray, "xor", na_cond_xor, 1);
 
   rb_define_method(cNArray, "mul_add",   na_mul_add, -1);
   rb_define_method(cNArray, "mul_accum", na_mul_accum, -1);

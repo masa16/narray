@@ -1,5 +1,5 @@
 
-	Ruby/NArray  ver 0.5.2 (2001-01-29)	by Masahiro TANAKA
+	Ruby/NArray  ver 0.5.4 (2001-07-01)	by Masahiro TANAKA
 
 
 Class method:
@@ -99,22 +99,34 @@ Arithmetic operator
     self.div! other
     self.mod! other
 
-Bitwise operator (only for integer)
+Bitwise operator (only for integers)
     ~self
     self & other
     self | other
     self ^ other
 
-Comparison operator
-    self == other 
-    self < other 
-    self <= other 
-    self > other
+Comparison
+  -- element-wise comparison, results in BYTE-type NArray;
+     Note that not true nor false is returned.
+    self.eq other  ( == operator was obsolete after ver 0.5.4 )
+    self.ne other
+    self.gt other
+    self >  other
+    self.ge other
     self >= other
-    self.and other
-    self.or other
+    self.lt other
+    self <  other 
+    self.le other
+    self <= other 
+
+    self.and other  element-wise condition.
+    self.or  other
+    self.xor other
     self.not other
 
+    self.all?	  true if all the elements are true.
+    self.any?	  true if any element is true.
+    self.none?	  true if none of the element is true.
     self.where	  Return NArray of indices where elements are true.
     self.where2	  Return Array including two NArrays of indices,
 		  where elements are true and false, respectively.

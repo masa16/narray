@@ -16,8 +16,8 @@ test "NArray.int(1000).random(10)"
 
 a = NArray.int(1000).random(10)
 
-idx = (a==0).where
-print "a==0  :: n=", idx.size, "\n"
+idx = (a.eq 0).where
+print "a.eq 0  :: n=", idx.size, "\n"
 
-idx = (a==10).where
-print "a==10 :: "; p idx
+idx = (a.eq 10).where
+print "a.eq 10 :: "; p idx

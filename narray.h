@@ -147,6 +147,7 @@ extern na_bifunc_t atan2Funcs;
 extern na_bifunc_t CmpFuncs;
 extern na_ufunc_t  AndFuncs;
 extern na_ufunc_t  Or_Funcs;
+extern na_ufunc_t  XorFuncs;
 extern na_ufunc_t  NotFuncs;
 extern na_ufunc_t  MinFuncs;
 extern na_ufunc_t  MaxFuncs;

@@ -1,6 +1,11 @@
 #  Numerical Array Extention for Ruby
 #    (C) Copyright 2000 by Masahiro TANAKA
 #
+#  This program is free software.
+#  You can distribute/modify this program
+#  under the same terms as Ruby itself.
+#  NO WARRANTY.
+#
 class NArray
 
   def integer?
@@ -11,6 +16,23 @@ class NArray
   def complex?
     self.typecode==NArray::DCOMPLEX ||
     self.typecode==NArray::SCOMPLEX
+  end
+
+  def all?
+    where.size == size
+  end
+
+  def any?
+    where.size > 0
+  end
+
+  def none?
+    where.size == 0
+  end
+
+  def ==(other)
+    other=NArray.to_na(other) unless other.kind_of?(NArray)
+    shape==other.shape && eq(other).all?
   end
 
   def rank_total(*ranks)

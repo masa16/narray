@@ -1,8 +1,18 @@
+2001-07-01  Masahiro Tanaka  <masa@ir.isas.ac.jp>
+
+	* ver 0.5.4
+
 2001-06-30  Masahiro Tanaka  <masa@ir.isas.ac.jp>
 
 	* extconf.rb: check sys/typedef.h, u_int8_t, int16_t, int32_t.
-	  generate narray_conf.h
+	  generating narray_conf.h.
 	* narray.h: conditional typedef. define NARRAY_H.
+	* na_func.c (Init_na_funcs): change == to eq. add gt,ge,lt,le.
+	* lib/narray_ext.rb: create ==, all?, any?, none?.
+	
+	* mkop.rb: create conditional XOR.
+	* na_func.c (na_cond_xor): ditto.
+	* narray.h: ditto.
 
 2001-06-05  Masahiro Tanaka  <masa@ir.isas.ac.jp>
 
@@ -34,6 +44,7 @@
 
 	* na_array.c (na_search_rank): ignore empty array.
 	* na_array.c (na_copy_ary_to_nary): ignore empty array and nil.
+	* ver 0.5.3
 
 2001-04-02  Masahiro Tanaka  <masa@ir.isas.ac.jp>
 

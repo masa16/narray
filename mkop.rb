@@ -543,6 +543,13 @@ mkfuncs('Or_', [$data_types[1]]*9, $data_types,
  ["*p1 = (RTEST(*p2) || RTEST(*p3)) ? 1:0;"]
 )
 
+mkfuncs('Xor', [$data_types[1]]*9, $data_types,
+ [nil] +
+ ["*p1 = ((*p2!=0) == (*p3!=0)) ? 0:1;"]*5 +
+ ["*p1 = ((p2->r!=0||p2->i!=0) == (p3->r!=0||p3->i!=0)) ? 0:1;"]*2 +
+ ["*p1 = (RTEST(*p2) == RTEST(*p3)) ? 0:1;"]
+)
+
 
 #
 #   Atan2
