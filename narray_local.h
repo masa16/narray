@@ -100,6 +100,8 @@ extern const int na_cast_byte[NA_NTYPES];
 
 extern const char *na_typestring[];
 
+extern VALUE cNArrayScalar, cComplex;
+
 /* narray.c */
 VALUE na_newdim_ref(int argc, VALUE *argv, VALUE self);
 

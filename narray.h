@@ -85,9 +85,9 @@ struct NARRAY {
   VALUE  ref;	  /* NArray object wrapping this structure */
 };
 
-extern VALUE cNArray, cNArrayScalar, cComplex;
+EXTERN VALUE cNArray;
 
-extern const int na_sizeof[NA_NTYPES+1];
+EXTERN const int na_sizeof[NA_NTYPES+1];
 
 #define NA_MAX_RANK 15
 
