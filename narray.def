@@ -4,6 +4,7 @@ na_sizeof
 na_make_object
 na_make_scalar
 na_make_empty
+na_get_typecode
 na_clear_data
 na_clone
 na_fill
