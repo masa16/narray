@@ -2,6 +2,7 @@ require 'narray'
 
 REPEAT = 100
 ARRSZ = 1_000_000
+T = (RUBY_VERSION<"1.8.0") ? Time : Process
 
 def bench_array(type=Float)
   [ NArray.new(type,ARRSZ).indgen!,
@@ -21,10 +22,10 @@ def bench_complex
 end
 
 def bench_time(n=REPEAT)
-  t1 = Time.times.utime
+  t1 = T.times.utime
    for i in 1..n
      yield
    end
-  t2 = Time.times.utime 
+  t2 = T.times.utime 
   puts " Time: %.2f sec\n\n" % [t2-t1]
 end
