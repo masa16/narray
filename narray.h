@@ -92,6 +92,14 @@ struct slice {
 #define IsNArray(obj) (rb_obj_is_kind_of(obj,cNArray)==Qtrue)
 
 #define NA_PTR(a,p)  ((a)->ptr+(p)*na_sizeof[(a)->type])
+#define NA_STRUCT(val) ((struct NARRAY*)DATA_PTR(val))
+#define NA_PTR_TYPE(val,type) (type)(((struct NARRAY*)DATA_PTR(val))->ptr)
+#define NA_RANK(val)   (((struct NARRAY*)DATA_PTR(val))->rank)
+#define NA_TYPE(val)   (((struct NARRAY*)DATA_PTR(val))->type)
+#define NA_TOTAL(val)  (((struct NARRAY*)DATA_PTR(val))->total)
+#define NA_SHAPE0(val) (((struct NARRAY*)DATA_PTR(val))->shape[0])
+#define NA_SHAPE1(val) (((struct NARRAY*)DATA_PTR(val))->shape[1])
+
 #define NA_IsNArray(obj) \
   (rb_obj_is_kind_of(obj,cNArray)==Qtrue)
 #define NA_IsArray(obj) \
@@ -110,8 +118,6 @@ struct slice {
  rb_funcall(cComplex, na_id_new, 2, rb_float_new(r), rb_float_new(i))
 #define NUM2REAL(v)  NUM2DBL( rb_funcall((v),na_id_real,0) )
 #define NUM2IMAG(v)  NUM2DBL( rb_funcall((v),na_id_imag,0) )
-
-#define NA_STRUCT(dta) ((struct NARRAY*)DATA_PTR(dta))
 
 #define NA_ALLOC_SLICE(slc,nc,shp,np) \
 { slc = (struct slice*)xmalloc( sizeof(struct slice)*(nc) + \
@@ -169,6 +175,8 @@ extern na_ufunc_t  MinFuncs;
 extern na_ufunc_t  MaxFuncs;
 extern na_sortfunc_t SortFuncs;
 extern na_sortfunc_t SortIdxFuncs;
+extern na_bifunc_t RefMaskFuncs;
+extern na_bifunc_t SetMaskFuncs;
 
 /* variables */
 
@@ -214,6 +222,10 @@ VALUE na_slice(int argc, VALUE *argv, VALUE self);
 void  na_aset_slice(struct NARRAY *dst, struct NARRAY *src, struct slice *s1);
 int   na_shrink_class(int class_dim, int *shrink);
 VALUE na_shrink_rank(VALUE obj, int class_dim, int *shrink);
+VALUE na_count_true(VALUE self);
+VALUE na_count_false(VALUE self);
+VALUE na_aref_mask(VALUE self, VALUE mask);
+void  na_aset_mask(VALUE self, VALUE mask, VALUE v);
 
 /* na_array.c */
 VALUE na_to_array(VALUE obj);

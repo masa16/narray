@@ -1,3 +1,22 @@
+2001-12-30  Masahiro Tanaka  <masa@ir.isas.ac.jp>
+
+	* extconf.rb: Modify install_rb to install narray.h, narray_config.h.
+	* na_index.c (na_aref,na_aset):
+	  Mask support.  Thanks to T.Horinoichi.
+	* mkop.rb: Mask functions added.
+	* narray.h: Macros added.
+	* narray.def: created.
+
+	* ver 0.5.5
+
+2001-11-20 Takeshi Horinouchi <horinout@kurasc.kyoto-u.ac.jp>
+
+	* narray.c (na_get_typecode): Bug: "!" needed at strncmp.
+	* Mask support in [], []=.
+	  na_aref/aset_mask(), na_count_true/false() added.
+          Methods mask, count_true, count_false added.
+	* test/testmask.rb: created.
+
 2001-07-01  Masahiro Tanaka  <masa@ir.isas.ac.jp>
 
 	* narray.h: introduce na_index_t.

@@ -1,5 +1,5 @@
 
-	Ruby/NArray  ver 0.5.4 (2001-07-01)	by Masahiro TANAKA
+	Ruby/NArray  ver 0.5.5 (2001-12-30)	by Masahiro TANAKA
 
 
 Class method:
@@ -48,10 +48,27 @@ Slicing Array
     a[ 0, true ]	sams as a[0,0..-1]. `true' means all.
     a[ false, 0 ]	same as a[true,true,0], if a is a 3-d array,
 			`false' means ellipsis dimension.
+    a[ mask ]		masking. "mask" is a byte NArray with its
+			length equal to that of "a". According to the
+			value of each element of mask, the corresponding
+			element in "a" is eliminated (when 0) or
+			retained (when not 0).
+			Example: 
+				a=NArray.float(2,2).indgen!
+				p a[ a.lt 3 ]
+				--> [ 0.0, 1.0, 2.0 ]
+				(Here, a.lt 3 gives a byte NArray)
+				(This is also done by a[ (a.lt 3).where ])
 
  - A 2-or-more-dim array object with only one argument in `[ ]',
    is treated as a flat 1-d array.
    e.g.: a[3] is same as a[0,1] if a is 3x3 array.
+
+ - self.slice(...)	Same as self[...] but keeps the rank of
+			original array by not elimiting dimensions 
+			whose length became equal to 1 (which self[] 
+			does). This is not the case with the
+			1-dimensional indexing and masking (same as []).
 
 Replacing Elements -- Same rule as slicing
 
@@ -186,6 +203,14 @@ Byte swap
     self.ntoh		
     self.htov		convert to VAX byte order
     self.vtoh		
+
+Boolean / mask related
+    self.count_false	count # of elements whose value == 0 (only for
+			byte, sint, and int)
+    self.count_true	count # of elements whose value != 0 (only for
+			byte, sint, and int)
+    self.mask( mask )	same as self[ mask ], but exclusively for masking.
+			Unlike [], a int or sint mask is accepted.
 
 Complex compound number
     self.real

@@ -34,6 +34,15 @@ def create_conf_h(file)
   hfile.close
 end
 
+alias __install_rb :install_rb
+def install_rb(mfile, dest, srcdir = nil)
+  __install_rb(mfile, dest, srcdir)
+  path = ['narray.h','narray_config.h']
+  for f in path
+    mfile.printf "\t@$(RUBY) -r ftools -e 'File::install(ARGV[0], ARGV[1], 0644, true)' %s %s\n", f, dest
+  end
+end
+
 #$DEBUG = true
 #$CFLAGS = ["-Wall",$CFLAGS].join(" ")
 

@@ -501,6 +501,87 @@ static VALUE
 }
 
 
+/* vvv mask vvv */
+static int
+ na_count_true_body(VALUE self)
+{
+  struct NARRAY *ary;
+  int  n, count=0;
+  u_int8_t *ptr;
+
+  GetNArray(self,ary);
+
+  if ( ary->type == NA_BYTE ) {
+    ptr = (u_int8_t *)ary->ptr;
+    n   = ary->total;
+    for (; n; n--) {
+      if (*ptr++) ++count;
+    }
+  } else
+    rb_raise(rb_eTypeError,"cannot count_true NArray except BYTE type");
+  return count;
+}
+
+VALUE
+ na_count_true(VALUE self)
+{
+  return( INT2NUM(na_count_true_body(self)) );
+}
+
+static int
+ na_count_false_body(VALUE self)
+{
+  struct NARRAY *ary;
+  int  n, count=0;
+  u_int8_t *ptr;
+
+  GetNArray(self,ary);
+
+  if ( ary->type == NA_BYTE ) {
+    ptr = (u_int8_t *)ary->ptr;
+    n   = ary->total;
+    for (; n; n--) {
+      if (!*ptr++) ++count;
+    }
+  } else
+    rb_raise(rb_eTypeError,"cannot count_false NArray except BYTE type");
+  return count;
+}
+
+VALUE
+ na_count_false(VALUE self)
+{
+  return( INT2NUM(na_count_false_body(self)) );
+}
+
+VALUE
+ na_aref_mask(VALUE self, VALUE mask)
+{
+  int total;
+  struct NARRAY *a1, *am, *a2;
+  VALUE v;
+
+  GetNArray( self, a1 );
+  GetNArray( mask, am );
+
+  if (a1->total != am->total) { 
+     rb_raise(rb_eTypeError,"self.length != mask.length");
+  }
+
+  total = na_count_true_body(mask);
+
+  v = na_make_object( a1->type, 1, &total, CLASS_OF(self) );
+  GetNArray(v,a2);
+
+  RefMaskFuncs[a1->type]
+    ( a1->total, a2->ptr, na_sizeof[a2->type], a1->ptr,
+      na_sizeof[a1->type], am->ptr, 1 );
+
+  return(v);
+}
+
+/* ^^^ mask ^^^ */
+
 
 /* method: [](idx1,idx2,...,idxN) */
 static VALUE
@@ -509,11 +590,17 @@ static VALUE
   if (nidx==0) {
     return na_clone(self);
   }
-  if (nidx==1 && na_class_dim(CLASS_OF(self)) != 1) {
-    if ( NA_IsArray(idx[0]) ) /* Array Index ? */
-      return na_aref_single_dim_array( self, idx[0] );
-    else 
-      return na_aref_single_dim( self, idx[0], flag );
+  if (nidx==1) {
+    if ( NA_IsNArray(idx[0]) ) {
+      if( NA_TYPE(idx[0]) == NA_BYTE ) /* then supposed to be a mask */
+	return na_aref_mask(self, idx[0]);
+    }
+    if ( na_class_dim(CLASS_OF(self)) != 1 ) {
+      if ( NA_IsArray(idx[0]) ) /* Array Index ? */
+	return na_aref_single_dim_array( self, idx[0] );
+      else
+	return na_aref_single_dim( self, idx[0], flag );
+    }
   }
   /* if (nidx>1) */
     return na_aref_multi_dim( self, nidx, idx, flag );
@@ -822,6 +909,36 @@ static void
 }
 
 
+/* --- mask --- */
+void
+ na_aset_mask(VALUE self, VALUE mask, VALUE val)
+{
+  int size, step;
+  struct NARRAY *a1, *am, *a2;
+
+  GetNArray( self, a1 );
+  GetNArray( mask, am );
+
+  if (a1->total != am->total) { 
+     rb_raise(rb_eTypeError,"self.length != mask.length");
+  }
+
+  size = na_count_true_body(mask);
+
+  val = na_cast_object(val,a1->type);
+  GetNArray( val, a2 );
+  if (a2->total == 1) {
+    step = 0;
+  } else if (a2->total == size) { 
+    step = na_sizeof[a2->type];
+  } else {
+    rb_raise(rb_eTypeError,"val.length != mask.count_true");
+  }
+
+  SetMaskFuncs[a1->type]
+    ( a1->total, a1->ptr, na_sizeof[a1->type],
+      a2->ptr, step, am->ptr, 1 );
+}
 
 /* method: []=(idx1,idx2,...,idxN,val) */
 VALUE
@@ -834,6 +951,12 @@ VALUE
   }
   else
   if (nidx==1) {
+    if ( NA_IsNArray(idx[0]) ) {
+      if( NA_TYPE(idx[0]) == NA_BYTE ) { /* then supposed to be a mask */
+	na_aset_mask(self, idx[0], idx[1]);
+	return(idx[1]);
+      }
+    }
     if ( NA_IsArray(idx[0]) ) /* Array Index ? */
       na_aset_array_index( self, idx[0], idx[1] );
     else

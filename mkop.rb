@@ -560,3 +560,27 @@ mkfuncs('atan2', $data_types, $data_types,
  ["*p1 = atan2(*p2, *p3);"]*2 +
  [nil]*3
 )
+
+
+#
+#   Mask
+#
+$func_body = 
+  "static void #name#C(int n, char *p1, int i1, char *p2, int i2, char *p3, int i3)
+{
+  for (; n; n--) {
+    OPERATION
+  }
+}
+"
+mkfuncs('RefMask',$data_types,$data_types,
+ [nil] +
+ ["if (*(u_int8_t*)p3) { *p1=*p2; p1+=i1; }
+    p3+=i3; p2+=i2;"]*8
+)
+
+mkfuncs('SetMask',$data_types,$data_types,
+ [nil] +
+ ["if (*(u_int8_t*)p3) { *p1=*p2; p2+=i2; }
+    p3+=i3; p1+=i1;"]*8
+)

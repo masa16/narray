@@ -370,7 +370,7 @@ static int
   }
   if (TYPE(v)==T_STRING) {
     for (i=1; i<NA_NTYPES; i++) {
-      if ( strncmp( RSTRING(v)->ptr, na_typestring[i], RSTRING(v)->len) )
+      if ( !strncmp( RSTRING(v)->ptr, na_typestring[i], RSTRING(v)->len) )
 	return i;
     }
   }
@@ -1305,6 +1305,11 @@ void
     rb_define_method(cNArray, "to_binary", na_to_binary, 0);
     rb_define_method(cNArray, "to_type_as_binary", na_to_type_as_binary, 1);
     rb_define_method(cNArray, "to_string", na_to_string, 0);
+    /*mask*/
+    rb_define_method(cNArray, "count_false", na_count_false, 0);
+    rb_define_method(cNArray, "count_true", na_count_true, 0);
+    rb_define_method(cNArray, "mask", na_aref_mask, 1);
+
     rb_define_const(cNArray, "BYTE", INT2FIX(NA_BYTE));
     rb_define_const(cNArray, "SINT", INT2FIX(NA_SINT));
     rb_define_const(cNArray, "LINT", INT2FIX(NA_LINT));

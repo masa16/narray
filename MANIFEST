@@ -46,6 +46,7 @@ test/testfftw.rb
 test/testindex.rb
 test/testindexary.rb
 test/testindexset.rb
+test/testmask.rb
 test/testmath.rb
 test/testmath2.rb
 test/testmatrix.rb

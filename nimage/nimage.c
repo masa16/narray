@@ -150,7 +150,8 @@ static void nimg_put_image(struct NIMG *nimg)
 static void init_display(void)
 {
   display = XOpenDisplay( NULL );
-  if ( display==NULL ) exit_err( "ERROR: cannot open display\n" );
+  if ( display==NULL )
+    rb_raise(rb_eRuntimeError, "ERROR: cannot open display\n");
 }
 
 
