@@ -1,3 +1,14 @@
+2004-01-04  Masahiro TANAKA  <masa@ir.isas.ac.jp>
+
+	* extconf.rb: narray.h, narray_conf.h was not installed on ruby-1.8.x
+
+	* narray.c: NArray-GC is disabled.
+
+	* nimage/nimage.c, test/testwhere.rb, speed/[mybench.rb,mul_rep.rb]:
+	  fix ruby-1.8.x incompatibility
+
+	* ver 0.5.7p1
+
 2003-03-04  Masahiro TANAKA  <masa@ir.isas.ac.jp>
 
 	* narray.c (na_alloc_struct): 

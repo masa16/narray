@@ -13,7 +13,7 @@
 #include "narray.h"
 #include "narray_local.h"
 
-#if RUBY_VERSION_CODE < 150 || RUBY_VERSION_CODE >= 180
+#if RUBY_VERSION_CODE < 150
 #define NARRAY_GC
 #endif
 
