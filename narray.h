@@ -73,6 +73,8 @@ struct NARRAY {
 
 extern VALUE cNArray, cNArrayScalar, cComplex;
 
+extern const int na_sizeof[NA_NTYPES+1];
+
 #define NA_MAX_RANK 15
 
 #define GetNArray(obj,var)  Data_Get_Struct(obj, struct NARRAY, var)
@@ -116,6 +118,7 @@ extern VALUE cNArray, cNArrayScalar, cComplex;
 VALUE na_make_object(int type, int rank, int *shape, VALUE klass);
 VALUE na_make_scalar(VALUE obj, int type);
 VALUE na_make_empty(int type, VALUE klass);
+int   na_get_typecode(VALUE v);
 void  na_clear_data(struct NARRAY *ary);
 VALUE na_clone(VALUE self);
 VALUE na_fill(VALUE self, VALUE obj);

@@ -689,7 +689,7 @@ static VALUE
 
 
 static VALUE
- na_unary_func(VALUE self, int *cast, na_ufunc_t funcs)
+ na_unary_func(VALUE self, const int *cast, na_ufunc_t funcs)
 {
   VALUE ans;
   struct NARRAY *a2;

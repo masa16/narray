@@ -33,7 +33,7 @@ static void TpErr(void) {
     rb_raise(rb_eTypeError,"illegal operation with this type");
 }
 
-#ifndef HAVE_SINCOS
+#if 0
 void sincos(double x, double *s, double *c)
 {
   *s=sin(x); *c=cos(x);
@@ -41,23 +41,71 @@ void sincos(double x, double *s, double *c)
 #endif
 
 #ifndef HAVE_ASINH
-double asinh(double x)
+static double rb_log1p (const double x)
 {
-  if (x<0)  
-    return -log(-x+sqrt(x*x+1));
-  else 
-    return log(x+sqrt(x*x+1));
+  double y;
+  y = 1+x;
+
+  if (y==1)
+     return x;
+  else
+     return log(y)*(x/(y-1));
 }
+
+static double zero=0;
+
 double acosh(double x)
 {
-  return log(x+sqrt(x*x-1));
+   /* acosh(x) = log(x+sqrt(x*x-1)) */
+   if (x>2) {
+      return log(2*x-1/(sqrt(x*x-1)+x));
+   } else if (x>=1) {
+      x-=1;
+      return rb_log1p(x+sqrt(2*x+x*x));
+   }
+   return zero/(x-x); /* x<1: NaN */
 }
+
+double asinh(double x)
+{
+   double a, x2;
+   int neg;
+
+   /* asinh(x) = log(x+sqrt(x*x+1)) */
+   neg = x<0;
+   if (neg) {x=-x;}
+   x2 = x*x;
+
+   if (x>2) {
+      a = log(2*x+1/(x+sqrt(x2+1)));
+   } else {
+      a = rb_log1p(x+x2/(1+sqrt(x2+1)));
+   }
+   if (neg) {a=-a;}
+   return a;
+}
+
 double atanh(double x)
 {
-  if (x<0)  
-    return -0.5*log((1-x)/(1+x));
-  else
-    return 0.5*log((1+x)/(1-x));
+   double a, x2;
+   int neg;
+
+   /* atanh(x) = 0.5*log((1+x)/(1-x)) */
+   neg = x<0;
+   if (neg) {x=-x;}
+   x2 = x*2;
+
+   if (x<0.5) {
+      a = 0.5*rb_log1p(x2+x2*x/(1-x));
+   } else if (x<1) {
+      a = 0.5*rb_log1p(x2/(1-x));
+   } else if (x==1) {
+      a = 1/zero;        /* Infinity */
+   } else {
+      return zero/(x-x); /* x>1: NaN */
+   }
+   if (neg) {a=-a;}
+   return a;
 }
 #endif
 
@@ -269,33 +317,27 @@ data = [
 [nil]*4 +
 ["{ *p1 = sin(*p2); }"]*2 +
 ["{
-  double s,c;
-  sincos(p2->r,&s,&c);
-  p1->r = s*cosh(p2->i);
-  p1->i = c*sinh(p2->i); }"]*2 +
+  p1->r = sin(p2->r)*cosh(p2->i);
+  p1->i = cos(p2->r)*sinh(p2->i); }"]*2 +
 [nil] ],
 
 ['cos',
 [nil]*4 +
 ["{ *p1 = cos(*p2); }"]*2 +
 ["{
-  double s,c;
-  sincos(p2->r,&s,&c);
-  p1->r = c*cosh(p2->i);
-  p1->i = -s*sinh(p2->i); }"]*2 +
+  p1->r = cos(p2->r)*cosh(p2->i);
+  p1->i = -sin(p2->r)*sinh(p2->i); }"]*2 +
 [nil] ],
 
 ['tan',
 [nil]*4 +
 ["{ *p1 = tan(*p2); }"]*2 +
 ["{
-  double s,c;
   typer d, th;
-  sincos(2*p2->r,&s,&c);
   p1->i = th = tanh(2*p2->i);
   p1->r = sqrt(1-th*th); /* sech */
-  d  = 1 + c * p1->r;
-  p1->r *= s/d;
+  d  = 1 + cos(2*p2->r) * p1->r;
+  p1->r *= sin(2*p2->r)/d;
   p1->i /= d;
 }"]*2 +
 [nil] ],
@@ -304,9 +346,8 @@ data = [
 [nil]*4 +
 ["{ *p1 = sinh(*p2); }"]*2 +
 ["{
-  double s,c; sincos(p2->i,&s,&c);
-  p1->r = sinh(p2->r)*c;
-  p1->i = cosh(p2->r)*s;
+  p1->r = sinh(p2->r)*cos(p2->i);
+  p1->i = cosh(p2->r)*sin(p2->i);
 }"]*2 +
 [nil] ],
 
@@ -314,9 +355,8 @@ data = [
 [nil]*4 +
 ["{ *p1 = cosh(*p2); }"]*2 +
 ["{
-  double s,c; sincos(p2->i,&s,&c);
-  p1->r = cosh(p2->r)*c;
-  p1->i = sinh(p2->r)*s;
+  p1->r = cosh(p2->r)*cos(p2->i);
+  p1->i = sinh(p2->r)*sin(p2->i);
 }"]*2 +
 [nil] ],
 
@@ -324,14 +364,12 @@ data = [
 [nil]*4 +
 ["{ *p1 = tanh(*p2); }"]*2 +
 ["{
-  double s,c;
   typer d, th;
-  sincos(2*p2->i,&s,&c);
   p1->r = th = tanh(2*p2->r);
   p1->i = sqrt(1-th*th); /* sech */
-  d  = 1 + c * p1->i;
+  d  = 1 + cos(2*p2->i) * p1->i;
   p1->r /= d;
-  p1->i *= s/d;
+  p1->i *= sin(2*p2->i)/d;
 }"]*2 +
 [nil] ],
 
@@ -339,17 +377,10 @@ data = [
 [nil]*4 +
 ["{ *p1 = exp(*p2); }"]*2 +
 ["{
-  typer a = exp(p2->r); double s,c;
-  sincos(p2->i, &s, &c);
-  p1->r = a*c;
-  p1->i = a*s;
-}",
-"{
   typer a = exp(p2->r);
-  sincos(p2->i, &(p1->i), &(p1->r));
-  p1->r *= a;
-  p1->i *= a;
-}"] +
+  p1->r = a*cos(p2->i);
+  p1->i = a*sin(p2->i);
+}"]*2 +
 [nil] ],
 
 ['log',

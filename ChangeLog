@@ -1,3 +1,23 @@
+2002-05-18  Masahiro TANAKA  <masa@ir.isas.ac.jp>
+
+	* narray.h, narray_local.h, narray.c:
+	  move na_sizeof variable from narray_local.h to narray.h.
+	  const keyword added.  Thanks to Horinouchi-san.
+	* narray.c (na_get_typecode): change to public method.
+	* narray.c (na_sizeof,na_typestring): const keyword added.
+	* mkop.rb : ditto.
+	* na_func.c (na_unary_func): ditto.
+	* mkmath.rb : dismiss sincos()
+
+2002-04-11  Masahiro TANAKA  <masa@ir.isas.ac.jp>
+
+	* mkmath.rb (asinh,acosh,atanh): better precision.
+
+2002-04-10  Masahiro TANAKA  <masa@ir.isas.ac.jp>
+
+	* mkop.rb (SetFucs): should use INT2NUM to extract 32-bit int.
+	 Thanks to Kozuka-san.
+
 2002-03-26  Masahiro TANAKA  <masa@ir.isas.ac.jp>
 
 	* narray.def: remove unused entry. Thanks to Watanabe-san.

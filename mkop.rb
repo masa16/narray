@@ -23,18 +23,18 @@ print <<EOM
 /* isalpha(3) etc. */
 #include <ctype.h>
 
-int na_upcast[NA_NTYPES][NA_NTYPES] = {
+const int na_upcast[NA_NTYPES][NA_NTYPES] = {
 #{upcast_ary} };
 
-int na_no_cast[NA_NTYPES] =
+const int na_no_cast[NA_NTYPES] =
  { 0, 1, 2, 3, 4, 5, 6, 7, 8 };
-int na_cast_real[NA_NTYPES] =
+const int na_cast_real[NA_NTYPES] =
  { 0, 1, 2, 3, 4, 5, 4, 5, 8 };
-int na_cast_comp[NA_NTYPES] =
+const int na_cast_comp[NA_NTYPES] =
  { 0, 6, 6, 6, 6, 7, 6, 7, 8 };
-int na_cast_round[NA_NTYPES] =
+const int na_cast_round[NA_NTYPES] =
  { 0, 1, 2, 3, 3, 3, 6, 7, 8 };
-int na_cast_byte[NA_NTYPES] =
+const int na_cast_byte[NA_NTYPES] =
  { 0, 1, 1, 1, 1, 1, 1, 1, 1 };
 
 
@@ -65,7 +65,8 @@ EOM
 #
 data = [
   [/[O]/,/[O]/,        "*p1 = *p2;"],
-  [/[O]/,/[BIL]/,      "*p1 = INT2FIX(*p2);"],
+  [/[O]/,/[BI]/,       "*p1 = INT2FIX(*p2);"],
+  [/[O]/,/[L]/,        "*p1 = INT2NUM(*p2);"],
   [/[O]/,/[FD]/,       "*p1 = rb_float_new(*p2);"],
   [/[O]/,/[XC]/,       "*p1 = rb_complex_new(p2->r,p2->i);"],
   [/[BIL]/,/[O]/,      "*p1 = NUM2INT(*p2);"],

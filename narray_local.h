@@ -88,15 +88,14 @@ extern ID na_id_real, na_id_imag;
 extern ID na_id_coerce_rev;
 extern ID na_id_new;
 
-extern int na_sizeof[NA_NTYPES+1];
-extern int na_upcast[NA_NTYPES][NA_NTYPES];
-extern int na_no_cast[NA_NTYPES];
-extern int na_cast_real[NA_NTYPES];
-extern int na_cast_comp[NA_NTYPES];
-extern int na_cast_round[NA_NTYPES];
-extern int na_cast_byte[NA_NTYPES];
+extern const int na_upcast[NA_NTYPES][NA_NTYPES];
+extern const int na_no_cast[NA_NTYPES];
+extern const int na_cast_real[NA_NTYPES];
+extern const int na_cast_comp[NA_NTYPES];
+extern const int na_cast_round[NA_NTYPES];
+extern const int na_cast_byte[NA_NTYPES];
 
-extern char *na_typestring[];
+extern const char *na_typestring[];
 
 /* narray.c */
 VALUE na_newdim_ref(int argc, VALUE *argv, VALUE self);

@@ -26,7 +26,7 @@ ID na_id_coerce_rev;
 ID na_id_new;
 static ID na_id_to_i, na_id_usec, na_id_now;
 
-int na_sizeof[NA_NTYPES+1] = {
+const int na_sizeof[NA_NTYPES+1] = {
   0,
   sizeof(u_int8_t),
   sizeof(int16_t),
@@ -39,7 +39,7 @@ int na_sizeof[NA_NTYPES+1] = {
   0
 };
 
-char *na_typestring[] = {
+const char *na_typestring[] = {
   "none",
   "byte",	/* 1 */
   "sint",	/* 2 */
@@ -352,7 +352,7 @@ static VALUE
 
 
 /* Convert type arguments -> typecode */
-static int
+int
  na_get_typecode(VALUE v)
 {
   struct NARRAY *na;

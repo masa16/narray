@@ -79,7 +79,7 @@ have_type("int16_t", header)
 have_type("int32_t", header)
 
 #have_library("m")
-have_func("sincos")
+#have_func("sincos")
 have_func("asinh")
 
 if have_header("fftw.h")
