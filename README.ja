@@ -1,4 +1,4 @@
-	Ruby/NArray  ver 0.5.7 (2003-03-04)	by Masahiro TANAKA
+	Ruby/NArray  ver 0.5.7p1 (2004-01-04)	by Masahiro TANAKA
 
 * Ruby/NArrayの特徴。
 
@@ -11,7 +11,9 @@
   + 配列同士の演算・代入は、各次元のサイズが同じであることが必要。
     ただし、サイズが1の次元は、他方の配列のサイズに合わせて
     「繰り返し」同じ要素が適用される。
-  + FFTW (高速フーリエ変換) インタフェース附属。
+  + FFTW (高速フーリエ変換) version 2 インタフェース附属。
+    ただし FFTW version 3 は次のモジュールでサポート。
+      http://www.ir.isas.ac.jp/~masa/ruby/dist/ruby-fftw3-0.1.0.tar.gz
   + NImage (X11イメージ表示) クラス附属。(nimage/ ディレクトリ参照)
   + Ruby/PGPLOT (グラフィックスライブラリ、別悃) にて
      XYグラフ、ヒストグラム、等高線、イメージ表示可能。
@@ -42,8 +44,8 @@
 
   ruby 1.6.8 (2002-12-24) [i686-linux]
   gcc version 2.96
-  ruby 1.6.7 (2002-03-01) [sparc-solaris2.7]
-  gcc version 2.95.2
+  ruby 1.8.1 (2003-12-25) [i686-linux]
+  gcc version 3.2.2 20030222 (Red Hat Linux 3.2.2-5)
 
 * 配布条件
 
