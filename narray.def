@@ -1,5 +1,6 @@
 EXPORTS
 Init_narray
+na_sizeof
 na_make_object
 na_make_scalar
 na_make_empty
