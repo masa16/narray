@@ -38,8 +38,9 @@ alias __install_rb :install_rb
 def install_rb(mfile, dest, srcdir = nil)
   __install_rb(mfile, dest, srcdir)
   path = ['narray.h','narray_config.h']
+  archdir = dest.sub(/sitelibdir/,"sitearchdir").sub(/rubylibdir/,"archdir")
   for f in path
-    mfile.printf "\t@$(RUBY) -r ftools -e 'File::install(ARGV[0], ARGV[1], 0644, true)' %s %s\n", f, dest
+    mfile.printf "\t@$(RUBY) -r ftools -e 'File::install(ARGV[0], ARGV[1], 0644, true)' %s %s\n", f, archdir
   end
 end
 
