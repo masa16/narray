@@ -1,3 +1,10 @@
+2004-02-19  Masahiro TANAKA  <masahiro.tanaka@nao.ac.jp>
+
+	* na_array.c (na_free_mdai):
+	  memory free bug: xfree(mdai->type); added.
+
+	* ver 0.5.7p2
+
 2004-01-04  Masahiro TANAKA  <masa@ir.isas.ac.jp>
 
 	* extconf.rb: narray.h, narray_conf.h was not installed on ruby-1.8.x

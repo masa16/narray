@@ -107,6 +107,7 @@ static int *
   for (i=0; r-->0; i++) {
     shape[i] = mdai->item[r].shape;
   }
+  xfree(mdai->type);
   xfree(mdai->item);
   xfree(mdai);
   return shape;
