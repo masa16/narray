@@ -1,21 +1,38 @@
 /*
- * narray.h
- * Numerical Array Extention for Ruby
- *   (C) Copyright 1999,2000 by Masahiro TANAKA
- */
+  narray.h
+  Numerical Array Extention for Ruby
+    (C) Copyright 1999-2001 by Masahiro TANAKA
+
+  This program is free software.
+  You can distribute/modify this program
+  under the same terms as Ruby itself.
+  NO WARRANTY.
+*/
+#ifndef NARRAY_H
+#define NARRAY_H
 
 #include <math.h>
+
+#ifdef HAVE_SYS_TYPES_H
+# include <sys/types.h>
+#endif
+
+#include "narray_conf.h"
 /*
- Data type used in NArray :
+  Data type used in NArray :
+  Please modify these types if your system has different types.
 */
- typedef unsigned char          u_int8_t; /* NA_BYTE */
- typedef short                  int16_t;  /* NA_SINT */
- typedef int                    int32_t;  /* NA_LINT */
- typedef struct { float r,i; }  scomplex;
- typedef struct { double r,i; } dcomplex;
-/*
- Please define these types if your system do not have them.
-*/
+#ifndef HAVE_U_INT8_T
+typedef unsigned char          u_int8_t; /* NA_BYTE */
+#endif
+#ifndef HAVE_INT16_T
+typedef short                  int16_t;  /* NA_SINT */
+#endif
+#ifndef HAVE_INT32_T
+typedef long                   int32_t;  /* NA_LINT */
+#endif
+typedef struct { float r,i; }  scomplex;
+typedef struct { double r,i; } dcomplex;
 
 enum NArray_Types {
   NA_NONE,
@@ -71,7 +88,7 @@ struct slice {
 #define NA_MAX(a,b) (((a)>(b))?(a):(b))
 #define NA_SWAP(a,b,tmp) {(tmp)=(a);(a)=(b);(b)=(tmp);}
 
-#define na_class_dim(klass) NUM2INT(rb_const_get(klass, na_id_class_dim));
+#define na_class_dim(klass) NUM2INT(rb_const_get(klass, na_id_class_dim))
 
 #define rb_complex_new(r, i) \
  rb_funcall(cComplex, na_id_new, 2, rb_float_new(r), rb_float_new(i))
@@ -217,3 +234,5 @@ void na_loop_index_ref(struct NARRAY *a1, struct NARRAY *a2,
 #define xfree(ptr) na_xfree(ptr)
 void na_xfree(void *ptr);
 #endif
+
+#endif /* ifndef NARRAY_H */

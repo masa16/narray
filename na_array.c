@@ -464,7 +464,7 @@ VALUE
   VALUE fs = rb_str_new(", ",2);
 
   GetNArray(val,ary);
-  if (ary->total < 1) return rb_str_new("", 0);
+  if (ary->total < 1) return rb_str_new(0, 0);
 
   /* Allocate Structure */
   rank = ary->rank;

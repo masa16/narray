@@ -1,4 +1,4 @@
-	Ruby/NArray  ver 0.5.1 (2000-12-12)	by Masahiro TANAKA
+	Ruby/NArray  ver 0.5.4 (2001-07-01)	by Masahiro TANAKA
 
 * NArray properties:
 
@@ -33,12 +33,13 @@
 
     ruby extconf.rb
     make
-    make install
+    make site-install
+    (or, make install)
 
 * Tested Platform
 
-  Ruby ver 1.6.1
-  SunOS 5.7 / gcc 2.8.1
+  Ruby ver 1.6.4
+  SunOS 5.7 / gcc 2.95.3
 
 * License
 

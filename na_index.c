@@ -448,9 +448,14 @@ static VALUE
   if (rank==0) {
     SetFuncs[NA_ROBJ][ary->type](1, &v, 0, NA_PTR(ary,pos), 0);
   } else {
+    VALUE klass;
+    int   class_dim;
+    klass = CLASS_OF(self);
+    class_dim = na_class_dim(klass);
+    if (rank < class_dim) rank = class_dim;
     shape = ALLOCA_N(int, rank);
     for (i=0;i<rank;i++) shape[i]=1;
-    v = na_make_object(ary->type,rank,shape,cNArray);
+    v = na_make_object(ary->type,rank,shape,klass);
     GetNArray(v,arynew);
     SetFuncs[ary->type][ary->type](1, arynew->ptr, 0, NA_PTR(ary,pos), 0);
   }
@@ -499,7 +504,7 @@ static VALUE
   if (nidx==0) {
     return na_clone(self);
   }
-  if (nidx==1) {
+  if (nidx==1 && na_class_dim(CLASS_OF(self)) != 1) {
     if ( NA_IsArray(idx[0]) ) /* Array Index ? */
       return na_aref_single_dim_array( self, idx[0] );
     else 

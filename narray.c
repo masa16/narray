@@ -795,7 +795,7 @@ static VALUE
       rb_str_cat(str,buf,strlen(buf));
     }
     rb_str_cat(str,")",1);
-    rb_str_cat(str,": \n",4);
+    rb_str_cat(str,": \n",3);
     rb_str_concat(str, na_make_inspect(self));
   }
   return str;

@@ -451,8 +451,9 @@ data = [
 ["{ *p1 = atan(*p2); }"]*2 +
 # i/2 * log((i+x)/(i-x))
 ["{
-  typed y = { p2->r, 1+p2->i};
-  typed x = {-p2->r, 1-p2->i};
+  typed x,y;
+  x.r=-p2->r; x.i=1-p2->i;
+  y.r= p2->r; y.i=1+p2->i;
   div#code((void*)&y,(void*)&x);
   log#code((void*)&x,(void*)&y);
   p1->r = -x.i/2;
@@ -465,8 +466,9 @@ data = [
 ["{ *p1 = atanh(*p2); }"]*2 +
 # 1/2 * log((1+x)/(1-x))
 ["{
-  typed y = {1+p2->r,  p2->i};
-  typed x = {1-p2->r, -p2->i};
+  typed x,y;
+  x.r=1-p2->r; x.i=-p2->i;
+  y.r=1+p2->r; y.i= p2->i;
   div#code((void*)&y,(void*)&x);
   log#code((void*)&x,(void*)&y);
   p1->r = x.r/2;

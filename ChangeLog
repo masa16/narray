@@ -1,3 +1,35 @@
+2001-06-30  Masahiro Tanaka  <masa@ir.isas.ac.jp>
+
+	* extconf.rb: check sys/typedef.h, u_int8_t, int16_t, int32_t.
+	  generate narray_conf.h
+	* narray.h: conditional typedef. define NARRAY_H.
+
+2001-06-05  Masahiro Tanaka  <masa@ir.isas.ac.jp>
+
+	* na_index.c (na_aref_body): NVector#[] should return NVector
+	  class even when single argument of range/array.
+	  Thanks to Daishi Harada.
+	* narray.h (na_class_dim): delete redundant ";"
+	* extconf.rb: delete config_dir("narray"), add dir_config("fftw").
+
+2001-06-04  Masahiro Tanaka  <masa@ir.isas.ac.jp>
+
+	* na_index.c (na_aref_multi_dim_single_elm): 
+	  do not change class even if a[0..0,0..0] for NMatrix.
+	  Thanks to Daishi Harada.
+	* narray.c (na_inspect): rb_str_cat(str,": \n",4);
+	  not 4, but 3. Thanks to Matju.
+
+2001-05-11  Masahiro Tanaka  <masa@ir.isas.ac.jp>
+
+	* nimage/extconf.rb: add dir_config("x11"). rm have_header.
+
+2001-04-10  Masahiro Tanaka  <masa@ir.isas.ac.jp>
+
+	* narray.h: exclude typedef int32_t,int16_t,u_int8_t for Mac OS X.
+	  Thanks to T.Yamamoto.
+	* mkmath.rb (atan,atanh): avoid non-constant initializer for complex.
+
 2001-04-03  Masahiro Tanaka  <masa@ir.isas.ac.jp>
 
 	* na_array.c (na_search_rank): ignore empty array.

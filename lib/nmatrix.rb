@@ -35,7 +35,9 @@ class NMatrix < NArray
   def *(other)
     case other
     when NMatrix
-      NMatrix.mul_add( NArray.refer(self).newdim!(0), other.newdim(2), 1 )
+      NMatrix.mul_add( NArray.refer(self).newdim!(0),other.newdim(2), 1 )
+      #NMatrix.mul_add( NArray.refer(self).newdim!(0),
+      #		       other.transpose(1,0).newdim!(2), 0 )
     when NVector
       NVector.mul_add( NArray.refer(self), other.newdim(1), 0 )
     when NArray

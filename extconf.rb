@@ -1,5 +1,48 @@
 require "mkmf"
 
+def have_type(type, header=nil)
+  printf "checking for %s... ", type
+  STDOUT.flush
+  src = <<"SRC"
+#include <ruby.h>
+SRC
+  unless header.nil?
+  src << <<"SRC"
+#include <#{header}>
+SRC
+  end
+  r = try_link(src + <<"SRC")
+  int main() { return 0; }
+  int t() { #{type} a; return 0; }
+SRC
+  unless r
+    print "no\n"
+    return false
+  end
+  $defs.push(format("-DHAVE_%s", type.upcase))
+  print "yes\n"
+  return true
+end
+
+def create_conf_h(file)
+  print "creating #{file}\n"
+  hfile = open(file, "w")
+  for line in $defs
+    line =~ /^-D(.*)/
+    hfile.printf "#define %s 1\n", $1
+  end
+  hfile.close
+end
+
+#$DEBUG = true
+$CFLAGS = ["-Wall",$CFLAGS].join(" ")
+
+# configure options:
+#  --with-fftw-dir=path
+#  --with-fftw-include=path
+#  --with-fftw-lib=path
+dir_config("fftw")
+
 srcs = %w(
 narray
 na_array
@@ -10,7 +53,17 @@ na_math
 na_linalg
 )
 
-have_library("m")
+if have_header("sys/types.h")
+  header = "sys/types.h"
+else
+  header = nil
+end
+
+have_type("u_int8_t", header)
+have_type("int16_t", header)
+have_type("int32_t", header)
+
+#have_library("m")
 have_func("sincos")
 have_func("asinh")
 
@@ -24,6 +77,5 @@ end
 
 $objs = srcs.collect{|i| i+".o"}
 
-dir_config("narray")
-
+create_conf_h("narray_conf.h")
 create_makefile("narray")
