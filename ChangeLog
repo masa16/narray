@@ -5,6 +5,7 @@
 	  change to na_index_t.
 	* na_index.c: modify EXCL(range) to use excule_end?.
 	* na_index.c (na_aref_single_dim): remain array if sl->step!=0.
+	  i.e., a[0..0] results in 1-element array.
 	* na_func.c (Init_na_funcs): alias image, arg, conjugate.
 
 	* ver 0.5.4
