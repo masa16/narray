@@ -1,3 +1,7 @@
+2002-03-26  Masahiro TANAKA  <masa@ir.isas.ac.jp>
+
+	* narray.def: remove unused entry. Thanks to Watanabe-san.
+
 2002-03-24  Masahiro TANAKA  <masa@ir.isas.ac.jp>
 
 	* na_array.c: 
