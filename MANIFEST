@@ -1,9 +1,9 @@
 ChangeLog
 MANIFEST
 README.en
-README.jp
+README.ja
 SPEC.en
-SPEC.jp
+SPEC.ja
 depend
 extconf.rb
 mkmath.rb
@@ -14,6 +14,7 @@ na_fftw.c
 na_func.c
 na_index.c
 na_linalg.c
+na_random.c
 narray.c
 narray.def
 narray.h
