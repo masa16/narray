@@ -1,10 +1,29 @@
+2004-11-10  Masahiro TANAKA  <masahiro.tanaka at nao.ac.jp>
+
+	* na_random.c:
+	  Fix infinite loop due to gcc bug?;
+	  "int32_t x; x>>=32;" unvaried although 0 expected.
+	  Thanks to David G. Andersen.
+
+	* lib/narray_ext.rb (randomn):
+	  Raise error if NArray type is other than float.
+
+	* ver 0.5.7p4
+
+2004-09-22  Masahiro TANAKA  <masahiro.tanaka at nao.ac.jp>
+
+	* nimage/nimage.c:
+	  Argument type of rb_str2cstr is changed.
+	  Use RSTRING()->ptr & RSTRING()->len.
+	  Thanks to Ara Howard.
+
 2004-06-28  KOSHIRO Tsuyoshi <koshiro rish.kyoto-u.ac.jp>
 
 	* extconf.rb: generate libnarray.a for Cygwin + Ruby 1.8.1.
 
 	* ver 0.5.7p3
 
-2004-02-19  Masahiro TANAKA  <masahiro.tanaka nao.ac.jp>
+2004-02-19  Masahiro TANAKA  <masahiro.tanaka at nao.ac.jp>
 
 	* na_array.c (na_free_mdai):
 	  memory free bug: xfree(mdai->type); added.

@@ -91,6 +91,10 @@ class NArray
     case type = self.typecode
     when COMPLEX; type=FLOAT
     when SCOMPLEX; type=SFLOAT
+    when FLOAT
+    when SFLOAT
+    else
+      raise TypeError, "NArray type must be (S)FLOAT or (S)COMPLEX."
     end
     rr = NArray.new(type,size)
     xx = NArray.new(type,size)
@@ -103,16 +107,22 @@ class NArray
       r = x**2 + y**2
       idx = (r<1).where
       idx = idx[0...n] if idx.size > n
-      rr[i] = r[idx]
-      xx[i] = x[idx]
-      i += idx.size
+      if idx.size>0
+	rr[i] = r[idx]
+	xx[i] = x[idx]
+	i += idx.size
+      end
     end
     # Box-Muller transform
     rr = ( xx * NMath::sqrt( -2 * NMath::log(rr) / rr ) )
     # finish
     rr.reshape!(*self.shape) if self.rank > 1
     rr = rr.to_type(self.typecode) if type!=self.typecode
-    self.type.refer(rr)
+    if RUBY_VERSION < "1.8.0"
+      self.type.refer(rr)
+    else
+      self.class.refer(rr)
+    end
   end
   alias randomn! randomn
 

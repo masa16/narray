@@ -251,13 +251,20 @@ static void RndB(int n, char *p1, int i1, double rmax)
   max   = size_check(rmax,0x100);
   shift = 32 - n_bits(max);
 
-  for (; n; n--) {
-    do {
-      genrand(y);
-      y >>= shift;
-    } while (y > max);
-    *(u_int8_t*)p1 = (u_int8_t)y;
-    p1+=i1;
+  if (max<1) {
+    for (; n; n--) {
+      *(u_int8_t*)p1 = 0;
+      p1+=i1;
+    }
+  } else {
+    for (; n; n--) {
+      do {
+	genrand(y);
+	y >>= shift;
+      } while (y > max);
+      *(u_int8_t*)p1 = (u_int8_t)y;
+      p1+=i1;
+    }
   }
 }
 
@@ -271,13 +278,20 @@ static void RndI(int n, char *p1, int i1, double rmax)
   max   = size_check(rmax,0x8000);
   shift = 32 - n_bits(max);
 
-  for (; n; n--) {
-    do {
-      genrand(y);
-      y >>= shift;
-    } while (y > max);
-    *(int16_t*)p1 = (int16_t)y*sign;
-    p1+=i1;
+  if (max<1) {
+    for (; n; n--) {
+      *(int16_t*)p1 = 0;
+      p1+=i1;
+    }
+  } else {
+    for (; n; n--) {
+      do {
+	genrand(y);
+	y >>= shift;
+      } while (y > max);
+      *(int16_t*)p1 = (int16_t)y*sign;
+      p1+=i1;
+    }
   }
 }
 
@@ -291,13 +305,20 @@ static void RndL(int n, char *p1, int i1, double rmax)
   max   = size_check(rmax,0x80000000);
   shift = 32 - n_bits(max);
 
-  for (; n; n--) {
-    do {
-      genrand(y);
-      y >>= shift;
-    } while (y > max);
-    *(int32_t*)p1 = (int32_t)y*sign;
-    p1+=i1;
+  if (max<1) {
+    for (; n; n--) {
+      *(int32_t*)p1 = 0;
+      p1+=i1;
+    }
+  } else {
+    for (; n; n--) {
+      do {
+	genrand(y);
+	y >>= shift;
+      } while (y > max);
+      *(int32_t*)p1 = (int32_t)y*sign;
+      p1+=i1;
+    }
   }
 }
 

@@ -80,9 +80,12 @@ static VALUE nimg_colormap(VALUE self, VALUE val_r, VALUE val_g, VALUE val_b)
   char *r, *g, *b;
   int nr, ng, nb, n;
 
-  r = rb_str2cstr(val_r, &nr);
-  g = rb_str2cstr(val_g, &ng);
-  b = rb_str2cstr(val_b, &nb);
+  r  = RSTRING(val_r)->ptr;
+  nr = RSTRING(val_r)->len;
+  g  = RSTRING(val_g)->ptr;
+  ng = RSTRING(val_g)->len;
+  b  = RSTRING(val_b)->ptr;
+  nb = RSTRING(val_b)->len;
 
   n = (nr<ng) ? nr:ng;
   n = (n <nb) ? n :nb;
@@ -251,7 +254,8 @@ static VALUE
   char *data;
   int   i, len;
 
-  data = rb_str2cstr(val_image,&len);
+  data = RSTRING(val_image)->ptr;
+  len  = RSTRING(val_image)->len;
 
   nimg = ALLOC( struct NIMG );
   nimg->image = ALLOC_N( char, len );
@@ -278,7 +282,8 @@ static VALUE
   int   i, len;
 
   Data_Get_Struct( self, struct NIMG, nimg );
-  data = rb_str2cstr(val_image,&len);
+  data = RSTRING(val_image)->ptr;
+  len  = RSTRING(val_image)->len;
 
   if (len != nimg->width * nimg->height)
     rb_raise(rb_eArgError, "Image size mismatch");
