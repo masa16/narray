@@ -99,3 +99,29 @@ $objs = srcs.collect{|i| i+".o"}
 
 create_conf_h("narray_config.h")
 create_makefile("narray")
+
+
+# extra installation
+
+if RUBY_VERSION >= '1.8.0'
+  files = [
+    ["$(srcdir)/","narray.h"],
+    ["","narray_config.h"]
+  ]
+  if RUBY_PLATFORM =~ /cygwin|mingw/
+    files << ["","libnarray.a"]
+  end
+  install_data = "$(INSTALL_DATA)"
+  dir = "$(RUBYARCHDIR)"
+  # for 1.6
+  #install_data = "$(RUBY) -r ftools -e 'File::install(ARGV[0], ARGV[1], 0644, true)'"
+  #dir = "$(sitearchdir)$(target_prefix)"
+  File.open("Makefile","ab") do |mfile|
+    mfile.print "\ninstall: #{dir}\n\n"
+    files.each do |prefix,file|
+      dest = "#{dir}/#{file}"
+      mfile.print "install: #{dest}\n"
+      mfile.print "#{dest}: #{prefix}#{file} #{dir}\n\t@#{install_data} #{prefix}#{file} #{dir}\n\n"
+    end
+  end
+end
