@@ -13,11 +13,11 @@
 
 #include <math.h>
 
+#include "narray_config.h"
+
 #ifdef HAVE_SYS_TYPES_H
 # include <sys/types.h>
 #endif
-
-#include "narray_config.h"
 
 /*
   Data types used in NArray :
