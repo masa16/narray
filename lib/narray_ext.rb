@@ -1,5 +1,5 @@
 #  Numerical Array Extention for Ruby
-#    (C) Copyright 2000 by Masahiro TANAKA
+#    (C) Copyright 2000-2003 by Masahiro TANAKA
 #
 #  This program is free software.
 #  You can distribute/modify this program
@@ -41,8 +41,10 @@ class NArray
   def rank_total(*ranks)
     if ranks.size>0
       n = 1
-      idx = ranks.collect{|i| i.to_a}.flatten
-      self.shape.indices(*idx).each do |i|
+      idx = []
+      ranks.each{|i| idx.push(*i)}
+      # ranks is expected to be, e.g., [1, 3..5, 7]
+      self.shape.select(*idx).each do |i|
 	n *= i
       end
       n
@@ -115,7 +117,7 @@ class NArray
   end
   alias randomn! randomn
 
-  SFloatOne = NArray.sfloat(1).fill!(1)
+  #SFloatOne = NArray.sfloat(1).fill!(1)
 end
 
 

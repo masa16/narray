@@ -1,5 +1,5 @@
 #  Numerical Array Extention for Ruby
-#    (C) Copyright 2000 by Masahiro TANAKA
+#    (C) Copyright 2000-2003 by Masahiro TANAKA
 #
 
 #
@@ -17,7 +17,7 @@ class NMatrix < NArray
         return other.coerce_rev( self, :+.to_i )
       end
     end
-    raise TypeError,"Illegal operation: NMatrix + %s" % other.type
+    raise TypeError,"Illegal operation: NMatrix + %s" % other.class
   end
 
   def -(other)
@@ -29,7 +29,7 @@ class NMatrix < NArray
         return other.coerce_rev( self, :-.to_i )
       end
     end
-    raise TypeError,"Illegal operation: NMatrix - %s" % other.type
+    raise TypeError,"Illegal operation: NMatrix - %s" % other.class
   end
 
   def *(other)
@@ -52,7 +52,7 @@ class NMatrix < NArray
     when Array
       NMatrix.mul( self, NArray[*other].newdim!(0,0) )
     else
-      raise TypeError,"Illegal operation: NMatrix * %s" % other.type
+      raise TypeError,"Illegal operation: NMatrix * %s" % other.class
     end
   end
 
@@ -61,7 +61,7 @@ class NMatrix < NArray
     when NMatrix
       other.lu.solve(self)
     when NVector
-      raise TypeError,"Illegal operation: NMatrix / %s" % other.type
+      raise TypeError,"Illegal operation: NMatrix / %s" % other.class
     when NArray
       if other.instance_of?(NArray)
 	NMatrix.div( NArray.refer(self), other.newdim(0,0) )
@@ -73,7 +73,7 @@ class NMatrix < NArray
     when Array
       NMatrix.div( self, NArray[*other].newdim!(0,0) )
     else
-      raise TypeError,"Illegal operation: NMatrix / %s" % other.type
+      raise TypeError,"Illegal operation: NMatrix / %s" % other.class
     end
   end
 
@@ -91,7 +91,7 @@ class NMatrix < NArray
       (2..n).each{ m *= self }
       m
     else
-      raise TypeError,"Illegal operation: NMatrix ** %s" % other.type
+      raise TypeError,"Illegal operation: NMatrix ** %s" % other.class
     end
   end
 
@@ -113,7 +113,7 @@ class NMatrix < NArray
 	end
     end
     raise TypeError,"Illegal operation: %s %s NMatrix" %
-      [other.type, id.id2name]
+      [other.class, id.id2name]
   end
 
   def inverse
@@ -166,7 +166,7 @@ class NVector < NArray
         return other.coerce_rev( self, :+.to_i )
       end
     end
-    raise TypeError,"Illegal operation: NVector + %s" % other.type
+    raise TypeError,"Illegal operation: NVector + %s" % other.class
   end
 
   def -(other)
@@ -178,7 +178,7 @@ class NVector < NArray
         return other.coerce_rev( self, :-.to_i )
       end
     end
-    raise TypeError,"Illegal operation: NVector - %s" % other.type
+    raise TypeError,"Illegal operation: NVector - %s" % other.class
   end
 
   def *(other)
@@ -196,7 +196,7 @@ class NVector < NArray
     when Numeric
       NVector.mul( NArray.refer(self), other )
     else
-      raise TypeError,"Illegal operation: NVector * %s" % other.type
+      raise TypeError,"Illegal operation: NVector * %s" % other.class
     end
   end
 
@@ -205,7 +205,7 @@ class NVector < NArray
     when NMatrix
       other.lu.solve(self)
     when NVector
-      raise TypeError,"Illegal operation: NVector / %s" % other.type
+      raise TypeError,"Illegal operation: NVector / %s" % other.class
     when NArray
       if other.instance_of?(NArray)
 	NVector.div( NArray.refer(self), other.newdim(0) )
@@ -215,7 +215,7 @@ class NVector < NArray
     when Numeric
       NVector.div( NArray.refer(self), other )
     else
-      raise TypeError,"Illegal operation: NVector / %s" % other.type
+      raise TypeError,"Illegal operation: NVector / %s" % other.class
     end
   end
 
@@ -238,7 +238,7 @@ class NVector < NArray
 	end
     end
     raise TypeError,"Illegal operation: %s %s NVector" %
-      [other.type, id.id2name]
+      [other.class, id.id2name]
   end
 
 end # class NVector

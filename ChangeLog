@@ -1,12 +1,23 @@
+2003-03-04  Masahiro TANAKA  <masa@ir.isas.ac.jp>
+
+	* narray.c (na_alloc_struct): 
+	  NArray-specific GC is enabled for ruby-1.8.0.
+
+	* ver 0.5.7
+
 2003-03-03  Masahiro TANAKA  <masa@ir.isas.ac.jp>
 
 	* na_random.c: created.
 
-	* ver 0.5.7
+	* lib/narray_ext.rb (rank_total): 
+	 Array#indices is obsolete. use Array#select.
+	 Default `to_a' will be obsolete.
+
+	* lib/nmatrix.rb: Object#type is obsolete. use Object#class.
 
 2003-03-01  Masahiro TANAKA  <masa@ir.isas.ac.jp>
 
-	* narray_ext.rb (swap_byte,hton,htov): removed
+	* narray_ext.rb (swap_byte,hton,htov): removed.
 	* mkop.rb, mknafunc.rb, na_func.c, narray_local.h: 
 	  add C-version of swap_byte, hton, htov.
 

@@ -1,5 +1,5 @@
 
-	Ruby/NArray  ver 0.5.6 (2001-03-25)	by Masahiro TANAKA
+	Ruby/NArray  ver 0.5.7 (2003-03-04)	by Masahiro TANAKA
 
 
 クラスメソッド:
@@ -80,9 +80,12 @@
 値のセット。
     self.indgen!([start[,step]]) startからstepづつ増加した値をセット。
     self.fill!(value)		 すべての要素にvalueをセット。
-    self.random!(max)	 0<=x<max の一様なランダム値を生成。
-    self.randomn	 平均0、分散1の正規分布のランダム値を生成。
-			 (Box-Muller)
+    self.random!(max)		 0<=x<max の一様なランダム値を生成。
+				 using MT19337
+    self.randomn		 平均0、分散1の正規分布のランダム値を生成。
+				 (Box-Muller)
+    NArray.srand([seed])	 乱数のシードを設定。
+				 省略時は時刻から自動生成。
 
 演算: 要素ごとにおこなう。
     a = NArray.float(3,3).indgen

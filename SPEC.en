@@ -1,5 +1,5 @@
 
-	Ruby/NArray  ver 0.5.6 (2001-03-25)	by Masahiro TANAKA
+	Ruby/NArray  ver 0.5.7 (2003-03-04)	by Masahiro TANAKA
 
 
 Class method:
@@ -91,8 +91,11 @@ Filling values
 				 Set values from 'start' with 'step' increment
     self.fill!(value)		 Fill elements with 'value'
     self.random!(max)		 Set random values between 0<=x<max
+				 using MT19337
     self.randomn		 Set Normally distributed random values
 				 with mean=0, dispersion=1 (Box-Muller)
+    NArray.srand([seed])	 Set random seed.
+				 A time-depend seed is choosed if omitted.
 
 Operation: performed element by element
     a = NArray.float(3,3).indgen

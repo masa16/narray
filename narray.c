@@ -13,6 +13,10 @@
 #include "narray.h"
 #include "narray_local.h"
 
+#if RUBY_VERSION_CODE < 150 || RUBY_VERSION_CODE >= 180
+#define NARRAY_GC
+#endif
+
 /* global variables within this module */
 VALUE cNArray, cNArrayScalar, cComplex;
 
@@ -52,8 +56,7 @@ const char *na_typestring[] = {
   "ntypes"	/* 9 */
 };
 
-
-#if RUBY_VERSION_CODE < 150
+#ifdef NARRAY_GC
 static int mem_count = 0;
 static int na_gc_freq = 2500000;   /* Frequency of Garbage Collection */
 #endif
@@ -138,7 +141,7 @@ struct NARRAY*
     memsz = na_sizeof[type] * total;
 
     /* Garbage Collection */
-#if RUBY_VERSION_CODE < 150
+#ifdef NARRAY_GC
     mem_count += memsz;
     if ( mem_count > na_gc_freq ) { rb_gc(); mem_count=0; }
 #endif
@@ -1020,79 +1023,6 @@ VALUE
 }
 
 
-/* method: random([max]) */
-/* must be changed in future */
-static VALUE
- na_random(int argc, VALUE *argv, VALUE self)
-{
-#if 0
-  static int first=1;
-  unsigned short seed[3];
-  VALUE v;
-  long  s;
-#endif
-  struct NARRAY *ary;
-  int    i, sz;
-  double data, rmax;
-  char  *p;
-  void  (*func)();
-#ifndef HAVE_DRAND48_DECL
-  double drand48 _((void));
-  unsigned short *seed48 _((unsigned short *));
-#endif
-
-  if (argc<0 || argc>1)
-    rb_raise(rb_eArgError, "wrong # of arguments (%d for 0 or 1)", argc);
-
-#if 0
-  if (first) {
-    v = rb_funcall(rb_cTime,na_id_now,0);
-    seed[0] = NUM2INT(rb_funcall(v,na_id_usec,0))*0.065536;
-    s = NUM2INT(rb_funcall(v,na_id_to_i,0));
-    seed[1] = s & 0xffff;
-#if   defined(HAVE_DRAND48)
-    seed[2] = s >> 16;
-    seed48(seed);
-#elif defined(HAVE_RANDOM)
-    srandom( (((long)seed[0])<<16) | seed[1] );
-#else
-    srand( (((long)seed[0])<<16) | seed[1] );
-#endif
-    first = 0;
-  }
-#endif
-
-  if (argc==1)
-    rmax = NUM2DBL(argv[0]);
-  else
-    rmax = 1;
-
-#ifdef HAVE_DRAND48
-# define RANDOM  drand48
-#else
-# ifdef HAVE_RANDOM
-#  define RANDOM  random
-  rmax /= 2147483648.0;  /* 2**31 */
-# else
-#  define RANDOM  rand
-  rmax /= (RAND_MAX+1);
-# endif
-#endif /* HAVE_DRAND48 */
-
-  GetNArray(self,ary);
-  p    = ary->ptr;
-  sz   = na_sizeof[ary->type];
-  func = SetFuncs[ary->type][NA_DFLOAT];
-
-  for ( i=ary->total; i-->0; ) {
-    data = RANDOM()*rmax;
-    (*func)( 1, p, 0, &data, 0 );
-    p += sz;
-  }
-  return self;
-}
-
-
 /* method:  where2
    idx_true, idx_false = narray.where2 */
 static VALUE
@@ -1294,10 +1224,6 @@ void
     rb_define_alias(cNArray,  "fill","fill!");
     rb_define_method(cNArray, "indgen!", na_indgen,-1);
     rb_define_alias(cNArray,  "indgen","indgen!");
-    
-    rb_define_method(cNArray, "random2!", na_random,-1);
-    rb_define_alias(cNArray,  "random2","random2!");
-    
     rb_define_method(cNArray, "where", na_where, 0);
     rb_define_method(cNArray, "where2", na_where2, 0);
     rb_define_method(cNArray, "each", na_each,0);
