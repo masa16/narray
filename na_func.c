@@ -1,7 +1,7 @@
 /*
   na_func.c
   Numerical Array Extention for Ruby
-    (C) Copyright 1999-2001 by Masahiro TANAKA
+    (C) Copyright 1999-2002 by Masahiro TANAKA
 
   This program is free software.
   You can distribute/modify this program
@@ -10,6 +10,7 @@
 */
 #include <ruby.h>
 #include "narray.h"
+#include "narray_local.h"
 
 int
  na_max3(int a, int b, int c)
@@ -622,11 +623,13 @@ static VALUE
 
 
 static VALUE
- na_power(VALUE obj1, VALUE obj2)
+ na_power(VALUE val1, VALUE val2)
 {
-  VALUE obj3;
+  volatile VALUE obj1, obj2, obj3;
   struct NARRAY *a1, *a2;
 
+  obj1 = val1;
+  obj2 = val2;
   GetNArray(obj1,a1);
   obj2 = na_to_narray(obj2);
   GetNArray(obj2,a2);
@@ -650,13 +653,13 @@ static VALUE
   na_exec_binary( NA_STRUCT(obj3), a1, a2,
 		  PowFuncs[a1->type][a2->type] );
 
-  na_touch_object(obj1,obj2);
+  //na_touch_object(obj1,obj2);
   return obj3;
 }
 
 
 static VALUE
- na_set_func(VALUE obj1, VALUE obj2, na_ufunc_t funcs)
+ na_set_func(VALUE obj1, volatile VALUE obj2, na_ufunc_t funcs)
 {
   struct NARRAY *a1;
 
@@ -665,13 +668,13 @@ static VALUE
 
   na_exec_unary( NA_STRUCT(obj1), NA_STRUCT(obj2), funcs[a1->type] );
 
-  na_touch_object(obj2);
+  //na_touch_object(obj2);
   return obj1;
 }
 
 
 static VALUE
- na_imag_set(VALUE obj1, VALUE obj2)
+ na_imag_set(VALUE obj1, volatile VALUE obj2)
 {
   struct NARRAY *a1;
 
@@ -680,7 +683,7 @@ static VALUE
 
   na_exec_unary( NA_STRUCT(obj1), NA_STRUCT(obj2), ImgSetFuncs[a1->type] );
 
-  na_touch_object(obj2);
+  //na_touch_object(obj2);
   return obj1;
 }
 
@@ -1201,7 +1204,7 @@ static VALUE
 
 
 static VALUE
- na_mul_add_body(int argc, VALUE *argv, VALUE self, VALUE other,
+ na_mul_add_body(int argc, VALUE *argv, volatile VALUE self, volatile VALUE other,
 		 VALUE wrap_klass, int flag)
 {
   VALUE ans, op_klass;
@@ -1246,7 +1249,7 @@ static VALUE
     ans = na_shrink_rank(ans,cl_dim,rankv);
 
   xfree(rankv);
-  na_touch_object(self,other);
+  //na_touch_object(self,other);
   return ans;
 }
 

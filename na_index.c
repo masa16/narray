@@ -1,7 +1,7 @@
 /*
   na_index.c
   Numerical Array Extention for Ruby
-    (C) Copyright 1999-2001 by Masahiro TANAKA
+    (C) Copyright 1999-2002 by Masahiro TANAKA
 
   This program is free software.
   You can distribute/modify this program
@@ -10,6 +10,7 @@
 */
 #include <ruby.h>
 #include "narray.h"
+#include "narray_local.h"
 
 #define EXCL(r) (RTEST(rb_funcall((r),na_id_exclude_end,0)))
 
@@ -156,7 +157,7 @@ static void na_free_slice_index(struct slice *s, int n)
 }
 
 
-static int na_index_test(VALUE idx, int shape, struct slice *sl)
+static int na_index_test(volatile VALUE idx, int shape, struct slice *sl)
 {
   int size;
   struct NARRAY *na;
@@ -187,7 +188,7 @@ static int na_index_test(VALUE idx, int shape, struct slice *sl)
     idx = na_cast_object(idx,NA_LINT);
     GetNArray(idx,na);
     size = na_ary_to_index(na,shape,sl);
-    na_touch_object(idx);
+    //na_touch_object(idx);
     return size;
 
   default:
@@ -348,7 +349,7 @@ static VALUE
 
 
 static VALUE
- na_aref_single_dim_array(VALUE self, VALUE vidx)
+ na_aref_single_dim_array(VALUE self, volatile VALUE vidx)
 {
   int  total;
   struct NARRAY *a1, *a2, *aidx;
@@ -384,7 +385,7 @@ static VALUE
   }
 
   na_free_slice_index(s1,1);
-  na_touch_object(vidx);
+  //na_touch_object(vidx);
   return v;
 }
 
@@ -740,7 +741,7 @@ void
 
 
 static void
- na_aset_array_index( VALUE self, VALUE idx, VALUE val )
+ na_aset_array_index( VALUE self, volatile VALUE idx, volatile VALUE val )
 {
   int i, total;
   struct NARRAY *aidx, *src, *dst;
@@ -780,12 +781,12 @@ static void
 
   na_aset_slice( dst, src, sl );
   na_free_slice_index( sl, 1 ); /* free index memory */
-  na_touch_object(idx,val);
+  //na_touch_object(idx,val);
 }
 
 
 static void
- na_aset_single_dim(VALUE self, VALUE idx, VALUE val)
+ na_aset_single_dim(VALUE self, VALUE idx, volatile VALUE val)
 {
   int size;
   struct NARRAY *src, *dst;
@@ -829,12 +830,12 @@ static void
   na_aset_slice( dst, src, sl );
 
   na_free_slice_index(sl,1); /* free index memory */
-  na_touch_object(val);
+  //na_touch_object(val);
 }
 
 
 static void
- na_aset_multi_dim(VALUE self, int nidx, VALUE *idx, VALUE val)
+ na_aset_multi_dim(VALUE self, int nidx, VALUE *idx, volatile VALUE val)
 {
   int    i, pos, size;
   struct NARRAY *dst, *src;
@@ -885,13 +886,13 @@ static void
 
   na_free_slice_index(sl,nidx); /* free index memory */
   xfree(sl); 
-  na_touch_object(val);
+  //na_touch_object(val);
 }
 
 
 
 static void
- na_aset_fill(VALUE self, VALUE val)
+ na_aset_fill(VALUE self, volatile VALUE val)
 {
   struct NARRAY *dst, *src;
   struct slice *sl;
@@ -912,7 +913,7 @@ static void
   else {
     na_fill( self, val );  /* Simple filling */
   }
-  na_touch_object(val);
+  //na_touch_object(val);
 }
 
 

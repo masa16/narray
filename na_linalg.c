@@ -1,10 +1,11 @@
 /*
  * na_linalg.c
  * Numerical Array Extention for Ruby
- *   (C) Copyright 2000 by Masahiro TANAKA
+ *   (C) Copyright 2000-2002 by Masahiro TANAKA
  */
 #include <ruby.h>
 #include "narray.h"
+#include "narray_local.h"
 #define ARRAY_BUF
 
 /*
@@ -260,7 +261,7 @@ na_lu_fact_func_body(int ni, char *a, char *idx, int *shape, int type, char *buf
 static int
  na_lu_fact_func(int ni, char *a, char *idx, int *shape, int type)
 {
-  VALUE val;
+  volatile VALUE val;
   char *buf;
   int status, size, n=shape[0];
 
@@ -271,7 +272,7 @@ static int
     RARRAY(val)->len = size;
     buf = (char*)((RARRAY(val))->ptr);
     status = na_lu_fact_func_body( ni, a, idx, shape, type, buf );
-    na_touch_object(val);
+    //na_touch_object(val);
   } else {
     size = na_sizeof[type]*n + na_sizeof[na_cast_real[type]]*(n+1);
     buf = ALLOC_N(char, size);
@@ -422,7 +423,7 @@ na_lu_solve_func( int ni,
 		  char *z, int ps,  char *x, int ps1,  char *a, int ps2,
 		  int *shape, int type )
 {
-  VALUE val;
+  volatile VALUE val;
   char *buf;
   int size;
 
@@ -433,7 +434,7 @@ na_lu_solve_func( int ni,
     RARRAY(val)->len = size;
     buf = (char*)((RARRAY(val))->ptr);
     na_lu_solve_func_body( ni, x, ps1, a, ps2, shape, type, buf );
-    na_touch_object(val);
+    //na_touch_object(val);
   } else {
     size = shape[1] * na_sizeof[type];
     buf = ALLOC_N(char, size);
@@ -466,12 +467,13 @@ na_shape_max2(int ndim, int *shape, int n1, int *shape1, int n2, int *shape2)
 
 
 static VALUE
-na_lu_solve(VALUE self, VALUE other)
+na_lu_solve(VALUE self, volatile VALUE other)
 {
   int  n, ndim;
   int *shape;
   struct NARRAY *a1, *a2, *l, *p;
-  VALUE lu, pv, obj, klass;
+  VALUE pv, obj, klass;
+  volatile VALUE lu;
 
   klass = CLASS_OF(other);
   if (klass==cNVector)
@@ -515,7 +517,7 @@ na_lu_solve(VALUE self, VALUE other)
     a2->shape = shape;
     a2->rank--;
   }
-  na_touch_object(other,lu);
+  //na_touch_object(other,lu);
   return obj;
 }
 

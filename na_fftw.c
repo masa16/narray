@@ -1,3 +1,13 @@
+/*
+  na_fftw.c
+  Numerical Array Extention for Ruby
+    (C) Copyright 1999-2002 by Masahiro TANAKA
+
+  This program is free software.
+  You can distribute/modify this program
+  under the same terms as Ruby itself.
+  NO WARRANTY.
+*/
 #include <ruby.h>
 #include "narray.h"
 #include <fftw.h>
@@ -12,18 +22,18 @@ VALUE rb_mFFTW;
 
 
 static VALUE
- na_fftw(VALUE m, VALUE v1, VALUE vdir)
+ na_fftw(VALUE m, VALUE val, VALUE vdir)
 {
   struct NARRAY *a1, *a2;
   int i, dir, *shape;
   fftwnd_plan p;
-  VALUE v2;
+  volatile VALUE v1, v2;
 
   dir = NUM2INT(vdir);
   if ( dir != 1 && dir != -1 )
     rb_raise(rb_eArgError, "direction should be 1 or -1");
 
-  v1 = na_cast_unless_narray(v1,NA_FFTW_TYPE);
+  v1 = na_cast_unless_narray(val,NA_FFTW_TYPE);
   GetNArray(v1,a1);
   v2 = na_make_object( NA_FFTW_TYPE, a1->rank, a1->shape, CLASS_OF(v1) );
   GetNArray(v2,a2);
@@ -38,7 +48,6 @@ static VALUE
   fftwnd_one( p, (fftw_complex*)a2->ptr, NULL );
   fftwnd_destroy_plan(p);
 
-  na_touch_object(v1);
   return v2;
 }
 

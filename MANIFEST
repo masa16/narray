@@ -7,7 +7,9 @@ SPEC.jp
 extconf.rb
 depend
 narray.h
+narray_local.h
 narray.c
+narray.def
 na_array.c
 na_func.c
 na_index.c

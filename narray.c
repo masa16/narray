@@ -1,7 +1,7 @@
 /*
   narray.c
   Numerical Array Extention for Ruby
-    (C) Copyright 1999-2001 by Masahiro TANAKA
+    (C) Copyright 1999-2002 by Masahiro TANAKA
 
   This program is free software.
   You can distribute/modify this program
@@ -11,6 +11,7 @@
 #include <ruby.h>
 #include <version.h>
 #include "narray.h"
+#include "narray_local.h"
 
 /* global variables within this module */
 VALUE cNArray, cNArrayScalar, cComplex;
@@ -307,11 +308,13 @@ static VALUE
 }
 
 
+/*
 void
  na_touch_object(VALUE val, ...)
 {
   return;
 }
+*/
 
 void
  na_clear_data(struct NARRAY *ary)
@@ -343,6 +346,7 @@ static VALUE
   if (ary->type != NA_ROBJ)
     na_clear_data(ary);
 
+  /* rb_obj_call_init(v, 0, 0); */
   return v;
 }
 
@@ -972,7 +976,7 @@ VALUE
 
 
 /* method: fill!(val) */
-VALUE na_fill(VALUE self, VALUE val)
+VALUE na_fill(VALUE self, volatile VALUE val)
 {
   struct NARRAY *a1, *a2;
 
@@ -986,7 +990,7 @@ VALUE na_fill(VALUE self, VALUE val)
   SetFuncs[a1->type][a2->type]( a1->total, 
 				a1->ptr, na_sizeof[a1->type],
 				a2->ptr, 0 );
-  na_touch_object(val);
+  //na_touch_object(val);
   return self;
 }
 
@@ -1091,7 +1095,7 @@ static VALUE
 /* method:  where2
    idx_true, idx_false = narray.where2 */
 static VALUE
- na_where2(VALUE obj)
+ na_where2(volatile VALUE obj)
 {
   VALUE v1, v0;
   int  n, i, n1, n0;
@@ -1128,7 +1132,7 @@ static VALUE
       *(idx0++) = i;
   }
 
-  na_touch_object(obj);
+  //na_touch_object(obj);
   return rb_assoc_new( v1, v0 );
 }
 

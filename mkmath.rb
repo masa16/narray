@@ -6,13 +6,19 @@ $> = open(fname,"w")
 
 print <<EOM
 /*
- * #{fname}
- * Automatically generated code
- * Numerical Array Extention for Ruby
- *   (C) Copyright 1999,2000 by Masahiro TANAKA
- */
+  #{fname}
+  Automatically generated code
+  Numerical Array Extention for Ruby
+    (C) Copyright 1999-2002 by Masahiro TANAKA
+
+  This program is free software.
+  You can distribute/modify this program
+  under the same terms as Ruby itself.
+  NO WARRANTY.
+*/
 #include <ruby.h>
 #include "narray.h"
+#include "narray_local.h"
 
 #ifndef M_LOG2E
 #define M_LOG2E         1.4426950408889634074
@@ -674,7 +680,7 @@ static void
 
 
 static VALUE
- na_math_func(VALUE self, na_mathfunc_t funcs)
+ na_math_func(volatile VALUE self, na_mathfunc_t funcs)
 {
   struct NARRAY *a1, *a2;
   VALUE ans;
@@ -689,7 +695,7 @@ static VALUE
   if (CLASS_OF(self) == cNArrayScalar)
     SetFuncs[NA_ROBJ][a1->type](1,&ans,0,a1->ptr,0);    
 
-  na_touch_object(self);
+  //na_touch_object(self);
   return ans;
 }
 EOM

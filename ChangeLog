@@ -1,3 +1,32 @@
+2002-03-24  Masahiro TANAKA  <masa@ir.isas.ac.jp>
+
+	* na_array.c: 
+	  New multi-dimentional array investigation is introduced.
+	  Scan array only once and check recursive array.
+
+	* narray.h, narray_local.h:
+	  Local definisions in narray.h are moved into narray_local.h.
+
+	* ver 0.5.6
+	
+2002-03-17  Masahiro TANAKA  <masa@ir.isas.ac.jp>
+
+	* nmatrix.rb (NMatrix#*): accept Array as an argument.
+
+2002-02-26  Masahiro TANAKA  <masa@ir.isas.ac.jp>
+
+	* na_array.c (na_copy_ary_to_nary): accept Range as a sequence.
+
+2002-02-06  Masahiro TANAKA  <masa@ir.isas.ac.jp>
+
+	* narray.c, na_func.c, na_index.c, na_linalg.c, na_fftw.c, mkmath.rb:
+	  add volatile keyword instead of na_touch_object() function.
+
+2002-01-25  Masahiro TANAKA  <masa@ir.isas.ac.jp>
+
+	* na_array.c (na_to_array0): Bug: GC fails if ary->len is set
+	  in advance.  Thanks to Bil Kleb.
+
 2001-12-30  Masahiro Tanaka  <masa@ir.isas.ac.jp>
 
 	* extconf.rb: Modify install_rb to install narray.h, narray_config.h.

@@ -1,5 +1,5 @@
 
-	Ruby/NArray  ver 0.5.5 (2001-12-30)	by Masahiro TANAKA
+	Ruby/NArray  ver 0.5.6 (2001-03-25)	by Masahiro TANAKA
 
 
 Class method:
@@ -16,8 +16,11 @@ Class method:
 				all above method initialize with 0 or nil.
 
     NArray.to_na(array)			convert to NArray
-    NArray.to_na(string,type[,size,..])
-    NArray[..]
+    NArray.to_na(string,type[,size,...])
+    NArray[...]
+      NArray[1,5,10.0]  #=>  NArray.float(3):[1.0, 5.0, 10.0]
+      NArray[1..10]     #=>  NArray.int(10):[1,2,3,4,5,6,7,8,9,10]
+
 
 Class constant:
     CLASS_DIMENSION	# of dimension treated as data.

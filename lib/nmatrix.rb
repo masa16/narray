@@ -47,7 +47,10 @@ class NMatrix < NArray
 	other.coerce_rev( self, :*.to_i )
       end
     when Numeric
-      NMatrix.mul( NArray.refer(self), other )
+      super
+      #NMatrix.mul( NArray.refer(self), other )
+    when Array
+      NMatrix.mul( self, NArray[*other].newdim!(0,0) )
     else
       raise TypeError,"Illegal operation: NMatrix * %s" % other.type
     end
@@ -67,6 +70,8 @@ class NMatrix < NArray
       end
     when Numeric
       NMatrix.div( NArray.refer(self), other )
+    when Array
+      NMatrix.div( self, NArray[*other].newdim!(0,0) )
     else
       raise TypeError,"Illegal operation: NMatrix / %s" % other.type
     end
