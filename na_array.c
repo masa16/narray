@@ -1,8 +1,13 @@
 /*
- * na_array.c
- * Numerical Array Extention for Ruby
- *   (C) Copyright 1999,2000 by Masahiro TANAKA
- */
+  na_array.c
+  Numerical Array Extention for Ruby
+    (C) Copyright 1999-2001 by Masahiro TANAKA
+
+  This program is free software.
+  You can distribute/modify this program
+  under the same terms as Ruby itself.
+  NO WARRANTY.
+*/
 #include <ruby.h>
 #include "narray.h"
 

@@ -35,7 +35,7 @@ def create_conf_h(file)
 end
 
 #$DEBUG = true
-$CFLAGS = ["-Wall",$CFLAGS].join(" ")
+#$CFLAGS = ["-Wall",$CFLAGS].join(" ")
 
 # configure options:
 #  --with-fftw-dir=path
@@ -77,5 +77,5 @@ end
 
 $objs = srcs.collect{|i| i+".o"}
 
-create_conf_h("narray_conf.h")
+create_conf_h("narray_config.h")
 create_makefile("narray")

@@ -1,12 +1,17 @@
 /*
- * na_indexc
- * Numerical Array Extention for Ruby
- *   (C) Copyright 1999,2000 by Masahiro TANAKA
- */
+  na_index.c
+  Numerical Array Extention for Ruby
+    (C) Copyright 1999-2001 by Masahiro TANAKA
+
+  This program is free software.
+  You can distribute/modify this program
+  under the same terms as Ruby itself.
+  NO WARRANTY.
+*/
 #include <ruby.h>
 #include "narray.h"
 
-#define EXCL(r) (FL_TEST((r),FL_USER1) || RTEST(rb_ivar_get((r),na_id_excl)))
+#define EXCL(r) (RTEST(rb_funcall((r),na_id_exclude_end,0)))
 
 static int
  na_index_range(VALUE obj, int size, struct slice *sl)
@@ -85,7 +90,7 @@ static int
  na_ary_to_index(struct NARRAY *a1, int size, struct slice *s)
 {
   int i;
-  int32_t idx, *p;
+  na_index_t idx, *p;
 
   /* Empty Array */
   if (a1->total==0) {
@@ -110,7 +115,7 @@ static int
     /* Copy index array */
     s->n    = a1->total;
     s->step = 1;
-    s->idx  = p = ALLOC_N(int, a1->total);
+    s->idx  = p = ALLOC_N(na_index_t, a1->total);
     SetFuncs[NA_LINT][a1->type]( s->n,
 				 s->idx, na_sizeof[NA_LINT],
 				 a1->ptr, na_sizeof[a1->type] );
@@ -398,7 +403,7 @@ static VALUE
   size = na_index_test(idx, ary->total, sl);
 
   if ( size == 1 ) {
-    if (flag) {
+    if (flag || sl->step!=0) {
       /* single-element NArray */
       v = na_make_object(ary->type,1,&size,cNArray);
       GetNArray(v,arynew);

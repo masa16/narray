@@ -1,16 +1,23 @@
 2001-07-01  Masahiro Tanaka  <masa@ir.isas.ac.jp>
 
+	* narray.h: introduce na_index_t.
+	* na_func.c (na_init_slice,na_loop_index_ref,na_loop_general): 
+	  change to na_index_t.
+	* na_index.c: modify EXCL(range) to use excule_end?.
+	* na_index.c (na_aref_single_dim): remain array if sl->step!=0.
+	* na_func.c (Init_na_funcs): alias image, arg, conjugate.
+
 	* ver 0.5.4
 
 2001-06-30  Masahiro Tanaka  <masa@ir.isas.ac.jp>
 
 	* extconf.rb: check sys/typedef.h, u_int8_t, int16_t, int32_t.
-	  generating narray_conf.h.
+	  generating narray_config.h.
 	* narray.h: conditional typedef. define NARRAY_H.
 	* na_func.c (Init_na_funcs): change == to eq. add gt,ge,lt,le.
-	* lib/narray_ext.rb: create ==, all?, any?, none?.
+	* lib/narray_ext.rb: new entry: ==, all?, any?, none?.
 	
-	* mkop.rb: create conditional XOR.
+	* mkop.rb: new entry: conditional XOR.
 	* na_func.c (na_cond_xor): ditto.
 	* narray.h: ditto.
 

@@ -1,10 +1,13 @@
 /*
- * narray.c
- * Numerical Array Extention for Ruby
- *   (C) Copyright 1999,2000 by Masahiro TANAKA
- * This library is free software; you can redistribute it and/or
- * modify it under the same terms as Ruby itself.
- */
+  narray.c
+  Numerical Array Extention for Ruby
+    (C) Copyright 1999-2001 by Masahiro TANAKA
+
+  This program is free software.
+  You can distribute/modify this program
+  under the same terms as Ruby itself.
+  NO WARRANTY.
+*/
 #include <ruby.h>
 #include <version.h>
 #include "narray.h"
@@ -12,7 +15,7 @@
 /* global variables within this module */
 VALUE cNArray, cNArrayScalar, cComplex;
 
-ID na_id_beg, na_id_end, na_id_excl;
+ID na_id_beg, na_id_end, na_id_exclude_end;
 ID na_id_minus, na_id_abs, na_id_power;
 ID na_id_compare, na_id_and, na_id_or;
 ID na_id_class_dim;
@@ -1338,7 +1341,7 @@ void
 
     na_id_beg  	= rb_intern("begin");
     na_id_end  	= rb_intern("end");
-    na_id_excl	= rb_intern("excl");
+    na_id_exclude_end	= rb_intern("exclude_end?");
     na_id_real 	= rb_intern("real");
     na_id_imag	= rb_intern("image");
     na_id_new  	= rb_intern("new");

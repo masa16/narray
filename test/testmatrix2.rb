@@ -1,5 +1,5 @@
 require 'narray'
-require 'xmp'
+require 'irb/xmp'
 # xmp :: http://www.ruby-lang.org/en/raa-list.rhtml?name=xmp
 
 m1 = NMatrix.float(2,2).indgen!

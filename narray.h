@@ -17,22 +17,38 @@
 # include <sys/types.h>
 #endif
 
-#include "narray_conf.h"
+#include "narray_config.h"
+
 /*
-  Data type used in NArray :
-  Please modify these types if your system has different types.
+  Data types used in NArray :
+  Please modify these types if your system has any different type.
 */
 #ifndef HAVE_U_INT8_T
 typedef unsigned char          u_int8_t; /* NA_BYTE */
 #endif
+
 #ifndef HAVE_INT16_T
+# if SIZEOF_SHORT != 2
+---->> Please typedef int16_t manually because sizeof(short) != 2. <<----
+typedef 16_bit_integer_type    int16_t;
+# else
 typedef short                  int16_t;  /* NA_SINT */
-#endif
+# endif
+#endif /* HAVE_INT16_T */
+
 #ifndef HAVE_INT32_T
+# if SIZEOF_LONG != 4
+---->> Please typedef int32_t manually because sizeof(long) != 4. <<----
+typedef 32_bit_integer_type    int32_t;
+# else
 typedef long                   int32_t;  /* NA_LINT */
-#endif
+# endif
+#endif /* HAVE_INT32_T */
+
 typedef struct { float r,i; }  scomplex;
 typedef struct { double r,i; } dcomplex;
+
+typedef int32_t na_index_t;
 
 enum NArray_Types {
   NA_NONE,
@@ -67,7 +83,7 @@ struct slice {
 						--- set in na_init_slice */
   int step;
   int beg;
-  int *idx;    	/* NULL if normal step */
+  na_index_t *idx;    	/* NULL if normal step */
 };
 
 #define NA_MAX_RANK 15
@@ -158,7 +174,7 @@ extern na_sortfunc_t SortIdxFuncs;
 
 extern VALUE cNArray, cNArrayScalar, cComplex;
 extern VALUE rb_mNMath;
-extern ID na_id_beg, na_id_end, na_id_excl;
+extern ID na_id_beg, na_id_end, na_id_exclude_end;
 extern ID na_id_minus, na_id_abs, na_id_power;
 extern ID na_id_compare, na_id_and, na_id_or;
 extern ID na_id_class_dim;

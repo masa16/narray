@@ -1,8 +1,13 @@
 /*
- * na_func.c
- * Numerical Array Extention for Ruby
- *   (C) Copyright 1999,2000 by Masahiro TANAKA
- */
+  na_func.c
+  Numerical Array Extention for Ruby
+    (C) Copyright 1999-2001 by Masahiro TANAKA
+
+  This program is free software.
+  You can distribute/modify this program
+  under the same terms as Ruby itself.
+  NO WARRANTY.
+*/
 #include <ruby.h>
 #include "narray.h"
 
@@ -35,7 +40,8 @@ void
 /* initialize slice structure */
 void na_init_slice( struct slice *s, int rank, int *shape, int elmsz )
 {
-  int r, i, b, *idx;
+  int r, i, b; 
+  na_index_t *idx;
 
   /*
   if (rank<1)
@@ -160,7 +166,8 @@ void na_loop_index_ref( struct NARRAY *a1, struct NARRAY *a2,
   int nr, i, ii;
   int ps1 = s1[0].pstep;
   int ps2 = s2[0].pstep;
-  int *si, *idx;
+  int *si;
+  na_index_t *idx;
   
   /*
   int copy;
@@ -225,7 +232,8 @@ void na_loop_general( struct NARRAY *a1, struct NARRAY *a2,
   int nr, i, ii;
   int ps1 = s1[0].pstep;
   int ps2 = s2[0].pstep;
-  int *si, *idx1, *idx2;
+  int *si;
+  na_index_t *idx1, *idx2;
 
   /* Initialize */
   nr = i = a1->rank;
@@ -1498,8 +1506,11 @@ void Init_na_funcs(void)
   rb_define_method(cNArray, "abs",  na_abs, 0);
   rb_define_method(cNArray, "real", na_real, 0);
   rb_define_method(cNArray, "imag", na_imag, 0);
+  rb_define_alias (cNArray, "image", "imag");
   rb_define_method(cNArray, "angle", na_angle, 0);
+  rb_define_alias (cNArray, "arg", "angle");
   rb_define_method(cNArray, "conj", na_conj, 0);
+  rb_define_alias (cNArray, "conjugate", "conj");
   rb_define_method(cNArray, "im",   na_imag_mul, 0);
   rb_define_method(cNArray, "floor",na_floor, 0);
   rb_define_method(cNArray, "ceil", na_ceil, 0);
@@ -1510,14 +1521,14 @@ void Init_na_funcs(void)
   rb_define_method(cNArray, "<=>", na_compare, 1);
   rb_define_method(cNArray, "eq",  na_equal, 1);
   rb_define_method(cNArray, "ne",  na_not_equal, 1);
-  rb_define_method(cNArray, ">",   na_greater_than, 1);
   rb_define_method(cNArray, "gt",  na_greater_than, 1);
-  rb_define_method(cNArray, ">=",  na_greater_equal, 1);
+  rb_define_alias (cNArray, ">",   "gt");
   rb_define_method(cNArray, "ge",  na_greater_equal, 1);
-  rb_define_method(cNArray, "<",   na_less_than, 1);
+  rb_define_alias (cNArray, ">=",  "ge");
   rb_define_method(cNArray, "lt",  na_less_than, 1);
-  rb_define_method(cNArray, "<=",  na_less_equal, 1);
+  rb_define_alias (cNArray, "<",   "lt");
   rb_define_method(cNArray, "le",  na_less_equal, 1);
+  rb_define_alias (cNArray, "<=",  "le");
   rb_define_method(cNArray, "and", na_cond_and, 1);
   rb_define_method(cNArray, "or",  na_cond_or, 1);
   rb_define_method(cNArray, "xor", na_cond_xor, 1);
