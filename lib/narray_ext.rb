@@ -115,39 +115,6 @@ class NArray
   end
   alias randomn! randomn
 
-
-# Byte Swap
-  def swap_byte
-    elmsz = self.element_size
-    size = self.size
-    if complex?
-      elmsz /= 2
-      size *= 2
-    end
-    self.to_binary.
-      reshape!(elmsz,size) [-1..0,true].
-      to_type_as_binary(self.typecode).
-      reshape!(*self.shape)
-  end
-
-  def hton
-    if NArray::ENDIAN == 0
-      self.swap_byte
-    else
-      self.dup
-    end
-  end
-  alias ntoh hton
-
-  def htov
-    if NArray::ENDIAN == 1
-      self.swap_byte
-    else
-      self.dup
-    end
-  end
-  alias vtoh htov
-
   SFloatOne = NArray.sfloat(1).fill!(1)
 end
 

@@ -10,7 +10,7 @@ print <<EOM
   #{fname}
   Automatically generated code
   Numerical Array Extention for Ruby
-    (C) Copyright 1999-2002 by Masahiro TANAKA
+    (C) Copyright 1999-2003 by Masahiro TANAKA
 
   This program is free software.
   You can distribute/modify this program
@@ -102,6 +102,44 @@ $func_body =
   }
 }
 "
+
+
+mkfuncs('Swp', $swap_types, $swap_types,
+ [nil] +
+ ["*p1 = *p2;"] + 
+ ["na_size16_t x;  swap16(x,*p2);   *p1 = x;"] + 
+ ["na_size32_t x;  swap32(x,*p2);   *p1 = x;"] + 
+ ["na_size32_t x;  swap32(x,*p2);   *p1 = x;"] + 
+ ["na_size64_t x;  swap64(x,*p2);   *p1 = x;"] + 
+ ["na_size64_t x;  swap64c(x,*p2);  *p1 = x;"] + 
+ ["na_size128_t x; swap128c(x,*p2); *p1 = x;"] + 
+ ["*p1 = *p2;"]
+)
+
+print <<EOM
+
+/* ------------------------- H2N --------------------------- */
+#ifdef WORDS_BIGENDIAN
+
+na_func_t H2NFuncs =
+{ TpErr, SetBB, SetII, SetLL, SetFF, SetDD, SetXX, SetCC, SetOO };
+
+na_func_t H2VFuncs =
+{ TpErr, SetBB, SwpI, SwpL, SwpF, SwpD, SwpX, SwpC, SetOO };
+
+#else
+#ifdef DYNAMIC_ENDIAN  /* not supported yet */
+#else  /* LITTLE ENDIAN */
+
+na_func_t H2NFuncs =
+{ TpErr, SetBB, SwpI, SwpL, SwpF, SwpD, SwpX, SwpC, SetOO };
+
+na_func_t H2VFuncs =
+{ TpErr, SetBB, SetII, SetLL, SetFF, SetDD, SetXX, SetCC, SetOO };
+
+#endif
+#endif
+EOM
 
 mkfuncs('Neg', $data_types, $data_types,
  [nil] +

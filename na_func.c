@@ -1,7 +1,7 @@
 /*
   na_func.c
   Numerical Array Extention for Ruby
-    (C) Copyright 1999-2002 by Masahiro TANAKA
+    (C) Copyright 1999-2003 by Masahiro TANAKA
 
   This program is free software.
   You can distribute/modify this program
@@ -791,6 +791,18 @@ static VALUE na_mul_bang(VALUE obj1, VALUE obj2)
 { return na_set_func( obj1, obj2, MulUFuncs ); }
 
 
+/* method: self.swap_byte */
+static VALUE na_swap_byte(VALUE self)
+{ return na_unary_func( self, na_no_cast, SwpFuncs ); }
+
+/* method: self.hton , self.ntoh */
+static VALUE na_hton(VALUE self)
+{ return na_unary_func( self, na_no_cast, H2NFuncs ); }
+
+/* method: self.htov , self.vtoh */
+static VALUE na_htov(VALUE self)
+{ return na_unary_func( self, na_no_cast, H2VFuncs ); }
+
 /* method: ~self */
 static VALUE na_bit_rev(VALUE self)
 { return na_unary_func( self, na_no_cast, BRvFuncs ); }
@@ -1122,13 +1134,13 @@ static void
   int i;
 
   if (rankc==0) {
-    /* Accumurate all elements */
+    /* Accumulate all elements */
     for (i=0; i<rank; i++) {
       itr_shape[i] = 1;
       rankv[i] = 1;
     }
   } else {
-    /* Select Accumurate ranks */
+    /* Select Accumulate ranks */
     for (i=0; i<rank; i++) {
       if (rankv[i]==1)
 	itr_shape[i] = 1;
@@ -1282,6 +1294,35 @@ static VALUE
   return na_mul_add_body(argc-2,argv+2,argv[0],argv[1],klass,0);
 }
 
+
+/* cumsum!
+ [1 2 3 4 5] -> [1 3 6 10 15]
+*/
+static VALUE
+  na_cumsum_bang(VALUE self)
+{
+  struct NARRAY *a;
+  int step;
+
+  GetNArray(self,a);
+
+  if ( a->rank != 1 )
+    rb_raise( rb_eTypeError, "only for 1-dimensional array" );
+  if ( a->total < 2 )
+    return self; /* do nothing */
+
+  step = na_sizeof[a->type];
+  AddUFuncs[a->type](a->total-1, a->ptr+step,step, a->ptr,step);
+
+  return self;
+}
+
+/* cumsum */
+static VALUE
+  na_cumsum(VALUE self)
+{
+  return na_cumsum_bang(na_clone(self));
+}
 
 
 /*  Copy element of idx=0  from a2 to a1, as start of accumulation */
@@ -1504,6 +1545,11 @@ void Init_na_funcs(void)
   rb_define_method(cNArray, "div!", na_div_bang, 1);
   rb_define_method(cNArray, "imag=",na_imag_set, 1);
 
+  rb_define_method(cNArray, "swap_byte", na_swap_byte, 0);
+  rb_define_method(cNArray, "hton", na_hton, 0);
+  rb_define_alias (cNArray, "ntoh", "hton");
+  rb_define_method(cNArray, "htov", na_htov, 0);
+  rb_define_alias (cNArray, "vtoh", "htov");
   rb_define_method(cNArray, "-@",   na_neg, 0);
   rb_define_method(cNArray, "recip",na_recip, 0);
   rb_define_method(cNArray, "abs",  na_abs, 0);
@@ -1543,6 +1589,8 @@ void Init_na_funcs(void)
   rb_define_method(cNArray, "accum", na_accum, -1);
   rb_define_method(cNArray, "min", na_min, -1);
   rb_define_method(cNArray, "max", na_max, -1);
+  rb_define_method(cNArray, "cumsum!", na_cumsum_bang, 0);
+  rb_define_method(cNArray, "cumsum", na_cumsum, 0);
   rb_define_method(cNArray, "sort", na_sort, -1);
   rb_define_method(cNArray, "sort!", na_sort_bang, -1);
   rb_define_method(cNArray, "sort_index", na_sort_index, -1);

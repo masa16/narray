@@ -1,7 +1,7 @@
 /*
   narray_local.h
   Numerical Array Extention for Ruby
-    (C) Copyright 1999-2002 by Masahiro TANAKA
+    (C) Copyright 1999-2003 by Masahiro TANAKA
 
   This program is free software.
   You can distribute/modify this program
@@ -32,6 +32,9 @@ typedef int  (*na_sortfunc_t[NA_NTYPES]) ();
 
 /* function arrays */
 extern na_setfunc_t SetFuncs;
+extern na_ufunc_t  SwpFuncs;
+extern na_ufunc_t  H2NFuncs;
+extern na_ufunc_t  H2VFuncs;
 extern na_ufunc_t  NegFuncs;
 extern na_ufunc_t  RcpFuncs;
 extern na_ufunc_t  AbsFuncs;
@@ -122,3 +125,75 @@ VALUE na_shrink_rank(VALUE obj, int class_dim, int *shrink);
 
 #define rb_complex_new(r,i) \
   rb_funcall(cComplex, na_id_new, 2, rb_float_new(r), rb_float_new(i))
+
+
+typedef union {
+  u_int8_t b[2];
+  int16_t s;
+} na_size16_t;
+
+typedef union {
+  u_int8_t b[4];
+  int32_t  i;
+  float    f;
+} na_size32_t;
+
+typedef union {
+  u_int8_t b[8];
+  float    f[2];
+  double   d;
+} na_size64_t;
+
+typedef union {
+  u_int8_t b[16];
+  double   d[2];
+} na_size128_t;
+
+
+#define swap16(d,s) \
+(d).b[0]=(s).b[1];\
+(d).b[1]=(s).b[0];
+
+#define swap32(d,s) \
+(d).b[0]=(s).b[3];\
+(d).b[1]=(s).b[2];\
+(d).b[2]=(s).b[1];\
+(d).b[3]=(s).b[0];
+
+#define swap64(d,s) \
+(d).b[0]=(s).b[7];\
+(d).b[1]=(s).b[6];\
+(d).b[2]=(s).b[5];\
+(d).b[3]=(s).b[4];\
+(d).b[4]=(s).b[3];\
+(d).b[5]=(s).b[2];\
+(d).b[6]=(s).b[1];\
+(d).b[7]=(s).b[0];
+
+#define swap64c(d,s) \
+(d).b[0]=(s).b[3];\
+(d).b[1]=(s).b[2];\
+(d).b[2]=(s).b[1];\
+(d).b[3]=(s).b[0];\
+(d).b[4]=(s).b[7];\
+(d).b[5]=(s).b[6];\
+(d).b[6]=(s).b[5];\
+(d).b[7]=(s).b[4];
+
+#define swap128c(d,s) \
+(d).b[0]=(s).b[7];\
+(d).b[1]=(s).b[6];\
+(d).b[2]=(s).b[5];\
+(d).b[3]=(s).b[4];\
+(d).b[4]=(s).b[3];\
+(d).b[5]=(s).b[2];\
+(d).b[6]=(s).b[1];\
+(d).b[7]=(s).b[0];\
+(d).b[8]=(s).b[15];\
+(d).b[9]=(s).b[14];\
+(d).b[10]=(s).b[13];\
+(d).b[11]=(s).b[12];\
+(d).b[12]=(s).b[11];\
+(d).b[13]=(s).b[10];\
+(d).b[14]=(s).b[9];\
+(d).b[15]=(s).b[8];

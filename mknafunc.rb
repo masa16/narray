@@ -7,6 +7,8 @@ $int_types  =
  %w(none u_int8_t int16_t int32_t int32_t int32_t scomplex dcomplex VALUE)
 $comp_types =
  %w(none scomplex scomplex scomplex scomplex dcomplex scomplex dcomplex VALUE)
+$swap_types  = 
+ %w(none u_int8_t na_size16_t na_size32_t na_size32_t na_size64_t na_size64_t na_size128_t VALUE)
 $upcast = [
   [ 0, 0, 0, 0, 0, 0, 0, 0, 0],
   [ 0, 1, 2, 3, 4, 5, 6, 7, 8],

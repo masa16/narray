@@ -1,7 +1,7 @@
 /*
   narray.c
   Numerical Array Extention for Ruby
-    (C) Copyright 1999-2002 by Masahiro TANAKA
+    (C) Copyright 1999-2003 by Masahiro TANAKA
 
   This program is free software.
   You can distribute/modify this program
@@ -62,6 +62,7 @@ void Init_fftw(void);
 void Init_nmath(void);
 void Init_na_funcs(void);
 void Init_na_linalg(void);
+void Init_na_random(void);
 
 
 #ifdef DEBUG
@@ -1293,8 +1294,10 @@ void
     rb_define_alias(cNArray,  "fill","fill!");
     rb_define_method(cNArray, "indgen!", na_indgen,-1);
     rb_define_alias(cNArray,  "indgen","indgen!");
-    rb_define_method(cNArray, "random!", na_random,-1);
-    rb_define_alias(cNArray,  "random","random!");
+    
+    rb_define_method(cNArray, "random2!", na_random,-1);
+    rb_define_alias(cNArray,  "random2","random2!");
+    
     rb_define_method(cNArray, "where", na_where, 0);
     rb_define_method(cNArray, "where2", na_where2, 0);
     rb_define_method(cNArray, "each", na_each,0);
@@ -1345,6 +1348,7 @@ void
 
     Init_nmath();
     Init_na_funcs();
+    Init_na_random();
 
     cNArrayScalar = rb_define_class("NArrayScalar", cNArray);
 

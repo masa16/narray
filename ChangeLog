@@ -1,3 +1,36 @@
+2003-03-03  Masahiro TANAKA  <masa@ir.isas.ac.jp>
+
+	* na_random.c: created.
+
+	* ver 0.5.7
+
+2003-03-01  Masahiro TANAKA  <masa@ir.isas.ac.jp>
+
+	* narray_ext.rb (swap_byte,hton,htov): removed
+	* mkop.rb, mknafunc.rb, na_func.c, narray_local.h: 
+	  add C-version of swap_byte, hton, htov.
+
+2003-02-28  Masahiro TANAKA  <masa@ir.isas.ac.jp>
+
+	* extconf.rb: do not add "--output-lib libnarray.a"
+	  to link options if Cygwin with Ruby 1.8.0.
+	  Thank MoonWolf for the note.
+
+2002-11-25  Masahiro TANAKA  <masa@ir.isas.ac.jp>
+	* na_func.c (na_cumsum_bang,na_cumsum_): created.
+	  Thank Jon Davidson for the proposal.
+
+2002-09-15  Masahiro TANAKA  <masa@ir.isas.ac.jp>
+
+	* na_array.c (na_do_mdai):
+	  Index is not `i' but `j' in recursive array check.
+	  Thank Ara Howard for the bug report.
+
+2002-05-30 WATANABE Hirofumi <eban@os.rim.or.jp>
+
+	* extconf.rb: to build in another directory than source tree.
+	* depend: ditto.
+	
 2002-05-18  Masahiro TANAKA  <masa@ir.isas.ac.jp>
 
 	* lib/narray_ext.rb (NArray#==): return false unless other is NArray.

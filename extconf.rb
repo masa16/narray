@@ -38,14 +38,17 @@ alias __install_rb :install_rb
 def install_rb(mfile, dest, srcdir = nil)
   __install_rb(mfile, dest, srcdir)
   archdir = dest.sub(/sitelibdir/,"sitearchdir").sub(/rubylibdir/,"archdir")
-  path = ['narray.h','narray_config.h']
-  path << ['libnarray.a'] if RUBY_PLATFORM =~ /cygwin|mingw/
+  path = ['$(srcdir)/narray.h','narray_config.h']
+  path << ['libnarray.a'] if $na_cygwin_with_ruby16
   for f in path
     mfile.printf "\t@$(RUBY) -r ftools -e 'File::install(ARGV[0], ARGV[1], 0644, true)' %s %s\n", f, archdir
   end
 end
 
-if RUBY_PLATFORM =~ /cygwin|mingw/
+$na_cygwin_with_ruby16 =
+ RUBY_PLATFORM =~ /cygwin|mingw/ && RUBY_VERSION < '1.7.0'
+
+if $na_cygwin_with_ruby16
   CONFIG["DLDFLAGS"] << " --output-lib libnarray.a"
 end
 
@@ -63,6 +66,7 @@ narray
 na_array
 na_func
 na_index
+na_random
 na_op
 na_math
 na_linalg
@@ -77,6 +81,7 @@ end
 have_type("u_int8_t", header)
 have_type("int16_t", header)
 have_type("int32_t", header)
+have_type("u_int32_t", header)
 
 #have_library("m")
 #have_func("sincos")

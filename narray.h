@@ -1,7 +1,7 @@
 /*
   narray.h
   Numerical Array Extention for Ruby
-    (C) Copyright 1999-2002 by Masahiro TANAKA
+    (C) Copyright 1999-2003 by Masahiro TANAKA
 
   This program is free software.
   You can distribute/modify this program
@@ -28,22 +28,36 @@ typedef unsigned char          u_int8_t; /* NA_BYTE */
 #endif
 
 #ifndef HAVE_INT16_T
-# if SIZEOF_SHORT != 2
----->> Please define int16_t manually because sizeof(short) != 2. <<----
-typedef 16_bit_integer_type    int16_t;
-# else
+# if SIZEOF_SHORT == 2
 typedef short                  int16_t;  /* NA_SINT */
+# else
+---->> Please define int16_t manually because sizeof(short) != 2. <<----
 # endif
 #endif /* HAVE_INT16_T */
 
 #ifndef HAVE_INT32_T
-# if SIZEOF_LONG != 4
----->> Please define int32_t manually because sizeof(long) != 4. <<----
-typedef 32_bit_integer_type    int32_t;
-# else
+# if SIZEOF_LONG == 4
 typedef long                   int32_t;  /* NA_LINT */
+# else
+#  if SIZEOF_INT == 4
+typedef int                    int32_t;  /* NA_LINT */
+#  else
+---->> Please define int32_t manually because sizeof(long) != 4. <<----
+#  endif
 # endif
 #endif /* HAVE_INT32_T */
+
+#ifndef HAVE_U_INT32_T
+# if SIZEOF_LONG == 4
+typedef unsigned long                   u_int32_t;  /* NA_LINT */
+# else
+#  if SIZEOF_INT == 4
+typedef unsigned int                    u_int32_t;  /* NA_LINT */
+#  else
+---->> Please define u_int32_t manually because sizeof(long) != 4. <<----
+#  endif
+# endif
+#endif /* HAVE_U_INT32_T */
 
 typedef struct { float r,i; }  scomplex;
 typedef struct { double r,i; } dcomplex;
