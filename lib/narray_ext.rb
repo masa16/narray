@@ -31,8 +31,11 @@ class NArray
   end
 
   def ==(other)
-    other=NArray.to_na(other) unless other.kind_of?(NArray)
-    shape==other.shape && eq(other).all?
+    if other.kind_of?(NArray)
+      (shape == other.shape) && eq(other).all?
+    else
+      false
+    end
   end
 
   def rank_total(*ranks)

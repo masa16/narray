@@ -1,5 +1,7 @@
 2002-05-18  Masahiro TANAKA  <masa@ir.isas.ac.jp>
 
+	* lib/narray_ext.rb (NArray#==): return false unless other is NArray.
+
 	* narray.h, narray_local.h, narray.c:
 	  move na_sizeof variable from narray_local.h to narray.h.
 	  const keyword added.  Thanks to Horinouchi-san.
