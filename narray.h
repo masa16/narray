@@ -29,7 +29,7 @@ typedef unsigned char          u_int8_t; /* NA_BYTE */
 
 #ifndef HAVE_INT16_T
 # if SIZEOF_SHORT != 2
----->> Please typedef int16_t manually because sizeof(short) != 2. <<----
+---->> Please define int16_t manually because sizeof(short) != 2. <<----
 typedef 16_bit_integer_type    int16_t;
 # else
 typedef short                  int16_t;  /* NA_SINT */
@@ -38,7 +38,7 @@ typedef short                  int16_t;  /* NA_SINT */
 
 #ifndef HAVE_INT32_T
 # if SIZEOF_LONG != 4
----->> Please typedef int32_t manually because sizeof(long) != 4. <<----
+---->> Please define int32_t manually because sizeof(long) != 4. <<----
 typedef 32_bit_integer_type    int32_t;
 # else
 typedef long                   int32_t;  /* NA_LINT */
