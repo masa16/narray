@@ -34,22 +34,33 @@ def create_conf_h(file)
   hfile.close
 end
 
-alias __install_rb :install_rb
-def install_rb(mfile, dest, srcdir = nil)
-  __install_rb(mfile, dest, srcdir)
-  archdir = dest.sub(/sitelibdir/,"sitearchdir").sub(/rubylibdir/,"archdir")
-  path = ['$(srcdir)/narray.h','narray_config.h']
-  path << ['libnarray.a'] if $na_cygwin_with_ruby16
-  for f in path
-    mfile.printf "\t@$(RUBY) -r ftools -e 'File::install(ARGV[0], ARGV[1], 0644, true)' %s %s\n", f, archdir
+if RUBY_VERSION < '1.8'
+  alias __install_rb :install_rb
+  def install_rb(mfile, dest, srcdir = nil)
+    __install_rb(mfile, dest, srcdir)
+    archdir = dest.sub(/sitelibdir/,"sitearchdir").sub(/rubylibdir/,"archdir")
+    path = ['$(srcdir)/narray.h','narray_config.h']
+    path << ['libnarray.a'] if /cygwin|mingw/ =~ RUBY_PLATFORM
+    for f in path
+      mfile.printf "\t@$(RUBY) -r ftools -e 'File::install(ARGV[0], ARGV[1], 0644, true)' %s %s\n", f, archdir
+    end
+  end
+else
+  $INSTALLFILES = [['narray.h', '$(archdir)'], ['narray_config.h', '$(archdir)']] 
+  if /cygwin|mingw/ =~ RUBY_PLATFORM
+	 $INSTALLFILES << ['libnarray.a', '$(archdir)']
   end
 end
 
-$na_cygwin_with_ruby16 =
- RUBY_PLATFORM =~ /cygwin|mingw/ && RUBY_VERSION < '1.7.0'
-
-if $na_cygwin_with_ruby16
-  CONFIG["DLDFLAGS"] << " --output-lib libnarray.a"
+if /cygwin|mingw/ =~ RUBY_PLATFORM
+  if RUBY_VERSION > '1.8.0'
+    $DLDFLAGS << ",--out-implib=libnarray.a"
+  elsif RUBY_VERSION > '1.8'
+    CONFIG["DLDFLAGS"] << ",--out-implib=libnarray.a"
+    system("touch libnarray.a")
+  else
+    CONFIG["DLDFLAGS"] << " --output-lib libnarray.a"
+  end
 end
 
 #$DEBUG = true
@@ -99,29 +110,3 @@ $objs = srcs.collect{|i| i+".o"}
 
 create_conf_h("narray_config.h")
 create_makefile("narray")
-
-
-# extra installation
-
-if RUBY_VERSION >= '1.8.0'
-  files = [
-    ["$(srcdir)/","narray.h"],
-    ["","narray_config.h"]
-  ]
-  if RUBY_PLATFORM =~ /cygwin|mingw/
-    files << ["","libnarray.a"]
-  end
-  install_data = "$(INSTALL_DATA)"
-  dir = "$(RUBYARCHDIR)"
-  # for 1.6
-  #install_data = "$(RUBY) -r ftools -e 'File::install(ARGV[0], ARGV[1], 0644, true)'"
-  #dir = "$(sitearchdir)$(target_prefix)"
-  File.open("Makefile","ab") do |mfile|
-    mfile.print "\ninstall: #{dir}\n\n"
-    files.each do |prefix,file|
-      dest = "#{dir}/#{file}"
-      mfile.print "install: #{dest}\n"
-      mfile.print "#{dest}: #{prefix}#{file} #{dir}\n\t@#{install_data} #{prefix}#{file} #{dir}\n\n"
-    end
-  end
-end

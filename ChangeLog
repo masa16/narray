@@ -1,4 +1,10 @@
-2004-02-19  Masahiro TANAKA  <masahiro.tanaka@nao.ac.jp>
+2004-06-28  KOSHIRO Tsuyoshi <koshiro rish.kyoto-u.ac.jp>
+
+	* extconf.rb: generate libnarray.a for Cygwin + Ruby 1.8.1.
+
+	* ver 0.5.7p3
+
+2004-02-19  Masahiro TANAKA  <masahiro.tanaka nao.ac.jp>
 
 	* na_array.c (na_free_mdai):
 	  memory free bug: xfree(mdai->type); added.
