@@ -557,16 +557,23 @@ VALUE
 VALUE
  na_aref_mask(VALUE self, VALUE mask)
 {
-  int total;
+  int total, i;
   struct NARRAY *a1, *am, *a2;
   VALUE v;
 
   GetNArray( self, a1 );
   GetNArray( mask, am );
 
-  if (a1->total != am->total) { 
-     rb_raise(rb_eTypeError,"self.length != mask.length");
-  }
+  if (a1->total != am->total)
+    rb_raise(rb_eTypeError,"self.size(=%i) != mask.size(=%i)",
+	     a1->total, am->total);
+  if (a1->rank != am->rank) 
+    rb_raise(rb_eTypeError,"self.rank(=%i) != mask.rank(=%i)",
+	     a1->rank, am->rank);
+  for (i=0; i<a1->rank; i++)
+    if (a1->shape[i] != am->shape[i])
+      rb_raise(rb_eTypeError,"self.shape[%i](=%i) != mask.shape[%i](=%i)",
+	       i, a1->shape[i], i, am->shape[i]);
 
   total = na_count_true_body(mask);
 
@@ -913,15 +920,22 @@ static void
 void
  na_aset_mask(VALUE self, VALUE mask, VALUE val)
 {
-  int size, step;
+  int size, step, i;
   struct NARRAY *a1, *am, *a2;
 
   GetNArray( self, a1 );
   GetNArray( mask, am );
 
-  if (a1->total != am->total) { 
-     rb_raise(rb_eTypeError,"self.length != mask.length");
-  }
+  if (a1->total != am->total)
+    rb_raise(rb_eTypeError,"self.size(=%i) != mask.size(=%i)",
+	     a1->total, am->total);
+  if (a1->rank != am->rank) 
+    rb_raise(rb_eTypeError,"self.rank(=%i) != mask.rank(=%i)",
+	     a1->rank, am->rank);
+  for (i=0; i<a1->rank; i++)
+    if (a1->shape[i] != am->shape[i])
+      rb_raise(rb_eTypeError,"self.shape[%i](=%i) != mask.shape[%i](=%i)",
+	       i, a1->shape[i], i, am->shape[i]);
 
   size = na_count_true_body(mask);
 
