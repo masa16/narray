@@ -40,13 +40,12 @@ class NArray
 
   def rank_total(*ranks)
     if ranks.size>0
-      n = 1
       idx = []
       ranks.each{|i| idx.push(*i)}
       # ranks is expected to be, e.g., [1, 3..5, 7]
-      self.shape.select(*idx).each do |i|
-	n *= i
-      end
+      a = self.shape
+      n = 1
+      idx.each{|i| n *= a[i]}
       n
     else
       self.total

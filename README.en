@@ -40,6 +40,8 @@
 
   ruby 1.6.8 (2002-12-24) [i686-linux]
   gcc version 2.96
+  ruby 1.6.7 (2002-03-01) [sparc-solaris2.7]
+  gcc version 2.95.2
 
 * License
 
