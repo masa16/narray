@@ -1,0 +1,309 @@
+2001-04-03  Masahiro Tanaka  <masa@ir.isas.ac.jp>
+
+	* na_array.c (na_search_rank): ignore empty array.
+	* na_array.c (na_copy_ary_to_nary): ignore empty array and nil.
+
+2001-04-02  Masahiro Tanaka  <masa@ir.isas.ac.jp>
+
+	* narray.c (na_to_s): bug: na_sizeof[] is necessary.
+	  Thank matju for report.
+
+2001-01-29  Masahiro Tanaka  <masa@ir.isas.ac.jp>
+
+	* mkop.rb (Angl): added.
+	* na_func.c (na_angle): added.  Thank M.Tagusai for proposal.
+	* ver 0.5.2
+
+2001-01-21  Masahiro Tanaka  <masa@ir.isas.ac.jp>
+
+	* mkop.rb, mkmath.rb: loop-end condition changed from n>0 to n.
+	  5% speed up for multiplication of double.
+
+2001-01-20  Masahiro Tanaka  <masa@ir.isas.ac.jp>
+
+	* mkop.rb (DivU,DivB): raise error if divided by 0.
+
+2001-01-19  Masahiro Tanaka  <masa@ir.isas.ac.jp>
+
+	* mkop.rb (round): bug: has omitted the case of 0.
+
+2001-01-18  Masahiro Tanaka  <masa@ir.isas.ac.jp>
+
+	* narray.c (na_is_empty): added.
+	* na_func.c (na_exec_unary,na_exec_binary,na_make_object_extend):
+	  enable operation of empty array.
+
+2001-01-17  Masahiro Tanaka  <masa@ir.isas.ac.jp>
+
+	* na_index.c (na_aset_array_index): allow a[[]]=1.
+
+2001-01-14  Masahiro Tanaka  <masa@ir.isas.ac.jp>
+
+	* na_index.c (na_ary_to_index): bug: should raise error if < -n.
+
+2001-01-13  Masahiro Tanaka  <masa@ir.isas.ac.jp>
+
+	* na_func.c (na_unary_func): should call func of self-type.
+	  Thanks to Matju.
+
+2001-01-06  Masahiro Tanaka  <masa@ir.isas.ac.jp>
+
+	* narray.c (na_s_new_int): check argc==0. Thanks to Matju.
+
+2000-12-10  Masahiro Tanaka  <masa@ir.isas.ac.jp>
+
+	* ver 0.5.1
+
+2000-12-11  Masahiro Tanaka  <masa@ir.isas.ac.jp>
+
+	* narray.c (na_alloc_struct): cope with empty array.
+	* na_func.c (na_exec_unary,na_shape_max_2obj): empty check.
+
+2000-12-10  Masahiro Tanaka  <masa@ir.isas.ac.jp>
+
+	* narray.c (na_random): disable initalizing seed.
+	* na_touch_object created.
+	* free -> xfree.  Thanks to Naoki Matsumoto.
+
+2000-12-07  Masahiro Tanaka  <masa@ir.isas.ac.jp>
+
+	* ver 0.5.0.p2
+
+	* fix problems for VC++. Thanks to Naoki Matsumoto.
+	* mkmath.rb: create asinh, acosh, atanh missing in VC++.
+	* mkop.rb (TpErrI): return int after rb_raise().
+	* narray.h: max() -> NA_MAX(), swap() -> NA_SWAP().
+	* narray.c (na_get_typecode): return int after rb_raise().
+	* na_func.c (na_sort,na_sort_index): fix function decl. for qsort.
+
+2000-12-01  Masahiro Tanaka  <masa@ir.isas.ac.jp>
+
+	* ver 0.5.0.p1
+
+	* lib/nmatrix.rb (NVector#+,-): should change Class to NArray
+	  before calling super.  Thanks to Kenya OGATA.
+
+	* na_index.c (EXCL): follow the change of EXCL() in 1.6.2.
+	  Thanks to Robert Feldt.
+
+2000-11-25  Masahiro Tanaka  <masa@ir.isas.ac.jp>
+
+	* ver 0.5.0
+	* No Log between 0.5.0 and 0.3.5.p1. Sorry.
+
+2000-10-14  Masahiro Tanaka  <masa>
+
+	* narray.c (na_wrap_struct_class): na_mark_ref, na_mark_obj.
+
+2000-10-05  Masahiro Tanaka  <masa>
+
+	* nmatrix.rb: created.
+	
+	* too many changes are applied to source codes. ^^;
+
+2000-10-03  Masahiro Tanaka  <masa>
+
+	* na_index.c (na_shrink_rank): created for general purposes.
+
+	* narray.c (na_reshape): use new na_shrink rank.
+	  recognize "true" argument.
+
+	* lib/narray_ext.rb: use new feature of reshape
+
+2000-10-02  Masahiro Tanaka  <masa>
+
+	* na_index.c (na_make_slice_aset_fill): created.
+
+	* lib/narray_ext.rb (flatten): no more use dup.
+
+	* na_func.c (na_s_mul_sum): created.
+
+	* narray.c (na_wrap_struct): wrap with referring class.
+	(na_ref_alloc_struct): created.
+	(na_reshape_ref,na_newrank_ref): created.
+	(na_inspect): print class name.
+
+	* narray.h: add "VALUE obj" elmt to "struct NARRAY".	 
+
+2000-09-29  Masahiro Tanaka  <masa>
+
+	* mkopfunc.rb (mulacmfunc): created.
+
+	* mkfuncs.rb: rewrite with %w().
+	(mktrifunc): renamed from mkcmpfunc. accept block.
+
+	* na_loop.c (na_slice_set_extend): change arguments.
+
+	* na_func.c (na_mul_acm,na_shape_max_3obj): created.
+	(na_exec_trifunc_extend): a1 can be shrinkable.
+
+2000-09-28  Masahiro Tanaka  <masa>
+
+	* lib/narray_ext.rb (is_ineger?,is_complex?):
+	  -> ineger?, complex?.
+
+2000-09-27  Masahiro Tanaka  <masa>
+
+	* na_index.c (na_index_analysis): add false dimension.
+
+	* narray.c (na_clone): renamed from ns_dup.
+
+2000-09-04  Masahiro Tanaka  <masa>
+
+	* ver 0.3.5.p1
+
+	* narray.c, na_array.c, na_func.c, narray.h, mknmath.rb
+	  remove unused variables and functions. (-Wall check)
+	  (Thanks to Robert Feldt)
+
+	* lib/narray_ext.rb (convol): put in module FFTW. 
+	  (Thanks to Robert Feldt)
+
+2000-09-01  Masahiro Tanaka  <masa>
+
+	* ver 0.3.5
+
+	* narray.c (na_random): remove `seed' argument.  add rand().
+
+2000-08-25  Masahiro Tanaka  <masa>
+
+	* lib/narray_ext.rb: create randomn (Box-Muller).
+
+2000-08-23  Masahiro Tanaka  <masa>
+
+	* na_index.c (aref, aset): categolize procedures with arguments.
+
+2000-08-02  Masahiro Tanaka  <masa>
+
+	* lib/narray_ext.rb: create FFTW.convol.
+
+2000-08-01  Masahiro Tanaka  <masa>
+
+	* na_index.c (na_aref_array_index): bug fix: free index memory.
+
+2000-07-28  Masahiro Tanaka  <masa>
+
+	* ver 0.3.4
+
+	* mkcmpfunc.rb : remove <=> with complex.  add ~.
+
+	* mkopfunc.rb, na_func.c: add &, |, ^.
+
+2000-07-27  Masahiro Tanaka  <masa>
+
+	* mknmath.rb, lib/narray_ext.rb: add covariance.
+
+	* mkopfunc.rb (data_mod): add imag=.
+
+	* mksetfunc.rb: add im (ImagMul).
+
+	* mknmath.rb, lib/narray_ext.rb: add trigonometric functions.
+
+2000-07-26  Masahiro Tanaka  <masa>
+
+	* na_func.c (na_exec_math_func): extract object if argument is
+	  non-array.
+
+	* lib/narray_ext.rb: add mean, stddev.
+
+2000-07-21  Masahiro Tanaka  <masa>
+
+	* na_index.c (na_aset): bug fix for empty index, etc.
+
+	* na_func.c (na_shape_check): raise error if empty array.
+	(na_sum_body,na_min,na_min,na_transpose): better arg-parse.
+	(na_arg_to_rank,na_accum_set_shape,na_accum_shrink_rank):
+	  created.
+
+2000-07-20  Masahiro Tanaka  <masa>
+
+	* narray.c (na_str_to_na): more size check.
+
+	* na_index.c (na_aset): allow if src-ary has smaller dims.
+
+	* narray.c (na_to_narray): moved from na_array.c
+
+	* lib/narray_ext.rb: created. swap_byte, hton etc.
+
+	* narray.c (Init_narray): change type=>typecode.
+	  add NArray.dfloat, NArray::DFLOAT etc.
+	  add element_size, to_binary, to_type_as_binary.
+
+2000-07-18  Masahiro Tanaka  <masa>
+
+	* na_loop.c (na_loop_general): created. na_loop_index is obsolete.
+
+2000-07-17  Masahiro Tanaka  <masa>
+
+	* na_func.c (na_sum_body,na_accum): created.
+
+	* na_index.c (na_slice): created.
+
+	* na_index.c (na_aref,na_aset): if the argument is an array,
+	  methods [],[]= return same shape as the array.  e.g,
+	  a[[[0,1],[2,3]]] creates 2-D array.
+
+	* na_index.c
+	  (na_serialize_struct,na_aref_aryindex,na_aref_single): Created.
+
+2000-07-16  Masahiro Tanaka  <masa>
+
+	* na_func.c (na_transpose_bifunc,na_transpose),
+	  test/testtrans.rb: Created.
+
+2000-07-15  Masahiro Tanaka  <masa>
+
+	* ver 0.3.3
+
+	* na_func.c (na_sort,na_sort_index,na_sort_number): Created.
+
+	* mkfuncs.rb (mksortfunc): Created.
+
+	* test/testsort.rb: Created.
+
+2000-07-14  Masahiro Tanaka  <masa>
+
+	* narray.c (Init_narray), narrah.h:  introduce NArrayScalar class.
+
+	* narray.c (na_coerce), na_func.c (na_bifunc):	better casting.
+
+2000-07-11  Masahiro Tanaka  <masa>
+
+	* mk*.rb, depend: include code-generating scripts in distribution.
+
+	* na_func.c, mkopfunc.rb: rename sub! => sbt!.
+
+	* mkfuncs.rb: fix to work for Ruby ver 1.5.4.
+
+2000-07-10  Masahiro Tanaka  <masa>
+
+	* na_array.c: rename na_to_narray1 to na_ary_to_narray
+
+	* na_array.c: reduce GC problem; delay registration of objects.
+	  change return value of na_to_narray0
+	  from VALUE to struct NARRAY *
+	  reflect in na_ary_to_na, na_ary_to_na, na_ary_to_narray.
+
+	* narray.h: add GetOrMakeNArray(obj,ary), FreeMadeNArray(obj,ary)
+
+	* narray.c, na_index.c, na_func.c, na_fftw.c:
+	  change na_to_narray0 to GetOrMakeNArray/FreeMadeNArray.
+
+	* narray.c (na_free): free memory of itself structure.
+
+	* narray.c (na_mark): pass pointer to rb_gc_mark.
+
+	* na_array.c (na_make_inspect): return if total<0.
+
+	* na_index.c (na_ary_to_index, na_aref, na_aset):
+	  judge whether empty array.
+
+	* naimage/demo/mandel.rb: Now no need for checking size.
+
+	* test/testindex*.rb: print more description.
+
+2000-07-05  Masahiro Tanaka  <masa>
+
+	* ver 0.3.2
+
+	* Create NImage library

@@ -1,0 +1,51 @@
+	Ruby/NArray  ver 0.5.1 (2000-12-12)	by Masahiro TANAKA
+
+* NArray properties:
+
+  + Fast and easy calculation for large numerical array.
+  + Accepting Elements:
+    8,16,32 bit integer, single/double float/complex, Ruby Object.
+  + Easy extraction/substitution of array subset,
+    using assignment with number, range, array index.
+  + Operator: +,-,*,/,%,**, etc.
+  + FFTW interface.
+  + NImage: Image viewer class.
+  + Ruby/PGPLOT: Graphics library interface (separately distributed)
+     X-Y Graph, Histogram, Contour map, Image map, etc.
+
+* NArray is similar to:
+
+  + Python/NumPy, Perl/PDL, Yorick, IDL 
+
+* NArray is far from completed!
+
+  + Experimental!  Specification may be changed.
+  + Little methodes.
+  + There may be bugs.
+  + No doduments.
+
+* Installation
+
+  + If you want to use FFTW, install it.
+    http://www.fftw.org/ or http://www.netlib.org/
+
+  + Compile & Install NArray
+
+    ruby extconf.rb
+    make
+    make install
+
+* Tested Platform
+
+  Ruby ver 1.6.1
+  SunOS 5.7 / gcc 2.8.1
+
+* License
+
+  Ruby's
+   # This library is free software; you can redistribute it and/or
+   # modify it under the same terms as Ruby itself.
+
+* Author
+
+    Masahiro TANAKA <masa@ir.isas.ac.jp>

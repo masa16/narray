@@ -1,0 +1,38 @@
+
+NAME
+
+   NImage --- A Ruby Extension Library for displaying Images on X11
+	      by Masahiro Tanaka 2000/07/05
+
+DESCRIPTION
+
+  NImage is a simple Ruby class for displaying 2-D Data as images
+  on X11 display.
+
+REQUIREMENT
+
+  Ruby (ver 1.4.4 or later)
+  NArray (ver 0.3.1 or later)
+
+INSTALLATION
+
+  ruby extconf.rb
+  make
+  make install
+
+USAGE
+
+  require "nimage"
+  image = NArray.float(100,100) # some 2-D array
+  win = NImage.show image
+  win.close
+
+ACKNOWLEDGMENT
+
+  moriq-san for Ruby/X11 which is useful for prototyping
+
+PS
+
+  FITS image file is not included. Sorry.
+
+END
