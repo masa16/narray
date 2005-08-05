@@ -1243,6 +1243,7 @@ void
     rb_define_method(cNArray, "count_true", na_count_true, 0);
     rb_define_method(cNArray, "mask", na_aref_mask, 1);
 
+    rb_define_const(cNArray, "NARRAY_VERSION", rb_str_new2(NARRAY_VERSION));
     rb_define_const(cNArray, "BYTE", INT2FIX(NA_BYTE));
     rb_define_const(cNArray, "SINT", INT2FIX(NA_SINT));
     rb_define_const(cNArray, "LINT", INT2FIX(NA_LINT));

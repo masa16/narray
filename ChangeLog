@@ -1,3 +1,22 @@
+2005-08-05  Masahiro TANAKA  <masahiro.tanaka at nao.ac.jp>
+
+	* mkmath.rb (na_math_func):
+	  Bug: Float class has been treated as SFloat type.
+	  Thank Yuhei Kuratomi for his report.
+
+	* ver 0.5.8
+
+2005-01-25  Masahiro TANAKA  <masahiro.tanaka at nao.ac.jp>
+
+	* na_array.c (na_ary_to_nary_w_type): 
+	  Bug: "type" is not initialized when an array is empty.
+
+2005-01-07  Masahiro TANAKA  <masahiro.tanaka at nao.ac.jp>
+
+	* narray.h: #define NARRAY_VERSION  NARRAY_VERSION_CODE
+
+	* narray.c: new constant: NArray::NARRAY_VERSION
+
 2004-11-10  Masahiro TANAKA  <masahiro.tanaka at nao.ac.jp>
 
 	* na_random.c:
@@ -80,7 +99,7 @@
 	  Index is not `i' but `j' in recursive array check.
 	  Thank Ara Howard for the bug report.
 
-2002-05-30 WATANABE Hirofumi <eban@os.rim.or.jp>
+2002-05-30 WATANABE Hirofumi <eban at os.rim.or.jp>
 
 	* extconf.rb: to build in another directory than source tree.
 	* depend: ditto.
@@ -151,7 +170,7 @@
 
 	* ver 0.5.5
 
-2001-11-20 Takeshi Horinouchi <horinout@kurasc.kyoto-u.ac.jp>
+2001-11-20 Takeshi Horinouchi <horinout at kurasc.kyoto-u.ac.jp>
 
 	* narray.c (na_get_typecode): Bug: "!" needed at strncmp.
 	* Mask support in [], []=.

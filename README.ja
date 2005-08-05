@@ -1,4 +1,4 @@
-	Ruby/NArray  ver 0.5.7p2 (2004-02-19)	by Masahiro TANAKA
+	Ruby/NArray  ver 0.5.8 (2005-08-05)	by Masahiro TANAKA
 
 * Ruby/NArrayの特徴。
 
@@ -42,10 +42,8 @@
 
 * 動作確認
 
-  ruby 1.6.8 (2002-12-24) [i686-linux]
-  gcc version 2.96
-  ruby 1.8.1 (2003-12-25) [i686-linux]
-  gcc version 3.2.2 20030222 (Red Hat Linux 3.2.2-5)
+  ruby 1.8.2 (2004-12-25) [i686-linux]
+  gcc version 3.3.3 20040412 (Red Hat Linux 3.3.3-7)
 
 * 配布条件
 

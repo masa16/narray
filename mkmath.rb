@@ -716,7 +716,14 @@ static VALUE
   struct NARRAY *a1, *a2;
   VALUE ans;
 
-  self = na_upcast_object(self,NA_SFLOAT);
+  if (TYPE(self) == T_ARRAY) {
+    self = na_ary_to_nary(self,cNArray);
+  } else
+  if (!IsNArray(self)) {
+    self = na_make_scalar(self,na_object_type(self));
+  } 
+  self = na_upcast_type(self,NA_SFLOAT);
+
   GetNArray(self,a2);
   ans = na_make_object(a2->type, a2->rank, a2->shape, CLASS_OF(self));
   GetNArray(ans,a1);
@@ -726,7 +733,6 @@ static VALUE
   if (CLASS_OF(self) == cNArrayScalar)
     SetFuncs[NA_ROBJ][a1->type](1,&ans,0,a1->ptr,0);    
 
-  //na_touch_object(self);
   return ans;
 }
 EOM

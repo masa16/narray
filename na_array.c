@@ -338,7 +338,8 @@ static void
 static VALUE
  na_ary_to_nary_w_type(VALUE ary, int type_spec, VALUE klass)
 {
-  int  i, rank, type;
+  int  i, rank;
+  int  type = NA_BYTE;
   int *shape, *idx;
   na_mdai_t *mdai;
   struct NARRAY *na;
