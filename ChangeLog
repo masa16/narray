@@ -1,8 +1,14 @@
 2005-08-05  Masahiro TANAKA  <masahiro.tanaka at nao.ac.jp>
 
 	* mkmath.rb (na_math_func):
-	  Bug: Float class has been treated as SFloat type.
-	  Thank Yuhei Kuratomi for his report.
+	  Bug: In NMath functions, Float class arguments have been
+	   converted to SFLOAT type.  Thank Yuhei Kuratomi for his report.
+	  Spec Change: Calculate and return as DFLOAT type
+	   if an integer argument is given to NMath functions.
+
+	* na_func.c (na_math_atan2):
+	  NMath.atan2() accepts other objects than NArray class.
+	  Treat as DFLOAT for integer arguments.
 
 	* ver 0.5.8
 

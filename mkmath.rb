@@ -721,10 +721,13 @@ static VALUE
   } else
   if (!IsNArray(self)) {
     self = na_make_scalar(self,na_object_type(self));
-  } 
-  self = na_upcast_type(self,NA_SFLOAT);
+  }
 
   GetNArray(self,a2);
+  if (NA_IsINTEGER(a2)) {
+    self = na_upcast_type(self,NA_DFLOAT);
+    GetNArray(self,a2);
+  }
   ans = na_make_object(a2->type, a2->rank, a2->shape, CLASS_OF(self));
   GetNArray(ans,a1);
 

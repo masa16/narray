@@ -757,8 +757,40 @@ static VALUE na_bit_xor(VALUE obj1, VALUE obj2)
 { return na_bifunc( obj1, obj2, Qnil, BXoFuncs ); }
 
 /* method: atan2(y,x) */
-static VALUE na_math_atan2(VALUE module, VALUE y, VALUE x)
-{ return na_bifunc( y, x, Qnil, atan2Funcs ); }
+static VALUE na_math_atan2(VALUE module, volatile VALUE y, volatile VALUE x)
+{
+  VALUE ans;
+  struct NARRAY *ya, *xa, *aa;
+
+  if (TYPE(y) == T_ARRAY) {
+    y = na_ary_to_nary(y,cNArray);
+  } else
+  if (!IsNArray(y)) {
+    y = na_make_scalar(y,na_object_type(y));
+  }
+
+  if (TYPE(x) == T_ARRAY) {
+    x = na_ary_to_nary(x,cNArray);
+  } else
+  if (!IsNArray(x)) {
+    x = na_make_scalar(x,na_object_type(x));
+  }
+
+  GetNArray(y,ya);
+  GetNArray(x,xa);
+  if (NA_IsINTEGER(ya) && NA_IsINTEGER(xa)) {
+    y = na_upcast_type(y,NA_DFLOAT);
+    x = na_upcast_type(x,NA_DFLOAT);
+  }
+
+  ans = na_bifunc( y, x, Qnil, atan2Funcs );
+  GetNArray(ans,aa);
+
+  if (CLASS_OF(y) == cNArrayScalar && CLASS_OF(x) == cNArrayScalar)
+    SetFuncs[NA_ROBJ][aa->type](1,&ans,0,aa->ptr,0);
+
+  return ans;
+}
 
 
 
