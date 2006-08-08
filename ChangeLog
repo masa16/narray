@@ -1,3 +1,42 @@
+2006-08-09  Masahiro TANAKA  <masahiro.tanaka@nao.ac.jp>
+
+	* na_fftw.c, extconf.rb, narray.c (Init_narray): 
+	  Remove FFTW2 support; it is a separete module.
+
+	* ver 0.5.9
+
+2006-08-08  Masahiro TANAKA  <masahiro.tanaka@nao.ac.jp>
+
+	* na_index.c (na_index_test, na_aset_single_dim): 
+	  `nv[1] = nu' should work if nv and nu are NVector.
+	  `NA_IsNArray(nu)' is used for checking NArray.
+	  Thanks to sun@titech.
+
+2006-08-08  Masahiro TANAKA  <masahiro.tanaka@nao.ac.jp>
+
+	* narray_local.h, mknafunc.rb (mksortfuncs): 
+	  Argument type of comparison function passed to
+	  qsort should be `const void *'.
+	  Thank Daniel Berger for report.
+
+2006-07-30  Masahiro TANAKA  <masahiro.tanaka@nao.ac.jp>
+
+	* narray.h, narray.c:
+	  Do not declare external variables of
+	  cNArray, na_sizeof in narray.c.
+	  Thank Daniel Berger for report.
+
+2006-03-22  Masahiro TANAKA  <masahiro.tanaka@nao.ac.jp>
+
+	* lib/narray_ext.rb (mean, stddev):
+	  Fix to work with NVector/NMatrix classes.
+	  Thank Stephen Hill for report.
+
+2005-09-13  Charlie Mills  <Charlie.Mills@m...>
+
+	* mkop.rb, na_func.c, narray_local.h:
+	  Make NArray#eq more robust.
+
 2005-08-05  Masahiro TANAKA  <masahiro.tanaka at nao.ac.jp>
 
 	* mkmath.rb (na_math_func):

@@ -40,7 +40,7 @@ void sincos(double x, double *s, double *c)
 }
 #endif
 
-#ifndef HAVE_ASINH
+#ifndef HAVE_ACOSH
 static double rb_log1p (const double x)
 {
   double y;
@@ -54,7 +54,7 @@ static double rb_log1p (const double x)
 
 static double zero=0;
 
-double acosh(double x)
+static double acosh(double x)
 {
    /* acosh(x) = log(x+sqrt(x*x-1)) */
    if (x>2) {
@@ -66,7 +66,7 @@ double acosh(double x)
    return zero/(x-x); /* x<1: NaN */
 }
 
-double asinh(double x)
+static double asinh(double x)
 {
    double a, x2;
    int neg;
@@ -85,7 +85,7 @@ double asinh(double x)
    return a;
 }
 
-double atanh(double x)
+static double atanh(double x)
 {
    double a, x2;
    int neg;

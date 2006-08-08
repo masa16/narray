@@ -564,6 +564,13 @@ mkfuncs('BXo', $data_types, $data_types,
 #   Comparison
 #
 
+mkfuncs('Eql', [$data_types[1]]*9, $data_types,
+ [nil] +
+ ["*p1 = (*p2==*p3) ? 1:0;"]*5 +
+ ["*p1 = (p2->r==p3->r) && (p2->i==p3->i) ? 1:0;"]*2 +
+ ["*p1 = RTEST(rb_equal(*p2, *p3)) ? 1:0;"]
+)
+
 mkfuncs('Cmp', [$data_types[1]]*9, $data_types,
  [nil] +
  ["if (*p2>*p3) *p1=1;

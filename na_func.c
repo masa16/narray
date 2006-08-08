@@ -912,26 +912,14 @@ static VALUE
 
 
 
-/* method: self == other */
+/* method: self.eq(other) */
 static VALUE
  na_equal(VALUE obj1, VALUE obj2)
 {
-  VALUE obj;
-  int  i;  char *p;
-  struct NARRAY *a;
-
-  obj = na_compare_func( obj1, obj2, CmpFuncs );
-  GetNArray(obj,a);
-  p = a->ptr;
-  for( i=a->total; i-->0; ) {
-    if (*p==0) *p=1;
-    else *p=0;
-    p++;
-  }
-  return obj;
+  return na_compare_func( obj1, obj2, EqlFuncs );
 }
 
-/* method: self.ne other */
+/* method: self.ne(other) */
 static VALUE
  na_not_equal(VALUE obj1, VALUE obj2)
 {
@@ -939,11 +927,11 @@ static VALUE
   int  i;  char *p;
   struct NARRAY *a;
 
-  obj = na_compare_func( obj1, obj2, CmpFuncs );
+  obj = na_compare_func( obj1, obj2, EqlFuncs );
   GetNArray(obj,a);
   p = a->ptr;
   for( i=a->total; i-->0; ) {
-    if (*p!=0) *p=1;
+    *p = *p==0 ? 1 : 0;
     p++;
   }
   return obj;

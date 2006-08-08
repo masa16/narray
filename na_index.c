@@ -198,7 +198,7 @@ static int na_index_test(volatile VALUE idx, int shape, struct slice *sl)
     }
     else
     /* NArray index */
-    if (CLASS_OF(idx) == cNArray) {
+    if (NA_IsNArray(idx)) {
       GetNArray(idx,na);
       size = na_ary_to_index(na,shape,sl);
     }
@@ -800,7 +800,7 @@ static void
   size = na_index_test(idx, dst->total, sl);
 
   if ( size == 1 ) {
-    if (CLASS_OF(val)==cNArray) {
+    if (NA_IsNArray(val)) {
       GetNArray(val,src);
       if ( src->total == 1 ) {
 	SetFuncs[dst->type][src->type](1, NA_PTR(dst,sl->beg),0, src->ptr,0);

@@ -88,9 +88,11 @@ struct NARRAY {
   VALUE  ref;	  /* NArray object wrapping this structure */
 };
 
+#ifndef NARRAY_C
 EXTERN VALUE cNArray;
 
 EXTERN const int na_sizeof[NA_NTYPES+1];
+#endif
 
 #define NA_MAX_RANK 15
 
@@ -138,7 +140,7 @@ VALUE na_make_empty(int type, VALUE klass);
 int   na_get_typecode(VALUE v);
 void  na_clear_data(struct NARRAY *ary);
 VALUE na_clone(VALUE self);
-VALUE na_fill(VALUE self, VALUE obj);
+VALUE na_fill(VALUE self, volatile VALUE obj);
 void  na_copy_nary(struct NARRAY *dst, struct NARRAY *src);
 
 /* na_array.c */

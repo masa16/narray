@@ -154,7 +154,7 @@ def mksortfuncs(bsname,t1,t2,func)
   name = bsname
 
   # Function Definition
-  head = "static int #{name}#code(void *p1, void *p2)"
+  head = "static int #{name}#code(const void *p1, const void *p2)"
   for i in 0...c.size
     if func[i] != nil && func[i]=~/^\{/
       f = func[i].
@@ -175,7 +175,7 @@ def mksortfuncs(bsname,t1,t2,func)
   m = []
   for i in 0...c.size
     if func[i] == nil
-      m += ['TpErrI']
+      m += ['(int (*)(const void *, const void *))TpErrI']
     elsif func[i]=='copy'
       m += ['Set'+c[i]*2]
     elsif !( func[i] =~ /^\{/ )

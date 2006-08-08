@@ -59,6 +59,7 @@ class NArray
     else
       a = self
     end
+    a = NArray.ref(a)
     a.sum(*ranks) / (rank_total(*ranks))
   end
 
@@ -68,6 +69,7 @@ class NArray
     else
       a = self
     end
+    a = NArray.ref(a)
     n = rank_total(*ranks)
     NMath::sqrt( (( a-a.accum(*ranks).div!(n) )**2).sum(*ranks)/(n-1) )
   end

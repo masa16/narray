@@ -8,6 +8,7 @@
   under the same terms as Ruby itself.
   NO WARRANTY.
 */
+#define NARRAY_C
 #include <ruby.h>
 #include <version.h>
 #include "narray.h"
@@ -61,7 +62,6 @@ static int mem_count = 0;
 static int na_gc_freq = 2500000;   /* Frequency of Garbage Collection */
 #endif
 
-void Init_fftw(void);
 void Init_nmath(void);
 void Init_na_funcs(void);
 void Init_na_linalg(void);
@@ -1303,9 +1303,6 @@ void
 
     na_id_class_dim = rb_intern("CLASS_DIMENSION");
 
-#ifdef HAVE_FFTW_H
-    Init_fftw();
-#endif
     Init_na_linalg();
 
     /* NArray extention script */

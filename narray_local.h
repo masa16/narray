@@ -28,7 +28,7 @@ typedef void (*na_func_t[NA_NTYPES]) ();
 typedef void (*na_ufunc_t[NA_NTYPES]) ();
 typedef void (*na_bifunc_t[NA_NTYPES]) ();
 typedef void (*na_mathfunc_t[NA_NTYPES]) ();
-typedef int  (*na_sortfunc_t[NA_NTYPES]) ();
+typedef int  (*na_sortfunc_t[NA_NTYPES]) (const void *, const void *);
 
 /* function arrays */
 extern na_setfunc_t SetFuncs;
@@ -68,6 +68,7 @@ extern na_bifunc_t ImgSetFuncs;
 extern na_setfunc_t PowFuncs;
 extern na_bifunc_t atan2Funcs;
 extern na_bifunc_t CmpFuncs;
+extern na_bifunc_t EqlFuncs;
 extern na_ufunc_t  AndFuncs;
 extern na_ufunc_t  Or_Funcs;
 extern na_ufunc_t  XorFuncs;
@@ -85,6 +86,7 @@ extern VALUE rb_mNMath;
 extern ID na_id_beg, na_id_end, na_id_exclude_end;
 extern ID na_id_minus, na_id_abs, na_id_power;
 extern ID na_id_compare, na_id_and, na_id_or;
+extern ID na_id_equal;
 extern ID na_id_class_dim;
 extern ID na_id_add, na_id_sbt, na_id_mul, na_id_div, na_id_mod;
 extern ID na_id_real, na_id_imag;

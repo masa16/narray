@@ -1,4 +1,4 @@
-	Ruby/NArray  ver 0.5.8 (2005-08-05)	by Masahiro TANAKA
+	Ruby/NArray  ver 0.5.9 (2006-08-09)	by Masahiro TANAKA
 
 * NArray properties:
 
@@ -8,8 +8,7 @@
   + Easy extraction/substitution of array subset,
     using assignment with number, range, array index.
   + Operator: +,-,*,/,%,**, etc.
-  + FFTW version 2 interface.
-    FFTW version 3 is separately supported.
+  + FFTW version 2 or 3 is separately supported.
       http://www.ir.isas.ac.jp/~masa/ruby/dist/ruby-fftw3-0.1.0.tar.gz
   + NImage: Image viewer class.
   + Ruby/PGPLOT: Graphics library interface (separately distributed)
@@ -40,8 +39,8 @@
 
 * Tested Platform
 
-  ruby 1.8.2 (2004-12-25) [i686-linux]
-  gcc version 3.3.3 20040412 (Red Hat Linux 3.3.3-7)
+  ruby 1.8.4 (2005-12-24) [i686-linux]
+  gcc version 4.1.1 20060525 (Red Hat 4.1.1-1)
 
 * License
 
