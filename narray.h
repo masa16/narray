@@ -89,9 +89,9 @@ struct NARRAY {
 };
 
 #ifndef NARRAY_C
-EXTERN VALUE cNArray;
+extern VALUE cNArray;
 
-EXTERN const int na_sizeof[NA_NTYPES+1];
+extern const int na_sizeof[NA_NTYPES+1];
 #endif
 
 #define NA_MAX_RANK 15
