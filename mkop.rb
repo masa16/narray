@@ -401,26 +401,26 @@ mkfuncs('Insp',['']+[$data_types[8]]*8,$data_types,
   sprintf(buf,\"%i\",(int)*p2);
   *p1 = rb_str_new2(buf);"]*3 +
  ["char buf[24];
-  sprintf(buf,\"%.4g\",(double)*p2);
+  sprintf(buf,\"%g\",(double)*p2);
   na_str_append_fp(buf);
   *p1 = rb_str_new2(buf);"] +
  ["char buf[24];
-  sprintf(buf,\"%.6g\",(double)*p2);
+  sprintf(buf,\"%g\",(double)*p2);
   na_str_append_fp(buf);
   *p1 = rb_str_new2(buf);"] +
  ["char buf[50], *b;
-  sprintf(buf,\"%.4g\",(double)p2->r);
+  sprintf(buf,\"%g\",(double)p2->r);
   na_str_append_fp(buf);
   b = buf+strlen(buf);
-  sprintf(b,\"%+.4gi\",(double)p2->i);
+  sprintf(b,\"%+g\",(double)p2->i);
   na_str_append_fp(b);
   strcat(buf,\"i\");
   *p1 = rb_str_new2(buf);"] +
  ["char buf[50], *b;
-  sprintf(buf,\"%.6g\",(double)p2->r);
+  sprintf(buf,\"%g\",(double)p2->r);
   na_str_append_fp(buf);
   b = buf+strlen(buf);
-  sprintf(b,\"%+.6g\",(double)p2->i);
+  sprintf(b,\"%+g\",(double)p2->i);
   na_str_append_fp(b);
   strcat(buf,\"i\");
   *p1 = rb_str_new2(buf);"] +

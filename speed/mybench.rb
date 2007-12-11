@@ -1,7 +1,7 @@
 require 'narray'
 
 REPEAT = 100
-ARRSZ = 1_000_000
+ARRSZ = 1_000_0000
 T = (RUBY_VERSION<"1.8.0") ? Time : Process
 
 def bench_array(type=Float)

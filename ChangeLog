@@ -1,3 +1,14 @@
+2007-12-11  Masahiro TANAKA  <masah16.tanaka at gmail.com>
+
+	* mkop.rb:
+	  omit precision in format "%g" for InspS/D/X/C.
+	  Thanks to Shigenori OTSUKA at kyoto-u.
+
+2007-10-09  David MacMahon <davidm at astro.berkeley...>
+
+	* narray.h, mkop.rb: 
+	  bug in NArray::NARRAY_VERSION and InspX.
+
 2006-08-09  Masahiro TANAKA  <masahiro.tanaka at nao.ac.jp>
 
 	* na_fftw.c, extconf.rb, narray.c (Init_narray): 
