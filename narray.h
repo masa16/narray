@@ -20,7 +20,7 @@
 #endif
 
 #define NARRAY_VERSION "0.5.9p2"
-#define NARRAY_VERSION_CODE 0592
+#define NARRAY_VERSION_CODE 592
 
 /*
   Data types used in NArray :

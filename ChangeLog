@@ -4,6 +4,8 @@
 	  omit precision in format "%g" for InspS/D/X/C.
 	  Thanks to Shigenori OTSUKA at kyoto-u.
 
+	* ver 0.5.9p2
+
 2007-10-09  David MacMahon <davidm at astro.berkeley...>
 
 	* narray.h, mkop.rb: 
