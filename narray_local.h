@@ -201,3 +201,10 @@ typedef union {
 (d).b[13]=(s).b[10];\
 (d).b[14]=(s).b[9];\
 (d).b[15]=(s).b[8];
+
+#if !defined RSTRING_LEN
+#define RSTRING_LEN(a) RSTRING(a)->len
+#endif
+#if !defined RSTRING_PTR
+#define RSTRING_PTR(a) RSTRING(a)->ptr
+#endif

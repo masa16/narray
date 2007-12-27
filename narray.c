@@ -10,13 +10,8 @@
 */
 #define NARRAY_C
 #include <ruby.h>
-#include <version.h>
 #include "narray.h"
 #include "narray_local.h"
-
-#if RUBY_VERSION_CODE < 150
-#define NARRAY_GC
-#endif
 
 /* global variables within this module */
 VALUE cNArray, cNArrayScalar, cComplex;
@@ -160,6 +155,9 @@ struct NARRAY*
   return ary;
 }
 
+#if !defined RCLASS_SUPER
+#define RCLASS_SUPER(v) (RCLASS(v)->super)
+#endif
 
 static void
  na_check_class_narray(VALUE v)
@@ -170,7 +168,7 @@ static void
   while (v) {
     if (v == cNArray || RCLASS(v)->m_tbl == RCLASS(cNArray)->m_tbl)
       return;
-    v = RCLASS(v)->super;
+    v = RCLASS_SUPER(v);
   }
   rb_raise(rb_eRuntimeError, "need NArray or its subclass");
 }
@@ -378,7 +376,7 @@ int
   }
   if (TYPE(v)==T_STRING) {
     for (i=1; i<NA_NTYPES; i++) {
-      if ( !strncmp( RSTRING(v)->ptr, na_typestring[i], RSTRING(v)->len) )
+      if ( !strncmp( RSTRING_PTR(v), na_typestring[i], RSTRING_LEN(v)) )
 	return i;
     }
   }
@@ -602,7 +600,7 @@ static VALUE
 
   type = na_get_typecode(argv[0]);
 
-  str_len = RSTRING(str)->len;
+  str_len = RSTRING_LEN(str);
 
   if (argc == 1) {
     rank  = 1;
@@ -622,7 +620,7 @@ static VALUE
   
   v = na_make_object( type, rank, shape, cNArray );
   GetNArray(v,ary);
-  memcpy( ary->ptr, RSTRING(str)->ptr, ary->total*na_sizeof[type] );
+  memcpy( ary->ptr, RSTRING_PTR(str), ary->total*na_sizeof[type] );
 
   return v;
 }

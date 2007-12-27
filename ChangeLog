@@ -1,3 +1,8 @@
+2007-12-27  Masahiro TANAKA  <masa16.tanaka at gmail.com>
+
+	* narray_local.h, narray.c, na_array.c: 
+	  use RSTRING_PTR, RSTRING_LEN for Ruby 1.9.0.
+
 2007-12-11  Masahiro TANAKA  <masah16.tanaka at gmail.com>
 
 	* mkop.rb:

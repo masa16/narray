@@ -560,7 +560,7 @@ static VALUE
 {
   VALUE str=Qnil, tmp;
   int max_col = 77;
-  int sep_len = RSTRING(sep)->len;
+  int sep_len = RSTRING_LEN(sep);
 
   if (n>0)
     (*tostr)(&str,p2);
@@ -571,7 +571,7 @@ static VALUE
 
     if (!NIL_P(sep)) rb_str_concat(str, sep);
 
-    if (RSTRING(str)->len + RSTRING(tmp)->len + rank*4 + sep_len < max_col) {
+    if (RSTRING_LEN(str) + RSTRING_LEN(tmp) + rank*4 + sep_len < max_col) {
       rb_str_concat(str, tmp);
     } else {
       rb_str_cat(str,"...",3);
