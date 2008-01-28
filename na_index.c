@@ -23,7 +23,7 @@ static int
   sl->idx  = NULL;
 
   /* Beginning */
-  vbeg = rb_ivar_get(obj, na_id_beg);
+  vbeg = rb_funcall(obj, na_id_beg, 0);
   if (vbeg==Qnil) /* First is nil */
     beg = 0;
   else
@@ -31,7 +31,7 @@ static int
   if (beg<0) beg += size;
 
   /* End */
-  vend = rb_ivar_get(obj, na_id_end);
+  vend = rb_funcall(obj, na_id_end, 0);
   if (vend==Qnil) { /* Last is nil */
     sl->beg  = beg;
     sl->step = 1;

@@ -122,8 +122,8 @@ static void
 {
   int end,len;
 
-  *beg = NUM2INT(rb_ivar_get(obj, na_id_beg));
-  end = NUM2INT(rb_ivar_get(obj, na_id_end));
+  *beg = NUM2INT(rb_funcall(obj, na_id_beg, 0));
+  end = NUM2INT(rb_funcall(obj, na_id_end, 0));
   len = end - *beg;
 
   /* direction */
@@ -179,8 +179,8 @@ static int
     if ( rb_obj_is_kind_of(v, rb_cRange) ) {
       na_range_to_sequence(v,&length,&start,&dir);
       len += length-1;
-      mdai->type[ na_object_type(rb_ivar_get(v, na_id_beg)) ] = 1;
-      mdai->type[ na_object_type(rb_ivar_get(v, na_id_end)) ] = 1;
+      mdai->type[ na_object_type(rb_funcall(v, na_id_beg, 0)) ] = 1;
+      mdai->type[ na_object_type(rb_funcall(v, na_id_end, 0)) ] = 1;
     }
     else {
 

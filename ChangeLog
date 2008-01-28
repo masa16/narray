@@ -1,7 +1,18 @@
+2008-01-28  Masahiro TANAKA  <masa16.tanaka at gmail.com>
+
+	* na_array.c (na_range_to_sequence, na_do_mdai): 
+	* na_index.c (na_index_range): 
+	  change in internal structure of Ruby 1.9 Range object.
+	  Thanks to Hargobind Khalsa.
+
+	* ver 0.5.9p4
+
 2007-12-27  Masahiro TANAKA  <masa16.tanaka at gmail.com>
 
 	* narray_local.h, narray.c, na_array.c: 
 	  use RSTRING_PTR, RSTRING_LEN for Ruby 1.9.0.
+
+	* ver 0.5.9p3
 
 2007-12-11  Masahiro TANAKA  <masah16.tanaka at gmail.com>
 
