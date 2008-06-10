@@ -9,7 +9,7 @@ print <<EOM
   #{fname}
   Automatically generated code
   Numerical Array Extention for Ruby
-    (C) Copyright 1999-2002 by Masahiro TANAKA
+    (C) Copyright 1999-2008 by Masahiro TANAKA
 
   This program is free software.
   You can distribute/modify this program
@@ -571,7 +571,7 @@ end
 $func_body = 
   "static void #name#C(int n, char *p1, int i1, char *p2, int i2)
 {
-  for (; n; n--) {
+  for (; n; --n) {
     OPERATION
     p1+=i1; p2+=i2;
   }
@@ -650,7 +650,7 @@ end
 $func_body = 
 "static void #name#CC(int n, char *p1, int i1, char *p2, int i2, char *p3, int i3)
 {
-  for (; n; n--) {
+  for (; n; --n) {
     OPERATION
     p1+=i1; p2+=i2; p3+=i3;
   }
@@ -658,7 +658,7 @@ $func_body =
 "
 mkpowfuncs('Pow',
 [
-[/[O]/,/[O]/,     "*p1 = rb_funcall(*p1,na_id_power,1,*p2);"],
+[/[O]/,/[O]/,     "*p1 = rb_funcall(*p2,na_id_power,1,*p3);"],
 [/[BIL]/,/[BIL]/, "*p1 = powInt(*p2,*p3);"],
 [/[FD]/,/[BIL]/,  "*p1 = pow#Ci(*p2,*p3);"],
 [/[BILFD]/,/[FD]/,"*p1 = pow(*p2,*p3);"],

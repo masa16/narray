@@ -1,7 +1,7 @@
 /*
   na_func.c
   Numerical Array Extention for Ruby
-    (C) Copyright 1999-2003 by Masahiro TANAKA
+    (C) Copyright 1999-2008 by Masahiro TANAKA
 
   This program is free software.
   You can distribute/modify this program
@@ -32,7 +32,7 @@ void
 {
   int i;
 
-  for (i=0; i<ndim; i++) {
+  for (i=0; i<ndim; ++i) {
     max_shp[i] = na_max3(shp1[i], shp2[i], shp3[i]);
   }
 }
@@ -51,10 +51,10 @@ void na_init_slice( struct slice *s, int rank, int *shape, int elmsz )
 
   /* set strides and clear index */
   s[0].stride = 1;
-  for (r=1; r<rank; r++)
+  for (r=1; r<rank; ++r)
     s[r].stride = s[r-1].stride * shape[r-1];
 
-  for (r=0; r<rank; r++) {
+  for (r=0; r<rank; ++r) {
     if ( s[r].idx == NULL )
       /* regular interval */
       s[r].pstep = s[r].step * s[r].stride * elmsz;
@@ -62,7 +62,7 @@ void na_init_slice( struct slice *s, int rank, int *shape, int elmsz )
       /* index */
       s[r].pstep = b = s[r].stride * elmsz;
       /* convert index to byte-unit */
-      for (i=0; i<16; i++)
+      for (i=0; i<16; ++i)
 	if ( (1<<i) == b ) { b=i; break; }
       if (i==16)
 	for (idx=s[r].idx,i=s[r].n; i-->0; ) { *(idx++)*=b; }
@@ -75,7 +75,7 @@ void na_init_slice( struct slice *s, int rank, int *shape, int elmsz )
   s[rank].n = 0;
   s[rank].idx = NULL;
 
-  for (r=rank-1;r>=0;r--) {
+  for (r=rank-1;r>=0;--r) {
     /* set beginning pointers */
     if ( s[r].idx == NULL )
       s[r].pbeg = s[r].stride * s[r].beg * elmsz;
@@ -102,7 +102,7 @@ static void
   for(;;) {
     /* set pointers */
     while (i > 0) {
-      i--;
+      --i;
       s2[i].p = s2[i].pbeg + s2[i+1].p;
       s1[i].p = s1[i].pbeg + s1[i+1].p;
       si[i] = s1[i].n;
@@ -139,7 +139,7 @@ static void
   for(;;) {
     /* set pointers */
     while (i > 0) {
-      i--;
+      --i;
       s3[i].p = s3[i].pbeg + s3[i+1].p;
       s2[i].p = s2[i].pbeg + s2[i+1].p;
       s1[i].p = s1[i].pbeg + s1[i+1].p;
@@ -187,7 +187,7 @@ void na_loop_index_ref( struct NARRAY *a1, struct NARRAY *a2,
   for(;;) {
     /* set pointers */
     while (i > 0) {
-      i--;
+      --i;
       s2[i].p = s2[i].pbeg + s2[i+1].p;
       s1[i].p = s1[i].pbeg + s1[i+1].p;
       si[i] = 0;
@@ -245,7 +245,7 @@ void na_loop_general( struct NARRAY *a1, struct NARRAY *a2,
   for(;;) {
     /* set pointers */
     while (i > 0) {
-      i--;
+      --i;
       s2[i].p = s2[i].pbeg + s2[i+1].p;
       s1[i].p = s1[i].pbeg + s1[i+1].p;
       si[i] = 0;
@@ -308,9 +308,9 @@ void
 {
   int i;
 
-  for (i=0; i<a->rank; i++)
+  for (i=0; i<a->rank; ++i)
     shape[i] = a->shape[i];
-  for (   ; i<ndim; i++)
+  for (   ; i<ndim; ++i)
     shape[i] = 1;
 }
 
@@ -321,7 +321,7 @@ void
   int i;
 
   /* for normal access */
-  for (i=0; i<ndim; i++) {
+  for (i=0; i<ndim; ++i) {
     slc[i].n    = shape[i];
     slc[i].beg  = 0;
     slc[i].step = 1;
@@ -337,7 +337,7 @@ static int
 {
   int i, j;
 
-  for (i=j=0; i<ndim; i++) {
+  for (i=j=0; i<ndim; ++i) {
 
     if ( shp1[i]==1 && shp2[i]>1 ) {
       s1[j].n    =
@@ -378,7 +378,7 @@ static int
     s2[j].beg = 0;
     s1[j].idx =
     s2[j].idx = NULL;
-    j++;
+    ++j;
   }
 
   return j;
@@ -406,7 +406,7 @@ int
   int i, j;
 
   /* for repetitous access */
-  for (i=j=0; i<ndim; i++) {
+  for (i=j=0; i<ndim; ++i) {
 
     s1[j].step = na_set_slice_check(shp1[i],shape[i],i);
     s2[j].step = na_set_slice_check(shp2[i],shape[i],i);
@@ -446,7 +446,7 @@ int
     s2[j].idx =
     s3[j].idx = NULL;
 
-    j++;
+    ++j;
   }
 
   return j;
@@ -535,13 +535,13 @@ static void
     NA_SWAP(a1,a2,tmp);
   }
 
-  for (i=0; i<a2->rank; i++) {
+  for (i=0; i<a2->rank; ++i) {
     shape[i] = NA_MAX(a1->shape[i],a2->shape[i]);
   }
-  for (   ; i<a1->rank; i++) {
+  for (   ; i<a1->rank; ++i) {
     shape[i] = a1->shape[i];
   }
-  for (   ; i<ndim; i++) {
+  for (   ; i<ndim; ++i) {
     shape[i] = 1;
   }
 }
@@ -653,7 +653,6 @@ static VALUE
   na_exec_binary( NA_STRUCT(obj3), a1, a2,
 		  PowFuncs[a1->type][a2->type] );
 
-  //na_touch_object(obj1,obj2);
   return obj3;
 }
 
@@ -668,7 +667,6 @@ static VALUE
 
   na_exec_unary( NA_STRUCT(obj1), NA_STRUCT(obj2), funcs[a1->type] );
 
-  //na_touch_object(obj2);
   return obj1;
 }
 
@@ -683,7 +681,6 @@ static VALUE
 
   na_exec_unary( NA_STRUCT(obj1), NA_STRUCT(obj2), ImgSetFuncs[a1->type] );
 
-  //na_touch_object(obj2);
   return obj1;
 }
 
@@ -822,6 +819,10 @@ static VALUE na_div_bang(VALUE obj1, VALUE obj2)
 static VALUE na_mul_bang(VALUE obj1, VALUE obj2)
 { return na_set_func( obj1, obj2, MulUFuncs ); }
 
+/* method: self.conj! */
+static VALUE na_conj_bang(VALUE self)
+{ return na_set_func( self, self, ConjFuncs ); }
+
 
 /* method: self.swap_byte */
 static VALUE na_swap_byte(VALUE self)
@@ -932,7 +933,7 @@ static VALUE
   p = a->ptr;
   for( i=a->total; i-->0; ) {
     *p = *p==0 ? 1 : 0;
-    p++;
+    ++p;
   }
   return obj;
 }
@@ -949,7 +950,7 @@ static VALUE
   p = a->ptr;
   for( i=a->total; i-->0; ) {
     if (*p!=1) *p=0;
-    p++;
+    ++p;
   }
   return self;
 }
@@ -968,7 +969,7 @@ static VALUE
   for( i=a->total; i-->0; ) {
     if (*p==1 || *p==0) *p=1;
     else *p=0;
-    p++;
+    ++p;
   }
   return obj;
 }
@@ -987,7 +988,7 @@ static VALUE
   for( i=a->total; i-->0; ) {
     if (*p==2) *p=1;
     else *p=0;
-    p++;
+    ++p;
   }
   return obj;
 }
@@ -1006,7 +1007,7 @@ static VALUE
   for( i=a->total; i-->0; ) {
     if (*p==2 || *p==0) *p=1;
     else *p=0;
-    p++;
+    ++p;
   }
   return obj;
 }
@@ -1036,7 +1037,7 @@ static int
   if (flag==0)
     MEMZERO(rankv,int,rankc);
 
-  for (i=0;i<argc;i++) {
+  for (i=0;i<argc;++i) {
     if ( c >= rankc )
       rb_raise(rb_eArgError, "too many ranks");
 
@@ -1051,7 +1052,7 @@ static int
 	rankv[c] = r;
       else
 	rankv[r] = 1;
-      c++;
+      ++c;
     }
     else
     if (CLASS_OF(v)==rb_cRange) {
@@ -1059,12 +1060,12 @@ static int
       if ( c+n > rankc )
 	rb_raise(rb_eArgError, "too many ranks");
       if (flag) {
-	for(j=0; j<n; j++)
+	for(j=0; j<n; ++j)
 	  rankv[c++] = r++;
       } else {
-	for(j=0; j<n; j++) {
+	for(j=0; j<n; ++j) {
 	  rankv[r++] = 1;
-	  c++;
+	  ++c;
 	}
       }
     }
@@ -1091,7 +1092,7 @@ static struct NARRAY *
   na_init_slice( s1, ndim, a2->shape, na_sizeof[a2->type] );
 
   /* Transpose Slice */
-  for (i=0; i<ndim; i++)
+  for (i=0; i<ndim; ++i)
     s2[i] = s1[trans[i]];
   s2[ndim] = s1[ndim];
 
@@ -1123,18 +1124,18 @@ static VALUE
   rankc = na_arg_to_rank( argc, argv, a2->rank, rankv, 1 );
   if (rankc > a2->rank)
     rb_raise(rb_eArgError, "too many args");
-  for ( ;rankc<a2->rank; rankc++)
+  for ( ;rankc<a2->rank; ++rankc)
     rankv[rankc] = rankc;
 
   /* Argument Check */
   MEMZERO(shape,int,rankc);
-  for (i=0; i<rankc; i++) {
+  for (i=0; i<rankc; ++i) {
     if (shape[rankv[i]] != 0)
       rb_raise(rb_eArgError,"rank doublebooking");
     shape[rankv[i]] = 1;
   }
 
-  for (i=0; i<a2->rank; i++)
+  for (i=0; i<a2->rank; ++i)
     shape[i] = a2->shape[rankv[i]];
 
   obj = na_make_object(a2->type, a2->rank, shape, CLASS_OF(self));
@@ -1155,13 +1156,13 @@ static void
 
   if (rankc==0) {
     /* Accumulate all elements */
-    for (i=0; i<rank; i++) {
+    for (i=0; i<rank; ++i) {
       itr_shape[i] = 1;
       rankv[i] = 1;
     }
   } else {
     /* Select Accumulate ranks */
-    for (i=0; i<rank; i++) {
+    for (i=0; i<rank; ++i) {
       if (rankv[i]==1)
 	itr_shape[i] = 1;
       else
@@ -1178,7 +1179,7 @@ static void
   VALUE zero = INT2FIX(0);
   VALUE *v = (VALUE*)ary->ptr;
 
-  for (i=ary->total; i>0; i--)
+  for (i=ary->total; i>0; --i)
     *(v++) = zero;
 }
 
@@ -1281,7 +1282,6 @@ static VALUE
     ans = na_shrink_rank(ans,cl_dim,rankv);
 
   xfree(rankv);
-  //na_touch_object(self,other);
   return ans;
 }
 
@@ -1358,7 +1358,7 @@ static void
   s2 = &s1[ndim+1];
 
   na_set_slice_1obj(a1->rank,s1,a1->shape);
-  for (i=0; i<ndim; i++) {
+  for (i=0; i<ndim; ++i) {
     s2[i].n    = a1->shape[i]; /* no-repeat if a1->shape[i]==1 */
     s2[i].beg  = 0;	       /* copy idx=0 */
     s2[i].step = 1;
@@ -1434,7 +1434,7 @@ static int
   }
 
   nsort = 1;
-  for (i=0; i<=rank; i++)
+  for (i=0; i<=rank; ++i)
     nsort *= a1->shape[i];
   return nsort;
 }
@@ -1463,7 +1463,7 @@ static VALUE
   ptr  = a2->ptr;
   step = size * nsort;
 
-  for (i=0; i<nloop; i++) {
+  for (i=0; i<nloop; ++i) {
     qsort( ptr, nsort, size, func );
     ptr += step;
   }
@@ -1490,7 +1490,7 @@ static VALUE
   ptr  = a1->ptr;
   step = size * nsort;
 
-  for (i=0; i<nloop; i++) {
+  for (i=0; i<nloop; ++i) {
     qsort( ptr, nsort, size, func );
     ptr += step;
   }
@@ -1519,7 +1519,7 @@ static VALUE
   ptr_p = ptr_ptr = ALLOC_N(char*, a1->total);
   ptr_a = ptr_ary = a1->ptr;
 
-  for (i=a1->total; i>0; i--) {
+  for (i=a1->total; i>0; --i) {
     *(ptr_p++) = ptr_a;
     ptr_a += size;
   }
@@ -1527,7 +1527,7 @@ static VALUE
   func = SortIdxFuncs[a1->type];
   ptr_p = ptr_ptr;
 
-  for (i=0; i<nloop; i++) {
+  for (i=0; i<nloop; ++i) {
     qsort( ptr_p, nsort, sizeof(char*), func );
     ptr_p += nsort;
   }
@@ -1536,7 +1536,7 @@ static VALUE
   GetNArray(obj,a2);
   ptr_p = ptr_ptr;
   ptr_i = (int32_t*)(a2->ptr);
-  for (i=a2->total; i>0; i--) {
+  for (i=a2->total; i>0; --i) {
     *(ptr_i++) = (int32_t)(*(ptr_p++)-ptr_ary)/size;
   }
   xfree(ptr_ptr);
@@ -1548,7 +1548,6 @@ static VALUE
 void Init_na_funcs(void)
 {
   rb_define_method(cNArray, "+",  na_add, 1);
-  rb_define_method(cNArray, "*",  na_mul, 1);
   rb_define_method(cNArray, "-",  na_sbt, 1);
   rb_define_method(cNArray, "*",  na_mul, 1);
   rb_define_method(cNArray, "/",  na_div, 1);
@@ -1559,7 +1558,6 @@ void Init_na_funcs(void)
   rb_define_method(cNArray, "**", na_power, 1);
 
   rb_define_method(cNArray, "add!", na_add_bang, 1);
-  rb_define_method(cNArray, "mul!", na_mul_bang, 1);
   rb_define_method(cNArray, "sbt!", na_sbt_bang, 1);
   rb_define_method(cNArray, "mul!", na_mul_bang, 1);
   rb_define_method(cNArray, "div!", na_div_bang, 1);
@@ -1580,6 +1578,8 @@ void Init_na_funcs(void)
   rb_define_alias (cNArray, "arg", "angle");
   rb_define_method(cNArray, "conj", na_conj, 0);
   rb_define_alias (cNArray, "conjugate", "conj");
+  rb_define_method(cNArray, "conj!", na_conj_bang, 0);
+  rb_define_alias (cNArray, "conjugate!", "conj!");
   rb_define_method(cNArray, "im",   na_imag_mul, 0);
   rb_define_method(cNArray, "floor",na_floor, 0);
   rb_define_method(cNArray, "ceil", na_ceil, 0);

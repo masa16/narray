@@ -1,7 +1,7 @@
 /*
  * na_linalg.c
  * Numerical Array Extention for Ruby
- *   (C) Copyright 2000-2002 by Masahiro TANAKA
+ *   (C) Copyright 2000-2008 by Masahiro TANAKA
  */
 #include <ruby.h>
 #include "narray.h"
@@ -70,7 +70,7 @@ na_loop_linalg( int nd, char *p1, char *p2, char *p3,
   for(;;) {
     /* set pointers */
     while (i > 0) {
-      i--;
+      --i;
       s3[i].p = s3[i].pbeg + s3[i+1].p;
       s2[i].p = s2[i].pbeg + s2[i+1].p;
       s1[i].p = s1[i].pbeg + s1[i+1].p;
@@ -94,7 +94,7 @@ na_shape_total( int n, int *shape )
 {
   int total=1;
 
-  for (; n>0; n--)
+  for (; n>0; --n)
     total *= *(shape++);
 
   return total;
@@ -173,12 +173,12 @@ na_lu_fact_func_body(int ni, char *a, char *idx, int *shape, int type, char *buf
     vi = v;
 
     /* v[j] = 1/max( abs( a[i,j] ) ) */
-    for (j=0;j<n;j++) {
+    for (j=0;j<n;++j) {
       f->abs(n, buf, relmsz, aa, felmsz);
 
       r->set(1, amax,0, r->zero,0);
       rtmp = buf;
-      for (i=0;i<n;i++) {
+      for (i=0;i<n;++i) {
 	if (r->sort(rtmp, amax) == 1)
 	  r->set(1, amax,0, rtmp,0);
 	rtmp += relmsz;
@@ -194,20 +194,20 @@ na_lu_fact_func_body(int ni, char *a, char *idx, int *shape, int type, char *buf
     ai0 = a0i = aii = a;
     vi  = v;
 
-    for (i=0;i<n;i++) {
+    for (i=0;i<n;++i) {
 
       f->set(n, buf, felmsz, ai0, rowsz);
 
       aij = buf;
       a0j = a;
       /* a[i,j(<i)]  -=  sum(k<j){ a[i,k]*a[k,j] } */
-      for (j=1;j<i;j++) {
+      for (j=1;j<i;++j) {
 	aij += felmsz;
 	a0j += rowsz;
 	f->mulsbt(j, aij, 0, buf, felmsz, a0j, felmsz);
       }
       /* a[i,j(>=i)]  -=  sum(k<i){ a[i,k]*a[k,j] } */
-      for (  ;j<n;j++) {
+      for (  ;j<n;++j) {
 	aij += felmsz;
 	a0j += rowsz;
 	f->mulsbt(i, aij, 0, buf, felmsz, a0j, felmsz);
@@ -222,7 +222,7 @@ na_lu_fact_func_body(int ni, char *a, char *idx, int *shape, int type, char *buf
       r->set(1, amax,0, r->zero,0);
       rtmp = buf;
       imax = 0;
-      for (j=i;j<n;j++) {
+      for (j=i;j<n;++j) {
 	if (r->sort(rtmp,amax) == 1) {
 	  r->set(1, amax,0, rtmp,0);
 	  imax = j;
@@ -272,7 +272,6 @@ static int
     RARRAY(val)->len = size;
     buf = (char*)((RARRAY(val))->ptr);
     status = na_lu_fact_func_body( ni, a, idx, shape, type, buf );
-    //na_touch_object(val);
   } else {
     size = na_sizeof[type]*n + na_sizeof[na_cast_real[type]]*(n+1);
     buf = ALLOC_N(char, size);
@@ -303,7 +302,7 @@ static VALUE
     rb_raise(rb_eTypeError,"not square matrix");
 
   total=1;
-  for (i=2; i<ary->rank; i++)
+  for (i=2; i<ary->rank; ++i)
     total *= ary->shape[i];
 
   piv = na_make_object(NA_LINT, ary->rank-1, ary->shape+1, cNVector);
@@ -312,7 +311,7 @@ static VALUE
   func = IndGenFuncs[NA_LINT];
   sz   = na_sizeof[NA_LINT];
   ptr  = idx = ((struct NARRAY *)DATA_PTR(piv))->ptr;
-  for (i=0; i<total; i++) {
+  for (i=0; i<total; ++i) {
     func(n,ptr,sz,0,1);
     ptr += n*sz;
   }
@@ -345,9 +344,9 @@ na_lu_pivot_func( int ni,
   n = shape[1];
   sz = f->elmsz * shape[0];
 
-  for (; ni>0; ni--) {
+  for (; ni>0; --ni) {
     xi = x;
-    for (i=0; i<n; i++) {
+    for (i=0; i<n; ++i) {
       memcpy(xi, y+((int32_t*)idx)[i]*sz, sz);
       xi += sz;
     }
@@ -374,11 +373,11 @@ na_lu_solve_func_body( int ni,
   int matsz = rowsz * n;
   int diagsz = rowsz + sz;
 
-  for (; ni>0; ni--) {
+  for (; ni>0; --ni) {
 
     xx = x;
 
-    for (k=shape[0]; k>0; k--) { /* once if x is vector */
+    for (k=shape[0]; k>0; --k) { /* once if x is vector */
 
       f->set(n, buf,sz, xx,xsz);
 
@@ -386,7 +385,7 @@ na_lu_solve_func_body( int ni,
       a0i = a;
 
       /* solve Lx' = y' */
-      for (i=1; i<n; i++) {
+      for (i=1; i<n; ++i) {
 	/* x[i] -= a[j(<i),i] * x[j(<i)] */
 	xi  += sz;
 	a0i += rowsz;
@@ -398,7 +397,7 @@ na_lu_solve_func_body( int ni,
 
       /* solve Ux = x' */
       f->div(1, xi,0, aii,0);
-      for (i=n-1; i>0; i--) {
+      for (i=n-1; i>0; --i) {
 	xi  -= sz;
 	aii -= diagsz;
 	/* x[i] -= a[j(>i),i] * x[j(>i)] */
@@ -434,7 +433,6 @@ na_lu_solve_func( int ni,
     RARRAY(val)->len = size;
     buf = (char*)((RARRAY(val))->ptr);
     na_lu_solve_func_body( ni, x, ps1, a, ps2, shape, type, buf );
-    //na_touch_object(val);
   } else {
     size = shape[1] * na_sizeof[type];
     buf = ALLOC_N(char, size);
@@ -454,13 +452,13 @@ na_shape_max2(int ndim, int *shape, int n1, int *shape1, int n2, int *shape2)
     NA_SWAP(shape1,shape2,tmp);
   }
 
-  for (i=0; i<n2; i++) {
+  for (i=0; i<n2; ++i) {
     shape[i] = NA_MAX(shape1[i],shape2[i]);
   }
-  for (   ; i<n1; i++) {
+  for (   ; i<n1; ++i) {
     shape[i] = shape1[i];
   }
-  for (   ; i<ndim; i++) {
+  for (   ; i<ndim; ++i) {
     shape[i] = 1;
   }
 }
@@ -515,9 +513,8 @@ na_lu_solve(VALUE self, volatile VALUE other)
     memcpy(shape,a2->shape+1,sizeof(int)*(ndim-1));
     xfree(a2->shape);
     a2->shape = shape;
-    a2->rank--;
+    --(a2->rank);
   }
-  //na_touch_object(other,lu);
   return obj;
 }
 
@@ -547,7 +544,7 @@ na_lu_init(VALUE self, VALUE lu, VALUE piv)
     rb_raise(rb_eRuntimeError,"LU matrix (%i,%i) is not square",
 	     l->shape[0], l->shape[1]);
 
-  for (i=1; i<l->rank; i++)
+  for (i=1; i<l->rank; ++i)
     if (l->shape[i] != p->shape[i-1])
       rb_raise(rb_eRuntimeError,"array size mismatch %i!=%i at %i",
 	       l->shape[i], p->shape[i-1], i);
@@ -569,7 +566,7 @@ void Init_na_linalg()
   static VALUE onev = INT2FIX(1);
   char *a = malloc(NA_NTYPES*sizeof(dcomplex)*2);
 
-  for (i=1;i<NA_NTYPES;i++) {
+  for (i=1;i<NA_NTYPES;++i) {
     sz = na_funcset[i].elmsz = na_sizeof[i];
     sz = (sz>sizeof(int)) ? sz : sizeof(int);
     SetFuncs[i][NA_LINT](1, a,0, &one, 0);

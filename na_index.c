@@ -1,7 +1,7 @@
 /*
   na_index.c
   Numerical Array Extention for Ruby
-    (C) Copyright 1999-2003 by Masahiro TANAKA
+    (C) Copyright 1999-2008 by Masahiro TANAKA
 
   This program is free software.
   You can distribute/modify this program
@@ -47,18 +47,18 @@ static int
   /* direction */
   if (len>0) {
     step = 1;
-    if (EXCL(obj)) end--; else len++;
+    if (EXCL(obj)) --end; else ++len;
   }
   else if (len<0) {
     len  = -len;
     step = -1;
-    if (EXCL(obj)) end++; else len++;
+    if (EXCL(obj)) ++end; else ++len;
   }
   else /*if(len==0)*/ {
     if (EXCL(obj))
       rb_raise(rb_eIndexError, "empty range");
     else {
-      len++;
+      ++len;
       step = 1;  /* or 0 ? depend on whether removing rank */
     }
   } 
@@ -120,11 +120,11 @@ static int
     SetFuncs[NA_LINT][a1->type]( s->n,
 				 s->idx, na_sizeof[NA_LINT],
 				 a1->ptr, na_sizeof[a1->type] );
-    for ( i=a1->total; i>0; i-- ) {
+    for ( i=a1->total; i>0; --i ) {
       if ( *p<0 ) *p += size;
       if ( *p<0 || *p>=size )
 	rb_raise(rb_eIndexError, "index %i out of range %i", *p, size);
-      p++;
+      ++p;
     }
     s->beg  = s->idx[0];
   }
@@ -188,7 +188,6 @@ static int na_index_test(volatile VALUE idx, int shape, struct slice *sl)
     idx = na_cast_object(idx,NA_LINT);
     GetNArray(idx,na);
     size = na_ary_to_index(na,shape,sl);
-    //na_touch_object(idx);
     return size;
 
   default:
@@ -220,11 +219,11 @@ static int
   int i, j, k, total=1, size;
   int multi_ellip=0;
 
-  for (i=j=0; i<nidx; i++) {
+  for (i=j=0; i<nidx; ++i) {
     if (TYPE(idx[i])==T_FALSE) {
       if (multi_ellip!=0)
 	rb_raise(rb_eIndexError, "multiple ellipsis-dimension is not allowd");
-      for (k=ary->rank-nidx+1; k>0; k--,j++) {
+      for (k=ary->rank-nidx+1; k>0; --k,++j) {
 	size = na_index_test( Qtrue, ary->shape[j], &sl[j] );
 	if (size != 1)
 	  total *= size;
@@ -234,7 +233,7 @@ static int
       size = na_index_test( idx[i], ary->shape[j], &sl[j] );
       if (size != 1)
 	total *= size;
-      j++;
+      ++j;
     }
   }
   if (j != ary->rank)
@@ -250,7 +249,7 @@ int
 {
   int i;
 
-  for (i=0; i<class_dim; i++) {
+  for (i=0; i<class_dim; ++i) {
     if (shrink[i]==0)      /* non-trim dimention */
       return 0;
   }
@@ -270,19 +269,19 @@ VALUE
   if (ary->rank < class_dim)
     return obj;
   
-  for (j=i=0; i<class_dim; i++) {
+  for (j=i=0; i<class_dim; ++i) {
     if (ary->shape[i]!=1 || shrink[i]==0) /* not trim */
-      j++;
+      ++j;
   }
 
   if (j>0)		/* if   non-trim dimensions exist, */
     j = class_dim;      /* then do not trim class_dimension.  */
 			/* if (j==0) then all trim. */
 
-  for (i=class_dim; i<ary->rank; i++) {
+  for (i=class_dim; i<ary->rank; ++i) {
     if (ary->shape[i]!=1 || shrink[i]==0) {    /* not trim */
       if (i>j) ary->shape[j] = ary->shape[i];
-      j++;
+      ++j;
     }
   }
   ary->rank = j;
@@ -311,7 +310,7 @@ static VALUE
   shape = ALLOCA_N(int,ndim);
   shrink = ALLOCA_N(int,ndim);
 
-  for (i=0; i<ndim; i++) {
+  for (i=0; i<ndim; ++i) {
     shape[i] = s2[i].n;
     if (shape[i]==1 && s2[i].step==0) /* shrink? */
       shrink[i] = 1;
@@ -385,7 +384,6 @@ static VALUE
   }
 
   na_free_slice_index(s1,1);
-  //na_touch_object(vidx);
   return v;
 }
 
@@ -440,7 +438,7 @@ static VALUE
   if (flag==0) {
     rank = 0; /* [] */
     for ( i=ary->rank; (i--)>0; ) {
-      if (sl[i].step!=0) rank++;
+      if (sl[i].step!=0) ++rank;
     }
   }
   else {
@@ -460,7 +458,7 @@ static VALUE
     class_dim = na_class_dim(klass);
     if (rank < class_dim) rank = class_dim;
     shape = ALLOCA_N(int, rank);
-    for (i=0;i<rank;i++) shape[i]=1;
+    for (i=0;i<rank;++i) shape[i]=1;
     v = na_make_object(ary->type,rank,shape,klass);
     GetNArray(v,arynew);
     SetFuncs[ary->type][ary->type](1, arynew->ptr, 0, NA_PTR(ary,pos), 0);
@@ -515,7 +513,7 @@ static int
   if ( ary->type == NA_BYTE ) {
     ptr = (u_int8_t *)ary->ptr;
     n   = ary->total;
-    for (; n; n--) {
+    for (; n; --n) {
       if (*ptr++) ++count;
     }
   } else
@@ -541,7 +539,7 @@ static int
   if ( ary->type == NA_BYTE ) {
     ptr = (u_int8_t *)ary->ptr;
     n   = ary->total;
-    for (; n; n--) {
+    for (; n; --n) {
       if (!*ptr++) ++count;
     }
   } else
@@ -571,7 +569,7 @@ VALUE
   if (a1->rank != am->rank) 
     rb_raise(rb_eTypeError,"self.rank(=%i) != mask.rank(=%i)",
 	     a1->rank, am->rank);
-  for (i=0; i<a1->rank; i++)
+  for (i=0; i<a1->rank; ++i)
     if (a1->shape[i] != am->shape[i])
       rb_raise(rb_eTypeError,"self.shape[%i](=%i) != mask.shape[%i](=%i)",
 	       i, a1->shape[i], i, am->shape[i]);
@@ -636,7 +634,7 @@ static void
 {
   int i;
 
-  for (i=0; i<rank; i++) {
+  for (i=0; i<rank; ++i) {
     src_shape[i]    = 1; /* all 1 */
     if ( (src_slc[i].n = dst_slc[i].n) < 1 )
       rb_raise(rb_eIndexError, "dst_slice[%i].n=%i ???", i, dst_slc[i].n);
@@ -655,7 +653,7 @@ static void
   int  i, j, idx_end;
   
   /* count range index */
-  for (j=i=0; i<dst->rank; i++) {
+  for (j=i=0; i<dst->rank; ++i) {
 
     if ( s1[i].step !=0 ) { /* Range index */
 
@@ -762,7 +760,7 @@ static void
     rb_raise( rb_eIndexError, "idx.rank=%i != src.rank=%i",
 	      aidx->rank, src->rank );
   /* check shape */
-  for (i=0;i<src->rank;i++)
+  for (i=0;i<src->rank;++i)
     if (aidx->shape[i] != src->shape[i] && src->shape[i] != 1)
       rb_raise( rb_eIndexError, "idx.shape[%i]=%i != src.shape[%i]=%i",
 		i, aidx->shape[i], i, src->shape[i] );
@@ -781,7 +779,6 @@ static void
 
   na_aset_slice( dst, src, sl );
   na_free_slice_index( sl, 1 ); /* free index memory */
-  //na_touch_object(idx,val);
 }
 
 
@@ -830,7 +827,6 @@ static void
   na_aset_slice( dst, src, sl );
 
   na_free_slice_index(sl,1); /* free index memory */
-  //na_touch_object(val);
 }
 
 
@@ -858,7 +854,7 @@ static void
       val = na_cast_unless_narray(val,dst->type);
       GetNArray(val,src);
       if (src->total > 1)
-	for( i=0; i<src->rank; i++ ) {
+	for( i=0; i<src->rank; ++i ) {
 	  sl[i].n = 0;
 	  sl[i].step = 1;
 	}
@@ -886,7 +882,6 @@ static void
 
   na_free_slice_index(sl,nidx); /* free index memory */
   xfree(sl); 
-  //na_touch_object(val);
 }
 
 
@@ -913,7 +908,6 @@ static void
   else {
     na_fill( self, val );  /* Simple filling */
   }
-  //na_touch_object(val);
 }
 
 
@@ -933,7 +927,7 @@ void
   if (a1->rank != am->rank) 
     rb_raise(rb_eTypeError,"self.rank(=%i) != mask.rank(=%i)",
 	     a1->rank, am->rank);
-  for (i=0; i<a1->rank; i++)
+  for (i=0; i<a1->rank; ++i)
     if (a1->shape[i] != am->shape[i])
       rb_raise(rb_eTypeError,"self.shape[%i](=%i) != mask.shape[%i](=%i)",
 	       i, a1->shape[i], i, am->shape[i]);
@@ -959,7 +953,7 @@ void
 VALUE
  na_aset(int nidx, VALUE *idx, VALUE self)
 {
-  nidx--;
+  --nidx;
 
   if (nidx==0) {
     na_aset_fill( self, idx[0] );

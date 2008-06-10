@@ -10,7 +10,7 @@ print <<EOM
   #{fname}
   Automatically generated code
   Numerical Array Extention for Ruby
-    (C) Copyright 1999-2003 by Masahiro TANAKA
+    (C) Copyright 1999-2008 by Masahiro TANAKA
 
   This program is free software.
   You can distribute/modify this program
@@ -80,7 +80,7 @@ data = [
 $func_body = 
   "static void #name#CC(int n, char *p1, int i1, char *p2, int i2)
 {
-  for (; n; n--) {
+  for (; n; --n) {
     OPERATION
     p1+=i1; p2+=i2;
   }
@@ -96,7 +96,7 @@ mksetfuncs('Set','','',data)
 $func_body = 
   "static void #name#C(int n, char *p1, int i1, char *p2, int i2)
 {
-  for (; n; n--) {
+  for (; n; --n) {
     OPERATION
     p1+=i1; p2+=i2;
   }
@@ -307,7 +307,7 @@ mksortfuncs('SortIdx', $data_types, $data_types, [nil] +
 $func_body = 
   "static void #name#C(int n, char *p1, int i1, int p2, int i2)
 {
-  for (; n; n--) {
+  for (; n; --n) {
     OPERATION
     p1+=i1; p2+=i2;
   }
@@ -332,36 +332,36 @@ $func_body =
 mkfuncs('ToStr',['']+[$data_types[8]]*8,$data_types,
  [nil] +
  ["char buf[22];
-  for (; n; n--) {
+  for (; n; --n) {
     sprintf(buf,\"%i\",(int)*p2);
     *p1 = rb_str_new2(buf);
     p1+=i1; p2+=i2;
   }"]*3 +
  ["char buf[24];
-  for (; n; n--) {
+  for (; n; --n) {
     sprintf(buf,\"%.5g\",(double)*p2);
     *p1 = rb_str_new2(buf);
     p1+=i1; p2+=i2;
   }"] +
  ["char buf[24];
-  for (; n; n--) {
+  for (; n; --n) {
     sprintf(buf,\"%.8g\",(double)*p2);
     *p1 = rb_str_new2(buf);
     p1+=i1; p2+=i2;
   }"] +
  ["char buf[50];
-  for (; n; n--) {
+  for (; n; --n) {
     sprintf(buf,\"%.5g%+.5gi\",(double)p2->r,(double)p2->i);
     *p1 = rb_str_new2(buf);
     p1+=i1; p2+=i2;
   }"] +
  ["char buf[50];
-  for (; n; n--) {
+  for (; n; --n) {
     sprintf(buf,\"%.8g%+.8gi\",(double)p2->r,(double)p2->i);
     *p1 = rb_str_new2(buf);
     p1+=i1; p2+=i2;
   }"] +
- ["for (; n; n--) {
+ ["for (; n; --n) {
     *p1 = rb_obj_as_string(*p2);
     p1+=i1; p2+=i2;
   }"]
@@ -373,7 +373,7 @@ print <<EOM
 /* from numeric.c */
 static void na_str_append_fp(char *buf)
 {
-  if (buf[0]=='-' || buf[0]=='+') buf++;
+  if (buf[0]=='-' || buf[0]=='+') ++buf;
   if (ISALPHA(buf[0])) return; /* NaN or Inf */
   if (strchr(buf, '.') == 0) {
       int   len = strlen(buf);
@@ -441,11 +441,11 @@ $func_body =
   int i;
   if (i1==sizeof(type1) && i2==sizeof(type1) && i3==sizeof(type1)) {
     type1 *a1=p1, *a2=p2, *a3=p3;
-    for (i=0; n; n--,i++) {
-      *a1 = *a2 * *a3; a1++;a2++;a3++;
+    for (i=0; n; --n,++i) {
+      *a1 = *a2 * *a3; +++a1;++a2;++a3;
     }
   } else
-    for (; n; n--) {
+    for (; n; --n) {
       OPERATION
       p1+=i1; p2+=i2; p3+=i3;
     }
@@ -460,7 +460,7 @@ mkfuncs('MulB', $data_types, $data_types,
 $func_body = 
   "static void #name#C(int n, char *p1, int i1, char *p2, int i2, char *p3, int i3)
 {
-  for (; n; n--) {
+  for (; n; --n) {
     OPERATION
     p1+=i1; p2+=i2; p3+=i3;
   }
@@ -620,7 +620,7 @@ mkfuncs('atan2', $data_types, $data_types,
 $func_body = 
   "static void #name#C(int n, char *p1, int i1, char *p2, int i2, char *p3, int i3)
 {
-  for (; n; n--) {
+  for (; n; --n) {
     OPERATION
   }
 }

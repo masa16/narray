@@ -1,5 +1,5 @@
 #  Numerical Array Extention for Ruby
-#    (C) Copyright 2000-2003 by Masahiro TANAKA
+#    (C) Copyright 2000-2008 by Masahiro TANAKA
 #
 #  This program is free software.
 #  You can distribute/modify this program
@@ -71,7 +71,41 @@ class NArray
     end
     a = NArray.ref(a)
     n = rank_total(*ranks)
-    NMath::sqrt( (( a-a.accum(*ranks).div!(n) )**2).sum(*ranks)/(n-1) )
+    if complex?
+      NMath::sqrt( (( a-a.accum(*ranks).div!(n) ).abs**2).sum(*ranks)/(n-1) )
+    else
+      NMath::sqrt( (( a-a.accum(*ranks).div!(n) )**2).sum(*ranks)/(n-1) )
+    end
+  end
+
+  def rms(*ranks)
+    if integer?
+      a = self.to_f
+    else
+      a = self
+    end
+    a = NArray.ref(a)
+    n = rank_total(*ranks)
+    if complex?
+      NMath::sqrt( (a.abs**2).sum(*ranks)/n )
+    else
+      NMath::sqrt( (a**2).sum(*ranks)/n )
+    end
+  end
+
+  def rmsdev(*ranks)
+    if integer?
+      a = self.to_f
+    else
+      a = self
+    end
+    a = NArray.ref(a)
+    n = rank_total(*ranks)
+    if complex?
+      NMath::sqrt( (( a-a.accum(*ranks).div!(n) ).abs**2).sum(*ranks)/n )
+    else
+      NMath::sqrt( (( a-a.accum(*ranks).div!(n) )**2).sum(*ranks)/n )
+    end
   end
 
   def median(rank=nil)

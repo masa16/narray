@@ -2,7 +2,7 @@ from Numeric import *
 import time
 
 REPEAT = 100
-ARRSZ = 1000000
+ARRSZ = 5000000
 
 def bench_array(type=Float64):
   return arrayrange(ARRSZ).astype(type)

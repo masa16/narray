@@ -9,7 +9,6 @@
     using assignment with number, range, array index.
   + Operator: +,-,*,/,%,**, etc.
   + FFTW version 2 or 3 is separately supported.
-      http://www.ir.isas.ac.jp/~masa/ruby/dist/ruby-fftw3-0.1.0.tar.gz
   + NImage: Image viewer class.
   + Ruby/PGPLOT: Graphics library interface (separately distributed)
      X-Y Graph, Histogram, Contour map, Image map, etc.
@@ -26,9 +25,6 @@
   + No document.
 
 * Installation
-
-  + If you want to use FFTW, install it.
-    http://www.fftw.org/ or http://www.netlib.org/
 
   + Compile & Install NArray
 
@@ -51,4 +47,4 @@
 
 * Author
 
-    Masahiro TANAKA <masa@ir.isas.ac.jp>
+    Masahiro TANAKA <masa16.tanaka@gmail.com>

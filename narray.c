@@ -1,7 +1,7 @@
 /*
   narray.c
   Numerical Array Extention for Ruby
-    (C) Copyright 1999-2003 by Masahiro TANAKA
+    (C) Copyright 1999-2008 by Masahiro TANAKA
 
   This program is free software.
   You can distribute/modify this program
@@ -79,7 +79,7 @@ static void
   VALUE *ptr;
 
   ptr = (VALUE*) ary->ptr;
-  for (i=ary->total; i>0; i--)
+  for (i=ary->total; i>0; --i)
     rb_gc_mark(*ptr++);
 }
 
@@ -120,7 +120,7 @@ struct NARRAY*
   int i, memsz;
   struct NARRAY *ary;
 
-  for (i=0; i<rank; i++)
+  for (i=0; i<rank; ++i)
     total *= shape[i];
 
   if (rank<=0 || total<=0) {
@@ -148,7 +148,7 @@ struct NARRAY*
     ary->rank  = rank;
     ary->total = total;
     ary->type  = type;
-    for (i=0; i<rank; i++)
+    for (i=0; i<rank; ++i)
       ary->shape[i] = shape[i];
   }
   ary->ref = Qtrue;
@@ -278,7 +278,7 @@ struct NARRAY*
   ary->rank  = orig->rank;
   ary->total = orig->total;
   ary->type  = orig->type;
-  for (i=0; i<orig->rank; i++)
+  for (i=0; i<orig->rank; ++i)
     ary->shape[i] = orig->shape[i];
   ary->ref   = obj;
 
@@ -310,14 +310,6 @@ static VALUE
 }
 
 
-/*
-void
- na_touch_object(VALUE val, ...)
-{
-  return;
-}
-*/
-
 void
  na_clear_data(struct NARRAY *ary)
 {
@@ -340,7 +332,7 @@ static VALUE
     rb_raise(rb_eArgError, "Argument required");
 
   shape = ALLOCA_N(int,argc);
-  for (i=0; i<argc; i++) shape[i]=NUM2INT(argv[i]);
+  for (i=0; i<argc; ++i) shape[i]=NUM2INT(argv[i]);
 
   v = na_make_object(type,argc,shape,klass);
   GetNArray(v,ary);
@@ -375,7 +367,7 @@ int
     return na->type;
   }
   if (TYPE(v)==T_STRING) {
-    for (i=1; i<NA_NTYPES; i++) {
+    for (i=1; i<NA_NTYPES; ++i) {
       if ( !strncmp( RSTRING_PTR(v), na_typestring[i], RSTRING_LEN(v)) )
 	return i;
     }
@@ -530,7 +522,7 @@ static VALUE
 
   GetNArray(self,ary);
   shape = ALLOCA_N(VALUE,ary->rank);
-  for (i = 0; i < ary->rank; i++)
+  for (i = 0; i < ary->rank; ++i)
     shape[i] = INT2FIX(ary->shape[i]);
   return rb_ary_new4(ary->rank,shape);
 }
@@ -611,7 +603,7 @@ static VALUE
   }
   else {
     shape = ALLOCA_N(int,rank);
-    for (i=0; i<rank; i++)
+    for (i=0; i<rank; ++i)
       len *= shape[i] = NUM2INT(argv[i+1]);
     len *= na_sizeof[type];
     if ( len != str_len )
@@ -651,7 +643,7 @@ static VALUE
   rank = a1->rank+1;
   shape = ALLOCA_N(int,rank);
   shape[0] = na_sizeof[a1->type];
-  for (i=1; i<rank; i++)
+  for (i=1; i<rank; ++i)
     shape[i] = a1->shape[i-1];
 
   v = na_make_object( NA_BYTE, rank, shape, cNArray );
@@ -689,7 +681,7 @@ static VALUE
 static void
  na_to_string_binary(int n, char *p1, int i1, char *p2, int i2)
 {
-  for (; n>0; n--) {
+  for (; n>0; --n) {
     *(VALUE*)p1 = rb_str_new(p2,i2);
     p1+=i1; p2+=i2;
   }
@@ -799,7 +791,7 @@ static VALUE
     sprintf(buf, (ary->ref==Qnil) ? org:ref,
 	    classname, na_typestring[ary->type], ary->shape[0]);
     rb_str_cat(str,buf,strlen(buf));
-    for (i=1; i<ary->rank; i++) {
+    for (i=1; i<ary->rank; ++i) {
       sprintf(buf,",%i",ary->shape[i]);
       rb_str_cat(str,buf,strlen(buf));
     }
@@ -827,8 +819,8 @@ static void
 
   if (argc == 0) {  /* trim ranks of size=1 */
     shape = ALLOCA_N(int,ary->rank+1);
-    for (i=0; i<class_dim; i++) shape[i]=0;
-    for (   ; i<ary->rank; i++) shape[i]=1;
+    for (i=0; i<class_dim; ++i) shape[i]=0;
+    for (   ; i<ary->rank; ++i) shape[i]=1;
     na_shrink_rank( self, class_dim, shape );
     if (ary->rank==0) ary->rank=1;
     return;
@@ -836,7 +828,7 @@ static void
 
   /* get shape from argument */
   shape = ALLOC_N(int,argc);
-  for (i=0; i<argc; i++)
+  for (i=0; i<argc; ++i)
     switch(TYPE(argv[i])) {
     case T_FIXNUM:
       total *= shape[i] = NUM2INT(argv[i]);
@@ -927,19 +919,19 @@ static void
 
   /* count new rank */
   count = ALLOCA_N(int,ary->rank+1);
-  for (i=0; i<=ary->rank; i++)
+  for (i=0; i<=ary->rank; ++i)
     count[i]=0;
-  for (i=0; i<argc; i++) {
+  for (i=0; i<argc; ++i) {
     j = NUM2INT(argv[i]);
     if (j<0)	/* negative rank : -1=>append after last rank */
       j += ary->rank+1;
     if (j<0 || j>ary->rank)  /* range check */
       rb_raise(rb_eArgError, "rank out of range");
-    count[j]++;
+    ++count[j];
   }
   /* extend shape shape */
   shape = ALLOC_N(int,ary->rank+argc);
-  for (j=i=0; i<ary->rank; i++) {
+  for (j=i=0; i<ary->rank; ++i) {
     while (count[i]-->0) shape[j++] = 1;
     shape[j++] = ary->shape[i];
   }
@@ -992,7 +984,6 @@ VALUE na_fill(VALUE self, volatile VALUE val)
   SetFuncs[a1->type][a2->type]( a1->total, 
 				a1->ptr, na_sizeof[a1->type],
 				a2->ptr, 0 );
-  //na_touch_object(val);
   return self;
 }
 
@@ -1039,8 +1030,8 @@ static VALUE
   /* Count true */
   c = ary->ptr;
   n1 = 0;
-  for (i=0; i<n; i++)
-    if (*(c++)) n1++;
+  for (i=0; i<n; ++i)
+    if (*(c++)) ++n1;
 
   n0 = n-n1;
 
@@ -1054,14 +1045,13 @@ static VALUE
 
   /* Get Indices */
   c = ary->ptr;
-  for ( i=0; i<n; i++ ) {
+  for ( i=0; i<n; ++i ) {
     if (*(c++))
       *(idx1++) = i;
     else
       *(idx0++) = i;
   }
 
-  //na_touch_object(obj);
   return rb_assoc_new( v1, v0 );
 }
 

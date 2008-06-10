@@ -1,15 +1,12 @@
 /*
   na_random.c
   Numerical Array Extention for Ruby
-    (C) Copyright 2003 by Masahiro TANAKA
+    (C) Copyright 2003-2008 by Masahiro TANAKA
 
   This program is free software.
   You can distribute/modify this program
   under the same terms as Ruby itself.
   NO WARRANTY.
-
-  This is based on ruby/random.c
-    Copyright (C) 1993-2003 Yukihiro Matsumoto
 */
 
 /* 
@@ -85,7 +82,7 @@ static void
 {
     int j;
     state[0]= s & 0xffffffffUL;
-    for (j=1; j<N; j++) {
+    for (j=1; j<N; ++j) {
         state[j] = (1812433253UL * (state[j-1] ^ (state[j-1] >> 30)) + j); 
         /* See Knuth TAOCP Vol2. 3rd Ed. P.106 for multiplier. */
         /* In the previous versions, MSBs of the seed affect   */
@@ -109,10 +106,10 @@ static void
     left = N;
     next = state;
     
-    for (j=N-M+1; --j; p++) 
+    for (j=N-M+1; --j; ++p) 
         *p = p[M] ^ TWIST(p[0], p[1]);
 
-    for (j=M; --j; p++) 
+    for (j=M; --j; ++p) 
         *p = p[M-N] ^ TWIST(p[0], p[1]);
 
     *p = p[M-N] ^ TWIST(p[0], state[0]);
@@ -204,7 +201,7 @@ static int n_bits(int32_t a)
   xu = 1<<(n+1);
   xl = 0;
 
-  for (i=n; i>=0; i--) {
+  for (i=n; i>=0; --i) {
     m = ~((1<<(x-1))-1);
 
     if (m & a) {
@@ -252,12 +249,12 @@ static void RndB(int n, char *p1, int i1, double rmax)
   shift = 32 - n_bits(max);
 
   if (max<1) {
-    for (; n; n--) {
+    for (; n; --n) {
       *(u_int8_t*)p1 = 0;
       p1+=i1;
     }
   } else {
-    for (; n; n--) {
+    for (; n; --n) {
       do {
 	genrand(y);
 	y >>= shift;
@@ -279,12 +276,12 @@ static void RndI(int n, char *p1, int i1, double rmax)
   shift = 32 - n_bits(max);
 
   if (max<1) {
-    for (; n; n--) {
+    for (; n; --n) {
       *(int16_t*)p1 = 0;
       p1+=i1;
     }
   } else {
-    for (; n; n--) {
+    for (; n; --n) {
       do {
 	genrand(y);
 	y >>= shift;
@@ -306,12 +303,12 @@ static void RndL(int n, char *p1, int i1, double rmax)
   shift = 32 - n_bits(max);
 
   if (max<1) {
-    for (; n; n--) {
+    for (; n; --n) {
       *(int32_t*)p1 = 0;
       p1+=i1;
     }
   } else {
-    for (; n; n--) {
+    for (; n; --n) {
       do {
 	genrand(y);
 	y >>= shift;
@@ -326,7 +323,7 @@ static void RndF(int n, char *p1, int i1, double rmax)
 {
   u_int32_t y;
 
-  for (; n; n--) {
+  for (; n; --n) {
     genrand(y);
     *(float*)p1 = rand_single(y) * rmax;
     p1+=i1;
@@ -337,7 +334,7 @@ static void RndD(int n, char *p1, int i1, double rmax)
 {
   u_int32_t x,y;
 
-  for (; n; n--) {
+  for (; n; --n) {
     genrand(x);
     genrand(y);
     *(double*)p1 = rand_double(x,y) * rmax;
@@ -349,7 +346,7 @@ static void RndX(int n, char *p1, int i1, double rmax)
 {
   u_int32_t y;
 
-  for (; n; n--) {
+  for (; n; --n) {
     genrand(y);
     ((scomplex*)p1)->r = rand_single(y) * rmax;
     ((scomplex*)p1)->i = 0;
@@ -361,7 +358,7 @@ static void RndC(int n, char *p1, int i1, double rmax)
 {
   u_int32_t x,y;
 
-  for (; n; n--) {
+  for (; n; --n) {
     genrand(x);
     genrand(y);
     ((dcomplex*)p1)->r = rand_double(x,y) * rmax;

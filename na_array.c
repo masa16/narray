@@ -1,7 +1,7 @@
 /*
   na_array.c
   Numerical Array Extention for Ruby
-    (C) Copyright 1999-2003 by Masahiro TANAKA
+    (C) Copyright 1999-2008 by Masahiro TANAKA
 
   This program is free software.
   You can distribute/modify this program
@@ -63,13 +63,13 @@ static na_mdai_t *
   mdai = ALLOC(na_mdai_t);
   mdai->n = n;
   mdai->item = ALLOC_N( na_mdai_item_t, n );
-  for (i=0; i<n; i++) {
+  for (i=0; i<n; ++i) {
     mdai->item[i].shape = 0;
     mdai->item[i].val = Qnil;
   }
   mdai->item[0].val = ary;
   mdai->type = ALLOC_N( int, NA_NTYPES );
-  for (i=0; i<NA_NTYPES; i++)
+  for (i=0; i<NA_NTYPES; ++i)
     mdai->type[i]=0;
 
   return mdai;
@@ -84,7 +84,7 @@ static void
   mdai->n += n_extra;
   n = mdai->n;
   REALLOC_N( mdai->item, na_mdai_item_t, n );
-  for (; i<n; i++) {
+  for (; i<n; ++i) {
     mdai->item[i].shape = 0;
     mdai->item[i].val = Qnil;
   }
@@ -96,15 +96,15 @@ static int *
   int i, t, r;
   int *shape;
 
-  for (t=i=NA_BYTE; i<NA_NTYPES; i++) {
+  for (t=i=NA_BYTE; i<NA_NTYPES; ++i) {
     if ( mdai->type[i] > 0 )
       t = na_upcast[t][i];
   }
   *type = t;
-  for (i=0; i < mdai->n && mdai->item[i].shape > 0; i++) ;
+  for (i=0; i < mdai->n && mdai->item[i].shape > 0; ++i) ;
   *rank = r = i;
   shape = ALLOC_N(int,r);
-  for (i=0; r-->0; i++) {
+  for (i=0; r-->0; ++i) {
     shape[i] = mdai->item[r].shape;
   }
   xfree(mdai->type);
@@ -129,17 +129,17 @@ static void
   /* direction */
   if (len>0) {
     *step = 1;
-    if (EXCL(obj)) end--; else len++;
+    if (EXCL(obj)) --end; else ++len;
   }
   else if (len<0) {
     len   = -len;
     *step = -1;
-    if (EXCL(obj)) end++; else len++;
+    if (EXCL(obj)) ++end; else ++len;
   }
   else /*if(len==0)*/ {
     *step = 0;
     if (!EXCL(obj)) {
-      len++;
+      ++len;
     }
   } 
   *n = len;
@@ -157,13 +157,13 @@ static int
   ary = RARRAY(mdai->item[rank-1].val);
   len = ary->len;
 
-  for (i=0; i < ary->len; i++) {
+  for (i=0; i < ary->len; ++i) {
 
     v = ary->ptr[i];
 
     if (TYPE(v) == T_ARRAY) {
       /* check recursive array */
-      for (j=0; j<rank; j++) {
+      for (j=0; j<rank; ++j) {
 	if (mdai->item[j].val == v)
 	  rb_raise(rb_eStandardError,"converting recursive Array to NArray");
       }
@@ -172,7 +172,7 @@ static int
       }
       mdai->item[rank].val = v;
       if ( na_do_mdai(mdai,rank+1) ) {
-	len--; /* Array is empty */
+	--len; /* Array is empty */
       }
     }
     else
@@ -191,12 +191,12 @@ static int
 	struct NARRAY *na;  GetNArray(v,na);
 
 	if ( na->rank == 0 ) {
-	  len--; /* NArray is empty */
+	  --len; /* NArray is empty */
 	} else {
 	  if ( rank+na->rank > mdai->n ) {
 	    na_realloc_mdai(mdai,((na->rank-1)/4+1)*4);
 	  }
-	  for ( j=na->rank, r=rank; j-- > 0  ; r++ ) {
+	  for ( j=na->rank, r=rank; --j > 0  ; ++r ) {
 	    if ( mdai->item[r].shape < na->shape[j] )
 	      mdai->item[r].shape = na->shape[j];
 	  }
@@ -245,19 +245,19 @@ static void
   n = thisrank - src->rank + 1;
 
   s = ALLOCA_N(struct slice, dst->rank+1);
-  for (i=0; i < n; i++) {
+  for (i=0; i < n; ++i) {
     s[i].n    = 1;
     s[i].beg  = 0;
     s[i].step = 0;
     s[i].idx  = NULL;
   }
-  for (   ; i <= thisrank; i++) {
+  for (   ; i <= thisrank; ++i) {
     s[i].n    = src->shape[i-n];
     s[i].beg  = 0;
     s[i].step = 1;
     s[i].idx  = NULL;
   }
-  for (   ; i < dst->rank; i++) {
+  for (   ; i < dst->rank; ++i) {
     s[i].n    = 1;
     s[i].beg  = idx[i];
     s[i].step = 0;
@@ -276,7 +276,7 @@ static void
   VALUE v;
 
   if (thisrank==0) {
-    for (i = idx[0] = 0; i < ary->len; i++) {
+    for (i = idx[0] = 0; i < ary->len; ++i) {
       v = ary->ptr[i];
       if (rb_obj_is_kind_of(v, rb_cRange)) {
 	na_range_to_sequence(v,&len,&start,&dir);
@@ -299,15 +299,15 @@ static void
   }
   else /* thisrank > 0 */
   { 
-    for (i = idx[thisrank] = 0; i < ary->len; i++) {
+    for (i = idx[thisrank] = 0; i < ary->len; ++i) {
       v = ary->ptr[i];
       if (TYPE(v) == T_ARRAY) {
 	na_copy_ary_to_nary(RARRAY(v),na,thisrank-1,idx,type);
-	if (idx[thisrank-1]>0) idx[thisrank]++;
+	if (idx[thisrank-1]>0) ++idx[thisrank];
       }
       else if (IsNArray(v)) {
 	na_copy_nary_to_nary(v,na,thisrank-1,idx);
-	idx[thisrank]++;
+	++idx[thisrank];
       }
       else {
 	for (j=thisrank; j; ) idx[--j] = 0;
@@ -316,7 +316,7 @@ static void
 	  na_range_to_sequence(v,&len,&start,&dir);
 	  if (len>0) {
 	    pos = na_index_pos(na,idx);
-	    idx[thisrank]++;
+	    ++idx[thisrank];
 	    step = na_index_pos(na,idx)-pos;
 	    IndGenFuncs[type]( len, NA_PTR(na,pos), na_sizeof[type]*step,
 			       start, dir );
@@ -326,7 +326,7 @@ static void
 	else {
 	  pos = na_index_pos(na,idx);
 	  SetFuncs[type][NA_ROBJ]( 1, NA_PTR(na,pos), 0, ary->ptr+i, 0 );
-	  idx[thisrank]++;
+	  ++idx[thisrank];
 	}
 	/* copy here */
       }
@@ -357,7 +357,7 @@ static VALUE
   /*
   printf("rank=%i\n", rank);
   printf("type=%i\n", type);
-  for (i=0; i<rank; i++) {
+  for (i=0; i<rank; ++i) {
     printf("shape[%i]=%i\n", i, shape[i]);
   }
   */
@@ -378,7 +378,7 @@ static VALUE
   na_clear_data(na);
 
   idx = ALLOCA_N(int,rank);
-  for (i=0; i<rank; i++) idx[i]=0;
+  for (i=0; i<rank; ++i) idx[i]=0;
 
   na_copy_ary_to_nary( RARRAY(ary), na, rank-1, idx, type );
 
@@ -520,14 +520,14 @@ static VALUE
   if (thisrank == 0) {
     ptr   = NA_PTR( na, na_index_pos(na,idx) );
     elmsz = na_sizeof[na->type];
-    for (i = na->shape[0]; i; i--) {
+    for (i = na->shape[0]; i; --i) {
       (*func)( 1, &val, 0, ptr, 0 );
       ptr += elmsz;
       rb_ary_push( ary, val );
     }
   }
   else {
-    for (i = 0; i < na->shape[thisrank]; i++) {
+    for (i = 0; i < na->shape[thisrank]; ++i) {
       idx[thisrank] = i;
       rb_ary_push( ary, na_to_array0(na,idx,thisrank-1,func) );
     }
@@ -549,7 +549,7 @@ VALUE
     return rb_ary_new();
 
   idx = ALLOCA_N(int,na->rank);
-  for (i = 0; i<na->rank; i++) idx[i] = 0;
+  for (i = 0; i<na->rank; ++i) idx[i] = 0;
   return na_to_array0(na,idx,na->rank-1,SetFuncs[NA_ROBJ][na->type]);
 }
 
@@ -565,7 +565,7 @@ static VALUE
   if (n>0)
     (*tostr)(&str,p2);
 
-  for (n--; n>0; n--) {
+  for (n--; n>0; --n) {
     p2 += p2step;
     (*tostr)(&tmp,p2);
 
@@ -613,7 +613,7 @@ VALUE
   for(;;) {
     /* set pointers */
     while (i > 0) {
-      i--;
+      --i;
       rb_str_cat(val, "[ ", 2);
       s1[i].p = s1[i].pbeg + s1[i+1].p;
       si[i] = s1[i].n;
@@ -638,7 +638,7 @@ VALUE
       return val;
     }
     /* indent */
-    for (ii=i; ii<rank; ii++)
+    for (ii=i; ii<rank; ++ii)
       rb_str_cat(val, "  ", 2);
   }
 }

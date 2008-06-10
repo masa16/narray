@@ -1,3 +1,28 @@
+2008-05-27  Jose M <braket at hotmai...>
+
+	* na_array.c, na_index.c, na_random.c, na_func.c:
+	* na_linalg.c, narray.c, mkmath.rb, mkop.rb:
+	  change var++ to ++var: make NArray perform faster.
+
+	* ver 0.5.9p5
+
+2008-05-24  Hiroki Motoyoshi <himotoyoshi at yahoo.co...>
+
+	* mkmath.rb:
+	  fix bug in powOO.
+
+2008-04-02  David MacMahon <davidm at astro.berkeley...>
+
+	* na_func.c:
+	  new methods: conj!, conjugate!
+
+2008-01-11  David MacMahon <davidm at astro.berkeley...>
+
+	* lib/narray_ext.rb (stddev):
+	  fix for complex NArrays.
+	* lib/narray_ext.rb (rms, rmsdev):
+	  new methods.
+
 2008-01-28  Masahiro TANAKA  <masa16.tanaka at gmail.com>
 
 	* na_array.c (na_range_to_sequence, na_do_mdai): 
