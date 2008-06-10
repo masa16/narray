@@ -10,7 +10,6 @@ mkmath.rb
 mknafunc.rb
 mkop.rb
 na_array.c
-na_fftw.c
 na_func.c
 na_index.c
 na_linalg.c
