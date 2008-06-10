@@ -1,10 +1,14 @@
+2008-06-10  Masahiro TANAKA  <masa16.tanaka at gmail.com>
+
+	* bench/: new sophisticated benchmark script.
+
+	* ver 0.5.9p5
+
 2008-05-27  Jose M <braket at hotmai...>
 
 	* na_array.c, na_index.c, na_random.c, na_func.c:
 	* na_linalg.c, narray.c, mkmath.rb, mkop.rb:
 	  change var++ to ++var: make NArray perform faster.
-
-	* ver 0.5.9p5
 
 2008-05-24  Hiroki Motoyoshi <himotoyoshi at yahoo.co...>
 
