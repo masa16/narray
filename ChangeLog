@@ -1,3 +1,16 @@
+2008-11-05  Masahiro TANAKA  <masa16.tanaka at gmail.com>
+
+	* work with ruby 1.9.1 preview1
+	  - use RARRAY_*** macros instead of struct RArray.
+	  - follow changes in Complex feature.
+	  - change oprator arg of coerce_rev func : id -> symbol
+	  - modify test scripts.
+
+	* na_array.c (na_do_mdai):
+	  - bug fix in counting narray's rank.
+
+	* ver 0.5.9p6
+
 2008-06-10  Masahiro TANAKA  <masa16.tanaka at gmail.com>
 
 	* bench/: new sophisticated benchmark script.
