@@ -1,11 +1,11 @@
 require 'narray'
 require 'rational'
 
-class Rational
-  def inspect
-    @numerator.to_s+"/"+@denominator.to_s
-  end
-end
+#class Rational
+#  def inspect
+#    @numerator.to_s+"/"+@denominator.to_s
+#  end
+#end
 
 srand(1)
 n=5

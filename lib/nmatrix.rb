@@ -14,7 +14,7 @@ class NMatrix < NArray
       return super(NArray.refer(other))
     when NArray
       unless other.instance_of?(NArray)
-        return other.coerce_rev( self, :+.to_i )
+        return other.coerce_rev( self, :+ )
       end
     end
     raise TypeError,"Illegal operation: NMatrix + %s" % other.class
@@ -26,7 +26,7 @@ class NMatrix < NArray
       return super(NArray.refer(other))
     when NArray
       unless other.instance_of?(NArray)
-        return other.coerce_rev( self, :-.to_i )
+        return other.coerce_rev( self, :- )
       end
     end
     raise TypeError,"Illegal operation: NMatrix - %s" % other.class
@@ -44,7 +44,7 @@ class NMatrix < NArray
       if other.instance_of?(NArray)
 	NMatrix.mul( NArray.refer(self), other.newdim(0,0) )
       else
-	other.coerce_rev( self, :*.to_i )
+	other.coerce_rev( self, :* )
       end
     when Numeric
       super
@@ -66,7 +66,7 @@ class NMatrix < NArray
       if other.instance_of?(NArray)
 	NMatrix.div( NArray.refer(self), other.newdim(0,0) )
       else
-	other.coerce_rev( self, :/.to_i )
+	other.coerce_rev( self, :/ )
       end
     when Numeric
       NMatrix.div( NArray.refer(self), other )
@@ -97,14 +97,14 @@ class NMatrix < NArray
 
   def coerce_rev(other,id)
     case id
-    when :*.to_i
+    when :*
 	if other.instance_of?(NArray)
 	  return NMatrix.mul( other.newdim(0,0), self )
 	end
 	if other.instance_of?(NArrayScalar)
 	  return NMatrix.mul( other.newdim(0), self )
 	end
-    when :/.to_i
+    when :/
 	if other.instance_of?(NArray)
 	  return NMatrix.mul( other.newdim(0,0), self.inverse )
 	end
@@ -163,7 +163,7 @@ class NVector < NArray
       return super(NArray.refer(other))
     when NArray
       unless other.instance_of?(NArray)
-        return other.coerce_rev( self, :+.to_i )
+        return other.coerce_rev( self, :+ )
       end
     end
     raise TypeError,"Illegal operation: NVector + %s" % other.class
@@ -175,7 +175,7 @@ class NVector < NArray
       return super(NArray.refer(other))
     when NArray
       unless other.instance_of?(NArray)
-        return other.coerce_rev( self, :-.to_i )
+        return other.coerce_rev( self, :- )
       end
     end
     raise TypeError,"Illegal operation: NVector - %s" % other.class
@@ -191,7 +191,7 @@ class NVector < NArray
       if other.instance_of?(NArray)
 	NVector.mul( NArray.refer(self), other.newdim(0) )
       else
-	other.coerce_rev( self, :*.to_i )
+	other.coerce_rev( self, :* )
       end
     when Numeric
       NVector.mul( NArray.refer(self), other )
@@ -210,7 +210,7 @@ class NVector < NArray
       if other.instance_of?(NArray)
 	NVector.div( NArray.refer(self), other.newdim(0) )
       else
-	other.coerce_rev( self, :/.to_i )
+	other.coerce_rev( self, :/ )
       end
     when Numeric
       NVector.div( NArray.refer(self), other )
@@ -229,7 +229,7 @@ class NVector < NArray
 
   def coerce_rev(other,id)
     case id
-    when :*.to_i
+    when :*
 	if other.instance_of?(NArray)
 	  return NVector.mul( other.newdim(0), self )
 	end

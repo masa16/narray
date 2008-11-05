@@ -607,7 +607,7 @@ static VALUE
 
     if (klass==Qnil) { /* coerce_rev */
       if ((id=na_bifunc_to_id(funcs))!=0)
-	return rb_funcall( obj2, na_id_coerce_rev, 2, obj1, INT2FIX(id) );
+	return rb_funcall( obj2, na_id_coerce_rev, 2, obj1, ID2SYM(id) );
       else
 	klass = cNArray;
     }
@@ -1047,7 +1047,7 @@ static int
       r = NUM2INT(v);
       if (r<0) r += rankc;     /* negative for from end */
       if (r<0 || r>=rankc)
-        rb_raise(rb_eArgError, "rank %d out of range", r);
+        rb_raise(rb_eArgError, "rank %ld out of range", r);
       if (flag)
 	rankv[c] = r;
       else

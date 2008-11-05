@@ -92,6 +92,7 @@ extern ID na_id_add, na_id_sbt, na_id_mul, na_id_div, na_id_mod;
 extern ID na_id_real, na_id_imag;
 extern ID na_id_coerce_rev;
 extern ID na_id_new;
+extern ID na_id_Complex;
 
 extern const int na_upcast[NA_NTYPES][NA_NTYPES];
 extern const int na_no_cast[NA_NTYPES];
@@ -128,7 +129,7 @@ int   na_shrink_class(int class_dim, int *shrink);
 VALUE na_shrink_rank(VALUE obj, int class_dim, int *shrink);
 
 #define rb_complex_new(r,i) \
-  rb_funcall(cComplex, na_id_new, 2, rb_float_new(r), rb_float_new(i))
+  rb_funcall(rb_mKernel, na_id_Complex, 2, rb_float_new(r), rb_float_new(i))
 
 
 typedef union {
@@ -207,4 +208,10 @@ typedef union {
 #endif
 #if !defined RSTRING_PTR
 #define RSTRING_PTR(a) RSTRING(a)->ptr
+#endif
+#if !defined RARRAY_LEN
+#define RARRAY_LEN(a) RARRAY(a)->len
+#endif
+#if !defined RARRAY_PTR
+#define RARRAY_PTR(a) RARRAY(a)->ptr
 #endif

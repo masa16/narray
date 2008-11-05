@@ -24,6 +24,7 @@ ID na_id_add, na_id_sbt, na_id_mul, na_id_div, na_id_mod;
 ID na_id_real, na_id_imag;
 ID na_id_coerce_rev;
 ID na_id_new;
+ID na_id_Complex;
 static ID na_id_to_i, na_id_usec, na_id_now;
 
 const int na_sizeof[NA_NTYPES+1] = {
@@ -775,7 +776,7 @@ static VALUE
   struct NARRAY *ary;
   int i;
   char buf[256];
-  char *classname;
+  const char *classname;
   char *ref = "%s(ref).%s(%i";
   char *org = "%s.%s(%i";
 
@@ -1061,7 +1062,7 @@ static VALUE
 static VALUE
  na_where(VALUE self)
 {
-  return RARRAY( na_where2(self) )->ptr[0];
+  return RARRAY_PTR( na_where2(self) )[0];
 }
 
 
@@ -1271,7 +1272,7 @@ void
     na_id_end  	= rb_intern("end");
     na_id_exclude_end	= rb_intern("exclude_end?");
     na_id_real 	= rb_intern("real");
-    na_id_imag	= rb_intern("image");
+    na_id_imag	= rb_intern("imag");
     na_id_new  	= rb_intern("new");
     na_id_to_i 	= rb_intern("to_i");
     na_id_usec 	= rb_intern("usec");
@@ -1288,6 +1289,7 @@ void
     na_id_div   = rb_intern("/");
     na_id_mod   = rb_intern("%");
     na_id_coerce_rev = rb_intern("coerce_rev");
+    na_id_Complex = rb_intern("Complex");
 
     na_id_class_dim = rb_intern("CLASS_DIMENSION");
 

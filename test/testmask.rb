@@ -2,14 +2,14 @@ require "narray"
 
 a = NArray.byte(10)
 a[2..4] = 1
-p a.type, a.count_true, a.count_false
+p a.class, a.count_true, a.count_false
 
 begin
    a = NArray.float(10)
    a[2..4] = 1
-   p a.type, a.count_true, a.count_false
+   p a.class, a.count_true, a.count_false
 rescue
-   print a.type," -- Exception raised as expected. The message was: ", $!,"\n"
+   print a.class," -- Exception raised as expected. The message was: ", $!,"\n"
 end
 
 #-------------------

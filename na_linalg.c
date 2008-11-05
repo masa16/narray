@@ -266,11 +266,14 @@ static int
   int status, size, n=shape[0];
 
   if (type==NA_ROBJ) {
+    VALUE *mem;
+    int i;
     size = n*2+1;
-    val = rb_ary_new2(size);
-    rb_mem_clear(RARRAY(val)->ptr,size);
-    RARRAY(val)->len = size;
-    buf = (char*)((RARRAY(val))->ptr);
+    mem = ALLOC_N(VALUE, size);
+    for (i=0; i<size; i++) mem[i] = Qnil;
+    val = rb_ary_new4(size, mem);
+    xfree(mem);
+    buf = (char*)((RARRAY_PTR(val)));
     status = na_lu_fact_func_body( ni, a, idx, shape, type, buf );
   } else {
     size = na_sizeof[type]*n + na_sizeof[na_cast_real[type]]*(n+1);
@@ -427,11 +430,14 @@ na_lu_solve_func( int ni,
   int size;
 
   if (type==NA_ROBJ) {
+    VALUE *mem;
+    int i;
     size = shape[1];
-    val = rb_ary_new2(size);
-    rb_mem_clear(RARRAY(val)->ptr,size);
-    RARRAY(val)->len = size;
-    buf = (char*)((RARRAY(val))->ptr);
+    mem = ALLOC_N(VALUE, size);
+    for (i=0; i<size; i++) mem[i] = Qnil;
+    val = rb_ary_new4(size, mem);
+    xfree(mem);
+    buf = (char*)((RARRAY_PTR(val)));
     na_lu_solve_func_body( ni, x, ps1, a, ps2, shape, type, buf );
   } else {
     size = shape[1] * na_sizeof[type];

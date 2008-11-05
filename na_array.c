@@ -152,14 +152,14 @@ static int
 {
   int i, j, len, length, start, dir;
   VALUE v;
-  struct RArray *ary;
+  VALUE ary;
 
-  ary = RARRAY(mdai->item[rank-1].val);
-  len = ary->len;
+  ary = mdai->item[rank-1].val;
+  len = RARRAY_LEN(ary);
 
-  for (i=0; i < ary->len; ++i) {
+  for (i=0; i < RARRAY_LEN(ary); ++i) {
 
-    v = ary->ptr[i];
+    v = RARRAY_PTR(ary)[i];
 
     if (TYPE(v) == T_ARRAY) {
       /* check recursive array */
@@ -196,7 +196,7 @@ static int
 	  if ( rank+na->rank > mdai->n ) {
 	    na_realloc_mdai(mdai,((na->rank-1)/4+1)*4);
 	  }
-	  for ( j=na->rank, r=rank; --j > 0  ; ++r ) {
+	  for ( j=na->rank, r=rank; j-- > 0  ; ++r ) {
 	    if ( mdai->item[r].shape < na->shape[j] )
 	      mdai->item[r].shape = na->shape[j];
 	  }
@@ -269,15 +269,15 @@ static void
 
 /* copy Array to NArray */
 static void
- na_copy_ary_to_nary( struct RArray *ary, struct NARRAY *na,
+ na_copy_ary_to_nary( VALUE ary, struct NARRAY *na,
 		      int thisrank, int *idx, int type )
 {
   int i, j, pos, len, start, step, dir;
   VALUE v;
 
   if (thisrank==0) {
-    for (i = idx[0] = 0; i < ary->len; ++i) {
-      v = ary->ptr[i];
+    for (i = idx[0] = 0; i < RARRAY_LEN(ary); ++i) {
+      v = RARRAY_PTR(ary)[i];
       if (rb_obj_is_kind_of(v, rb_cRange)) {
 	na_range_to_sequence(v,&len,&start,&dir);
 	if (len>0) {
@@ -299,10 +299,10 @@ static void
   }
   else /* thisrank > 0 */
   { 
-    for (i = idx[thisrank] = 0; i < ary->len; ++i) {
-      v = ary->ptr[i];
+    for (i = idx[thisrank] = 0; i < RARRAY_LEN(ary); ++i) {
+      v = RARRAY_PTR(ary)[i];
       if (TYPE(v) == T_ARRAY) {
-	na_copy_ary_to_nary(RARRAY(v),na,thisrank-1,idx,type);
+	na_copy_ary_to_nary(v,na,thisrank-1,idx,type);
 	if (idx[thisrank-1]>0) ++idx[thisrank];
       }
       else if (IsNArray(v)) {
@@ -325,7 +325,7 @@ static void
 	}
 	else {
 	  pos = na_index_pos(na,idx);
-	  SetFuncs[type][NA_ROBJ]( 1, NA_PTR(na,pos), 0, ary->ptr+i, 0 );
+	  SetFuncs[type][NA_ROBJ]( 1, NA_PTR(na,pos), 0, &(RARRAY_PTR(ary)[i]), 0 );
 	  ++idx[thisrank];
 	}
 	/* copy here */
@@ -346,7 +346,7 @@ static VALUE
   VALUE v;
 
   /* empty array */
-  if (RARRAY(ary)->len < 1) {
+  if (RARRAY_LEN(ary) < 1) {
     return na_make_empty( type, klass );
   }
 
@@ -380,7 +380,7 @@ static VALUE
   idx = ALLOCA_N(int,rank);
   for (i=0; i<rank; ++i) idx[i]=0;
 
-  na_copy_ary_to_nary( RARRAY(ary), na, rank-1, idx, type );
+  na_copy_ary_to_nary( ary, na, rank-1, idx, type );
 
   return v;
 }
