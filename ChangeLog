@@ -1,9 +1,15 @@
+2009-06-14  Masahiro TANAKA  <masa16.tanaka at gmail.com>
+
+	* narray.h:
+	  include sys/stdint.h rather than sys/types.h
+	  for C99 confomance
+	* ver 0.5.9p7
+
 2009-05-20  Masahiro TANAKA  <masa16.tanaka at gmail.com>
 
 	* lib/narray_ext.rb (mean, stddev,rms,rsmdev,covariance): 
 	  - swith to DFLOAT type if integer array.
 	  - thanks to Philip Silva for report.
-	* ver 0.5.9p7
 
 2009-03-11  Masahiro TANAKA  <masa16.tanaka at gmail.com>
 
