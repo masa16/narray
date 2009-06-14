@@ -83,16 +83,20 @@ na_math
 na_linalg
 )
 
-if have_header("sys/types.h")
+header = "stdint.h"
+unless have_header(header)
   header = "sys/types.h"
-else
-  header = nil
+  unless have_header(header)
+    header = nil
+  end
 end
 
 have_type("u_int8_t", header)
+have_type("uint8_t", header)
 have_type("int16_t", header)
 have_type("int32_t", header)
 have_type("u_int32_t", header)
+have_type("uint32_t", header)
 #have_library("m")
 #have_func("sincos")
 #have_func("asinh")

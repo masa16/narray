@@ -15,19 +15,30 @@
 
 #include "narray_config.h"
 
+#ifdef HAVE_STDINT_H
+# include <stdint.h>
+#endif
+
 #ifdef HAVE_SYS_TYPES_H
 # include <sys/types.h>
 #endif
 
-#define NARRAY_VERSION "0.5.9p6"
-#define NARRAY_VERSION_CODE 596
+#define NARRAY_VERSION "0.5.9p7"
+#define NARRAY_VERSION_CODE 597
 
 /*
   Data types used in NArray :
   Please modify these types if your system has any different type.
 */
+
+
+/* NA_BYTE : unsigned 8-bit integer */
 #ifndef HAVE_U_INT8_T
-typedef unsigned char          u_int8_t; /* NA_BYTE */
+# ifdef HAVE_UINT8_T
+typedef uint8_t			u_int8_t;
+# else
+typedef unsigned char		u_int8_t;
+# endif
 #endif
 
 #ifndef HAVE_INT16_T
@@ -50,14 +61,19 @@ typedef int                    int32_t;  /* NA_LINT */
 # endif
 #endif /* HAVE_INT32_T */
 
+/* unsigned 32-bit integer */
 #ifndef HAVE_U_INT32_T
-# if SIZEOF_LONG == 4
-typedef unsigned long                   u_int32_t;  /* NA_LINT */
+# ifdef HAVE_UINT32_T
+typedef uint32_t			u_int32_t;
 # else
-#  if SIZEOF_INT == 4
-typedef unsigned int                    u_int32_t;  /* NA_LINT */
+#  if SIZEOF_LONG == 4
+typedef unsigned long                   u_int32_t;  
 #  else
+#   if SIZEOF_INT == 4
+typedef unsigned int                    u_int32_t;
+#   else
 ---->> Please define u_int32_t manually because sizeof(long) != 4. <<----
+#   endif
 #  endif
 # endif
 #endif /* HAVE_U_INT32_T */
