@@ -55,7 +55,7 @@ class NArray
 # Statistics
   def mean(*ranks)
     if integer?
-      a = self.to_f
+      a = self.to_type(NArray::DFLOAT)
     else
       a = self
     end
@@ -65,7 +65,7 @@ class NArray
 
   def stddev(*ranks)
     if integer?
-      a = self.to_f
+      a = self.to_type(NArray::DFLOAT)
     else
       a = self
     end
@@ -80,7 +80,7 @@ class NArray
 
   def rms(*ranks)
     if integer?
-      a = self.to_f
+      a = self.to_type(NArray::DFLOAT)
     else
       a = self
     end
@@ -95,7 +95,7 @@ class NArray
 
   def rmsdev(*ranks)
     if integer?
-      a = self.to_f
+      a = self.to_type(NArray::DFLOAT)
     else
       a = self
     end
@@ -217,9 +217,9 @@ module NMath
 # Statistics
   def covariance(x,y,*ranks)
     x = NArray.to_na(x) unless x.kind_of?(NArray)
-    x = x.to_f if x.integer?
+    x = x.to_type(NArray::DFLOAT) if x.integer?
     y = NArray.to_na(y) unless y.kind_of?(NArray)
-    y = y.to_f if y.integer?
+    y = y.to_type(NArray::DFLOAT) if y.integer?
     n = x.rank_total(*ranks)
     xm = x.accum(*ranks).div!(n)
     ym = y.accum(*ranks).div!(n)

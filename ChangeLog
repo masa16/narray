@@ -1,3 +1,16 @@
+2009-05-20  Masahiro TANAKA  <masa16.tanaka at gmail.com>
+
+	* lib/narray_ext.rb (mean, stddev,rms,rsmdev,covariance): 
+	  - swith to DFLOAT type if integer array.
+	  - thanks to Philip Silva for report.
+	* ver 0.5.9p7
+
+2009-03-11  Masahiro TANAKA  <masa16.tanaka at gmail.com>
+
+	* na_index.c (na_aset_single_dim): 
+	  - add check of storing empty array.
+	  - thanks to NISHI Takao for report.
+
 2008-11-05  Masahiro TANAKA  <masa16.tanaka at gmail.com>
 
 	* work with ruby 1.9.1 preview1

@@ -720,6 +720,8 @@ void
   /* rank check */
   if (rank < src->rank)
     rb_raise(rb_eIndexError, "%i dst.ranks < %i src.ranks", rank, src->rank);
+  if (src->rank == 0)
+    rb_raise(rb_eIndexError, "cannot store empty array");
 
   /* extend rank */
   src_shape = ALLOCA_N(int, rank);
