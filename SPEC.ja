@@ -2,8 +2,8 @@
 	Ruby/NArray  ver 0.5.9p5 (2008-05-28)	by Masahiro TANAKA
 
 
-$B%/%i%9%a%=%C%I(B:
-    NArray.new(typecode, size, ...)	$BG[Ns$r@8@.$9$k!#MWAG$O(B0$B$G=i4|2=!#(B
+クラスメソッド:
+    NArray.new(typecode, size, ...)	配列を生成する。要素は0で初期化。
 
     NArray.byte(size,...)		1 byte unsigned integer
     NArray.sint(size,...)		2 byte signed integer
@@ -13,88 +13,88 @@
     NArray.scomplex(size,...)		single precision complex
     NArray.complex(size,...)		double precision complex
     NArray.object(size,...)		Ruby object
-					$B0J>eMWAG$O(B0$B$^$?$O(Bnil$B$G=i4|2=!#(B
+					以上要素は0またはnilで初期化。
 
-    NArray.to_na(array)			NArray$B$KJQ49(B
+    NArray.to_na(array)			NArrayに変換
     NArray.to_na(string,type[,size,..])
     NArray[...]
       NArray[1,5,10.0]  #=>  NArray.float(3):[1.0, 5.0, 10.0]
       NArray[1..10]     #=>  NArray.int(10):[1,2,3,4,5,6,7,8,9,10]
 
 
-$B%/%i%9JQ?t(B:
-    CLASS_DIMENSION	$B%G!<%?$H$7$F07$o$l$k<!85!#(B
-			NArray$B$O(B0$B!#(BNVector$B$O(B1$B!#(BNMatrix$B$O(B2$B!#(B
+クラス変数:
+    CLASS_DIMENSION	データとして扱われる次元。
+			NArrayは0。NVectorは1。NMatrixは2。
 
-$BG[Ns>pJs;2>H(B
-    self.dim	    $B<!85(B($B%$%s%G%C%/%9$N?t(B)$B$rJV$9!#(B
-    self.rank	    $B<!85(B($B%$%s%G%C%/%9$N?t(B)$B$rJV$9!#(B
-    self.shape	    $B<!85$4$H$N%5%$%:$rJV$9!#(B
-    self.total	    $BA4MWAG?t$rJV$9!#(B
+配列情報参照
+    self.dim	    次元(インデックスの数)を返す。
+    self.rank	    次元(インデックスの数)を返す。
+    self.shape	    次元ごとのサイズを返す。
+    self.total	    全要素数を返す。
 
-$B%$%s%G%C%/%9;2>H(B
+インデックス参照
     self[ dim0, dim1, ... ]
 
-  -- $B%$%s%G%C%/%90z?t$K;XDj$G$-$k$b$N(B:  $B?tCM!"HO0O!"G[Ns!"(Btrue, false
-  -- $B%$%s%G%C%/%9$N=g=x(B:		FORTRAN $B7?(B
-  -- $BE:;z0z?t$,(B1$B$D$N>l9g!"B?<!85G[Ns$O(Bflatten$B$5$l$?(B1$B<!85G[Ns$H$_$J$5$l$k!#(B
-     $BNc(B: a $B$,(B 3x3 $BG[Ns$N$H$-!"(Ba[3] $B$O(B a[0,1] $B$NMWAG$r;X$9!#(B
+  -- インデックス引数に指定できるもの:  数値、範囲、配列、true, false
+  -- インデックスの順序:		FORTRAN 型
+  -- 添字引数が1つの場合、多次元配列はflattenされた1次元配列とみなされる。
+     例: a が 3x3 配列のとき、a[3] は a[0,1] の要素を指す。
 
-    a[ 1, 2, -1 ]	$BMWAG$N<h$j=P$7!#Ii?t$O:G8e$+$i?t$($k(B(-1$B$,:G8e(B)
-			$BMWAG;XDj$N<!85$O=LLs$5$l$k!#(B
-    a[ 0..3, 4..1 ]	$BHO0O<h$j=P$7!#HO0O$N:G8e$,:G=i$h$jA0$J$i$P5U=g$K$J$k!#(B
-    a[ [1,4,2] ]	$B%$%s%G%C%/%9G[Ns!#MWAG$,(B[a[1],a[4],a[2]]$B$N(BNArray$B$,JV$k!#(B
-    a[]			a.dup $B$HF1$8!#(B
-    a[ 0, true ]	a[0, 0..-1] $B$HF1$8!#(B
-    a[ 0, false ]	a$B$,(B3$B<!85$N$H$-!"(Ba[0,true,true] $B$HF1$8!#(B
-			$B>JN,$5$l$?<!85$9$Y$F$K(Btrue$B$r;XDj$7$?$N$HF1$8!#(B
-    a[ mask ]		$B%^%9%-%s%0(B. mask $B$OD9$5$,(B a $B$HEy$7$$(B byte $B7?(B 
-			NArray. mask $B$N3FMWAG$NCM$K1~$8$F!"(Ba $B$N$=$l$>(B
-			$B$l$OMn$5$l$k(B(0$B$N>l9g(B)$B$+!"J];}$5$l$k(B(0$B0J30$N>l9g(B)$B!#(B
-			$BNc(B: 
+    a[ 1, 2, -1 ]	要素の取り出し。負数は最後から数える(-1が最後)
+			要素指定の次元は縮約される。
+    a[ 0..3, 4..1 ]	範囲取り出し。範囲の最後が最初より前ならば逆順になる。
+    a[ [1,4,2] ]	インデックス配列。要素が[a[1],a[4],a[2]]のNArrayが返る。
+    a[]			a.dup と同じ。
+    a[ 0, true ]	a[0, 0..-1] と同じ。
+    a[ 0, false ]	aが3次元のとき、a[0,true,true] と同じ。
+			省略された次元すべてにtrueを指定したのと同じ。
+    a[ mask ]		マスキング. mask は長さが a と等しい byte 型 
+			NArray. mask の各要素の値に応じて、a のそれぞ
+			れは落される(0の場合)か、保持される(0以外の場合)。
+			例: 
 				a=NArray.float(2,2).indgen!
 				p a[ a.lt 3 ]
 				--> [ 0.0, 1.0, 2.0 ]
-				(a.lt 3 $B$O(B byte $B7?(B NArray $B$rJV$9(B)
-				($BF1$8$3$H$O(B a[ (a.lt 3).where ] $B$G$b=PMh$k(B)
+				(a.lt 3 は byte 型 NArray を返す)
+				(同じことは a[ (a.lt 3).where ] でも出来る)
 
-  -- self.slice(...)	self[...] $B$HF1$8$@$,!"D9$5$,#1$K$J$C$?<!85$rMn(B
-			$B$5$:(B(self[]$B$OMn$9(B)$B!"$b$H$N%i%s%/$rJ]$D!#C"$7!"(B
-			1$B<!85%$%s%G%C%/%9IU$1$H%^%9%-%s%0$ONc30(B([]$B$HF1(B
-			$B$8(B)$B!#(B
+  -- self.slice(...)	self[...] と同じだが、長さが１になった次元を落
+			さず(self[]は落す)、もとのランクを保つ。但し、
+			1次元インデックス付けとマスキングは例外([]と同
+			じ)。
 
-$B%$%s%G%C%/%9BeF~!#(B-- $B<h=P$7$H$[$\F1$8%k!<%k!#(B
+インデックス代入。-- 取出しとほぼ同じルール。
 
     a[ 1, 2, 3 ] = 1
     a[ 0..3, 1..4, 2..5 ] = 2
     a[ [1,3,2,4], true ] = 3
-    a[] = 4			a.fill!(4) $B$HF1$8!#(B
+    a[] = 4			a.fill!(4) と同じ。
   
-    a[0..2]  = b[1..5]		--> $BMWAG?t$,0[$J$k$N$G%(%i!<!#(B
-    a[1,2]   = b[0..2,1..3]	[1,2]$B$r;OE@$H$7$FBeF~!#(B
-    a[0..2,0..3]  = b[0..2,1]	$B7+$jJV$7BeF~!#(B
+    a[0..2]  = b[1..5]		--> 要素数が異なるのでエラー。
+    a[1,2]   = b[0..2,1..3]	[1,2]を始点として代入。
+    a[0..2,0..3]  = b[0..2,1]	繰り返し代入。
 				( a[0,0]=b[0,1],..,a[0,3]=b[0,1] )
 
-$BCM$N%;%C%H!#(B
-    self.indgen!([start[,step]]) start$B$+$i(Bstep$B$E$DA}2C$7$?CM$r%;%C%H!#(B
-    self.fill!(value)		 $B$9$Y$F$NMWAG$K(Bvalue$B$r%;%C%H!#(B
-    self.random!(max)		 0<=x<max $B$N0lMM$J%i%s%@%`CM$r@8@.!#(B
+値のセット。
+    self.indgen!([start[,step]]) startからstepづつ増加した値をセット。
+    self.fill!(value)		 すべての要素にvalueをセット。
+    self.random!(max)		 0<=x<max の一様なランダム値を生成。
 				 using MT19337
-    self.randomn		 $BJ?6Q(B0$B!"J,;6(B1$B$N@55,J,I[$N%i%s%@%`CM$r@8@.!#(B
+    self.randomn		 平均0、分散1の正規分布のランダム値を生成。
 				 (Box-Muller)
-    NArray.srand([seed])	 $BMp?t$N%7!<%I$r@_Dj!#(B
-				 $B>JN,;~$O;~9o$+$i<+F0@8@.!#(B
+    NArray.srand([seed])	 乱数のシードを設定。
+				 省略時は時刻から自動生成。
 
-$B1i;;(B: $BMWAG$4$H$K$*$3$J$&!#(B
+演算: 要素ごとにおこなう。
     a = NArray.float(3,3).indgen
     b = NArray.float(3,3).fill(10)
     c = a*b	# --> NArray.float(3,3)
 
     a = NArray.float(3,1).indgen
     b = NArray.float(1,3).fill(10)
-    c = a*b	# --> NArray.float(3,3) -- size=1$B$N<!85$O3HD%$9$k!#(B
+    c = a*b	# --> NArray.float(3,3) -- size=1の次元は拡張する。
 
-$B;;=Q1i;;;R(B
+算術演算子
     -self
     self + other
     self - other
@@ -110,19 +110,19 @@
     self.div! other
     self.mod! other
 
-    self.mul_add(other,dim,...)   (self * other).sum(dim,...)$B$H$[$\F1$8!#(B
-				  $B$?$@$7ESCf$GG[Ns$r:n$i$J$$!#(B
+    self.mul_add(other,dim,...)   (self * other).sum(dim,...)とほぼ同じ。
+				  ただし途中で配列を作らない。
 
-$B%S%C%H1i;;;R(B($B@0?t$N$_2DG=(B)
+ビット演算子(整数のみ可能)
     ~self
     self & other
     self | other
     self ^ other
 
-$BHf3S(B
-  -- $BMWAG$4$H$KCM$rHf3S$7!"7k2L$r(BBYTE$B7?(B NArray$B$rJV$9!#(B
-     true/false$B$G$J$$$3$H$KCm0U!#(B
-    self.eq other  ( ver 0.5.4 $B0J9_!"(B== $B1i;;;R$OGQ;_$7$^$7$?!#(B)
+比較
+  -- 要素ごとに値を比較し、結果をBYTE型 NArrayを返す。
+     true/falseでないことに注意。
+    self.eq other  ( ver 0.5.4 以降、== 演算子は廃止しました。)
     self.ne other
     self.gt other
     self >  other
@@ -133,89 +133,89 @@
     self.le other
     self <= other
 
-    self.and other  $BMWAG$4$H$N>r7oHf3S!#(B
+    self.and other  要素ごとの条件比較。
     self.or  other
     self.xor other
     self.not other
 
-    self.all?     $BMWAG$,$9$Y$F??$J$i$P??!#(B
-    self.any?     $BMWAG$N$I$l$+$,??$J$i$P??!#(B
-    self.none?    $BMWAG$N$I$l$+$,??$J$i$P??!#(B
-    self.where	  $BMWAG$,??$N%$%s%G%C%/%9G[Ns$rJV$9!#(B
-    self.where2	  $BMWAG$,??$H56$N%$%s%G%C%/%9G[Ns$r4^$`(B(Ruby)$BG[Ns$rJV$9!#(B
+    self.all?     要素がすべて真ならば真。
+    self.any?     要素のどれかが真ならば真。
+    self.none?    要素のどれかが真ならば真。
+    self.where	  要素が真のインデックス配列を返す。
+    self.where2	  要素が真と偽のインデックス配列を含む(Ruby)配列を返す。
 
-	$BNc(B: idx_t,idx_f = (a>12).where2
+	例: idx_t,idx_f = (a>12).where2
 
-$BE}7W(B
-    self.sum(dim,..)	    $B;XDj$7$?<!85$NOB!#(B
-    self.mean(dim,..)       $B;XDj$7$?<!85$NJ?6Q!#(B
-    self.stddev(dim,..)     $B;XDj$7$?<!85$NI8=`JP:9(B($BI8K\I8=`JP:9(B)$B!#(B
-    self.rms(dim,..)        $B;XDj$7$?<!85$N(Broot mean square$B!#(B
-    self.rmsdev(dim,..)     $B;XDj$7$?<!85$N(Broot mean square deviation$B!#(B
-    self.min(dim,..)        $B;XDj$7$?<!85$N:G>.!#(B
-    self.max(dim,..)        $B;XDj$7$?<!85$N:GBg!#(B
-			    ($B>JN,;~$OA4$F$N<!85!#(BRange$B;XDj2D!#(B)
-    self.median(dim)	    0..dim$B$N<!85$NCf1{CM!#>JN,;~$O$9$Y$F$N<!85!#(B
+統計
+    self.sum(dim,..)	    指定した次元の和。
+    self.mean(dim,..)       指定した次元の平均。
+    self.stddev(dim,..)     指定した次元の標準偏差(標本標準偏差)。
+    self.rms(dim,..)        指定した次元のroot mean square。
+    self.rmsdev(dim,..)     指定した次元のroot mean square deviation。
+    self.min(dim,..)        指定した次元の最小。
+    self.max(dim,..)        指定した次元の最大。
+			    (省略時は全ての次元。Range指定可。)
+    self.median(dim)	    0..dimの次元の中央値。省略時はすべての次元。
 
-$B%=!<%H(B
-    self.sort(dim)	     0..dim$B$N<!85$G%=!<%H!#>JN,;~$O$9$Y$F$N<!85!#(B
-    self.sort_index(dim)     $B%=!<%H$7$?%$%s%G%C%/%9$rJV$9!#(B
-			     self[self.sort_index] $B$O(B self.sort $B$HF1Ey!#(B
+ソート
+    self.sort(dim)	     0..dimの次元でソート。省略時はすべての次元。
+    self.sort_index(dim)     ソートしたインデックスを返す。
+			     self[self.sort_index] は self.sort と同等。
 
-$BE>CV(B
+転置
     self.transpose( dim0, dim1, .. )
-	$BG[Ns$NE>CV!#(Bself$B$NBh(B(dim0)$B<!85$,?7$7$$G[Ns$NBh(B0$B<!85$K$J$k!#(B
-	$BIi?t$O8e$+$i$N=gHV!#(B
-	transpose(-1,1..-2,0) $B$G:G=i$H:G8e$rF~$l49$(!#(B
+	配列の転置。selfの第(dim0)次元が新しい配列の第0次元になる。
+	負数は後からの順番。
+	transpose(-1,1..-2,0) で最初と最後を入れ換え。
 
-$B%$%s%G%C%/%9$NJQ99(B ($BMWAG?t$OITJQ(B)
+インデックスの変更 (要素数は不変)
     self.reshape!(size,...)
     self.shape= size,...
-    self.newdim!(dim,...)	$B;XDj0LCV$K%5%$%:(B1$B$N<!85$rA^F~$9$k!#(B
+    self.newdim!(dim,...)	指定位置にサイズ1の次元を挿入する。
 
-$B%G!<%?$N;2>H(B
-    self.refer			self$B$N%G!<%?$r;2>H$9$kJL$N%*%V%8%'%/%H$r:n@.!#(B
-    self.reshape(size,...)	self.refer.reshape! $B$HF1MM!#(B
-    self.newdim(dim,...)	self.refer.newdim! $B$HF1MM!#(B
+データの参照
+    self.refer			selfのデータを参照する別のオブジェクトを作成。
+    self.reshape(size,...)	self.refer.reshape! と同様。
+    self.newdim(dim,...)	self.refer.newdim! と同様。
 
-$B7?JQ49(B
-    self.floor self$B$h$j>.$5$$:GBg$N@0?t$rJV$9!#(B
-    self.ceil  self$B$h$jBg$-$$:G>.$N@0?t$rJV$9!#(B
-    self.round self$B$K$b$C$H$b6a$$@0?t$rJV$9!#(B
-    self.to_f  $BCM$rIbF0>.?tE@?t$KJQ49$9$k!#(B
-    self.to_i  $BCM$r@0?t$KJQ49$9$k!#(B 
-    self.to_a  $BCM$r(BRuby$B$NG[Ns$KJQ49$9$k!#(B
-    self.to_s  $B%P%$%J%j%G!<%?$r$=$N$^$^(BRuby$B$NJ8;zNs%G!<%?$KJQ49$9$k!#(B
-    self.to_string  $B3FMWAG$rJ8;zNs$KJQ49$9$k!#(B
+型変換
+    self.floor selfより小さい最大の整数を返す。
+    self.ceil  selfより大きい最小の整数を返す。
+    self.round selfにもっとも近い整数を返す。
+    self.to_f  値を浮動小数点数に変換する。
+    self.to_i  値を整数に変換する。 
+    self.to_a  値をRubyの配列に変換する。
+    self.to_s  バイナリデータをそのままRubyの文字列データに変換する。
+    self.to_string  各要素を文字列に変換する。
 
-$B%$%F%l!<%?(B
+イテレータ
     self.each {|i| ...}
     self.collect {|i| ...}
     self.collect! {|i| ...}
 
-$B%P%$%H%9%o%C%W(B
-    self.swap_byte	$B%P%$%H%9%o%C%W(B
-    self.hton		$B%M%C%H%o!<%/%P%$%H%*!<%@!<$KJQ49(B
+バイトスワップ
+    self.swap_byte	バイトスワップ
+    self.hton		ネットワークバイトオーダーに変換
     self.ntoh		
-    self.htov		VAX$B%P%$%H%*!<%@!<$KJQ49(B
+    self.htov		VAXバイトオーダーに変換
     self.vtoh		
 
-Boolean / $B%^%9%/4X78(B
-    self.count_false	$BCM(B == 0 $B$NMWAG?t(B (byte, sint, int $B$N$_(B)
-    self.count_true	$BCM(B == 1 $B$NMWAG?t(B (byte, sint, int $B$N$_(B)
-    self.mask( mask )	self[ mask ] $B$HF1$8$@$+%^%9%-%s%0@lMQ(B.
-			[] $B$H0c$$(B int, sint $B$N%^%9%/$b;H$($k(B.
+Boolean / マスク関係
+    self.count_false	値 == 0 の要素数 (byte, sint, int のみ)
+    self.count_true	値 == 1 の要素数 (byte, sint, int のみ)
+    self.mask( mask )	self[ mask ] と同じだかマスキング専用.
+			[] と違い int, sint のマスクも使える.
 
-$BJ#AG?t(B
+複素数
     self.real
     self.imag
     self.conj
     self.conj!
     self.angle		atan2(self.imag, self.real)
-    self.imag= other	$B5u?tItJ,$K(Bother$B$r%;%C%H!#(B
-    self.im		$B5u?tG\!#(B
+    self.imag= other	虚数部分にotherをセット。
+    self.im		虚数倍。
 
-NMath $B%b%8%e!<%k(B
+NMath モジュール
     sqrt(x)
     exp(x)
     log(x)
@@ -233,55 +233,55 @@ NMath $B%b%8%e!<%k(B
     covariance
 
 
-FFTW $B%b%8%e!<%k(B (fftw-2.1.3$B$r(Bshared lib$B$G%3%s%Q%$%k$7$?$b$N$G3NG'(B)
- ($BJL%b%8%e!<%k(B)
+FFTW モジュール (fftw-2.1.3をshared libでコンパイルしたもので確認)
+ (別モジュール)
     fftw(x,[1|-1])
-    convol(a,b)		FFTW$B$rMQ$$$?>v$_9~$_!#(B
+    convol(a,b)		FFTWを用いた畳み込み。
 
 
 NMatrix
 
-  NArray$B$N%5%V%/%i%9!#:G=i$N(B2$B<!85$r(BMatrix$B$H$7$FMQ$$$k!#(B
-  $B;D$j$N<!85$OB?<!85G[Ns$H$7$F07$o$l$k!#(B
-  $B<!85$N=g=x$O!"?t3X$G$NI=5-$H$O5U(B:  a_ij => a[j,i]
+  NArrayのサブクラス。最初の2次元をMatrixとして用いる。
+  残りの次元は多次元配列として扱われる。
+  次元の順序は、数学での表記とは逆:  a_ij => a[j,i]
 
-  $B%a%=%C%I(B:
-    +,-	 $BAj<j$,(B NMatrix $B$N$H$-$K1i;;2D!#(B
-    *	 $BAj<j$,(B NMatrix $B$^$?$O(B NVector $B$N$H$-$O(B Matrix$B@Q!#(B
-	 $BAj<j$,(B Numeric $B$^$?$O(B NArray $B$N$H$-$O(B Scalar$B@Q!#(B
-	 $BNc(B: NMatrix[[1,2],[3,4]] * [1,10]
+  メソッド:
+    +,-	 相手が NMatrix のときに演算可。
+    *	 相手が NMatrix または NVector のときは Matrix積。
+	 相手が Numeric または NArray のときは Scalar積。
+	 例: NMatrix[[1,2],[3,4]] * [1,10]
 	       == NMatrix[ [[1,2],[3,4]], [[10,20],[30,40]] ]
-    /	 $BAj<j$,(B Numeric $B$^$?$O(B NArray $B$N$H$-$O(BScalar$B=|;;!#(B
-	 $BAj<j$,(B square NMatrix $B$N$H$-$O(BLU$B$K$h$j@~7AJ}Dx<0$r2r$/!#(B
+    /	 相手が Numeric または NArray のときはScalar除算。
+	 相手が square NMatrix のときはLUにより線形方程式を解く。
 	 a/b == b.lu.solve(a)
 
-    transpose		$B0z?t$r>JN,$7$?>l9g$O!":G=i$N(BMatrix$B<!85$r8r49!#(B
+    transpose		引数を省略した場合は、最初のMatrix次元を交換。
     diagonal(other)
-    diagonal!(other)	$BBP3QMWAG$KCM$r%;%C%H!#0z?t>JN,;~$O(B1$B$r%;%C%H!#(B
-    I			$BBP3QMWAG$KCM$K(B1$B$r%;%C%H!#(B
-    inverse		$B5U9TNs(B
-    lu			LU$BJ,2r$r7W;;!#(BNMatrixLU $B%/%i%9$N%$%s%9%?%s%9$rJV$9!#(B
+    diagonal!(other)	対角要素に値をセット。引数省略時は1をセット。
+    I			対角要素に値に1をセット。
+    inverse		逆行列
+    lu			LU分解を計算。NMatrixLU クラスのインスタンスを返す。
 
 
 NVector
 
-  NArray$B$N%5%V%/%i%9!#:G=i$N(B1$B<!85$r(BVector$B$H$7$FMQ$$$k!#(B
-  $B;D$j$N<!85$OB?<!85G[Ns$H$7$F07$o$l$k!#(B
+  NArrayのサブクラス。最初の1次元をVectorとして用いる。
+  残りの次元は多次元配列として扱われる。
 
-  $B%a%=%C%I(B:
-    +,-	 $BAj<j$,(B NVector $B$N$H$-$K1i;;2D!#(B
-    *	 $BAj<j$,(B NMatrix $B$N$H$-$O(B Matrix$B@Q!#(B
-    	 $BAj<j$,(B NVector $B$N$H$-$O(B $BFb@Q!#(B
-	 $BAj<j$,(B Numeric $B$^$?$O(B NArray $B$N$H$-$O(B Scalar$B@Q!#(B
-    /	 $BAj<j$,(B Numeric $B$^$?$O(B NArray $B$N$H$-$O(B Scalar$B=|;;!#(B
-	 $BAj<j$,(B square NMatrix $B$N$H$-$O(BLU$B$K$h$j@~7AJ}Dx<0$r2r$/!#(B
+  メソッド:
+    +,-	 相手が NVector のときに演算可。
+    *	 相手が NMatrix のときは Matrix積。
+    	 相手が NVector のときは 内積。
+	 相手が Numeric または NArray のときは Scalar積。
+    /	 相手が Numeric または NArray のときは Scalar除算。
+	 相手が square NMatrix のときはLUにより線形方程式を解く。
 	 v/m == m.lu.solve(v)
 
 NMatrixLU
 
-  NMatrix#lu $B%a%=%C%I$K$h$j:n$i$l$k!#(B
-  LU (NMatrix) $B$H(B pivot (NVector) $B$r4^$`!#(B
+  NMatrix#lu メソッドにより作られる。
+  LU (NMatrix) と pivot (NVector) を含む。
 
-  $B%a%=%C%I(B:
-    solve(other)	LU$BJ,2r$N7k2L$r;H$C$F(B other $B$r2r$/!#(B
-			other $B$O(B NMatrix $B$^$?$O(B NVector $B$N%$%s%9%?%s%9!#(B
+  メソッド:
+    solve(other)	LU分解の結果を使って other を解く。
+			other は NMatrix または NVector のインスタンス。
