@@ -1,3 +1,9 @@
+2010-01-16  Masahiro TANAKA  <masa16.tanaka at gmail.com>
+
+	* na_index.c (na_index_analysis): 
+	  - access out-of-bounds "struct slice" array.
+	    thanks to Yusuke ENDOH.
+
 2009-06-14  Masahiro TANAKA  <masa16.tanaka at gmail.com>
 
 	* narray.h:

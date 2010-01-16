@@ -230,9 +230,11 @@ static int
       }
       multi_ellip = 1;
     } else {
-      size = na_index_test( idx[i], ary->shape[j], &sl[j] );
-      if (size != 1)
-	total *= size;
+      if (j < ary->rank) {
+         size = na_index_test( idx[i], ary->shape[j], &sl[j] );
+         if (size != 1)
+             total *= size;
+      }
       ++j;
     }
   }
