@@ -1,5 +1,5 @@
 
-	Ruby/NArray  ver 0.5.9p5 (2008-05-28)	by Masahiro TANAKA
+	Ruby/NArray  ver 0.5.9p8 (2010-01-16)	by Masahiro TANAKA
 
 
 Class method:
@@ -218,9 +218,9 @@ Byte swap
 
 Boolean / mask related
     self.count_false	count # of elements whose value == 0 (only for
-			byte, sint, and int)
+			byte type)
     self.count_true	count # of elements whose value != 0 (only for
-			byte, sint, and int)
+			byte type)
     self.mask( mask )	same as self[ mask ], but exclusively for masking.
 			Unlike [], a int or sint mask is accepted.
 

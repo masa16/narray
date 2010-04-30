@@ -370,8 +370,9 @@ static void RndC(int n, char *p1, int i1, double rmax)
 na_func_t RndFuncs =
   { TpErr, RndB, RndI, RndL, RndF, RndD, RndX, RndC, TpErr };
 
+
 static VALUE
- na_random(int argc, VALUE *argv, VALUE self)
+ na_random_bang(int argc, VALUE *argv, VALUE self)
 {
   VALUE  vmax;
   struct NARRAY *ary;
@@ -397,10 +398,16 @@ static VALUE
   return self;
 }
 
+static VALUE
+ na_random(int argc, VALUE *argv, VALUE self)
+{
+  return na_random_bang(argc, argv, na_clone(self));
+}
+
 void
 Init_na_random()
 {
     rb_define_singleton_method(cNArray,"srand",na_s_srand,-1);
-    rb_define_method(cNArray, "random!", na_random,-1);
-    rb_define_alias(cNArray,  "random","random!");
+    rb_define_method(cNArray, "random!", na_random_bang,-1);
+    rb_define_method(cNArray, "random",  na_random,-1);
 }

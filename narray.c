@@ -731,6 +731,9 @@ static VALUE
   VALUE v;
   struct NARRAY *ary;
 
+  if (argc != 1) {
+    rb_raise(rb_eArgError, "wrong number of arguments(%d for 1)", argc);
+  }
   switch(TYPE(argv[0])) {
   case T_STRING:
     return na_str_to_na(argc-1,argv+1,argv[0]);

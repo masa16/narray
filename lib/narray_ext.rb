@@ -160,7 +160,12 @@ class NArray
       self.class.refer(rr)
     end
   end
-  alias randomn! randomn
+  #alias randomn! randomn
+
+  def randomn!
+    self[]= random
+    self
+  end
 
   #SFloatOne = NArray.sfloat(1).fill!(1)
 end

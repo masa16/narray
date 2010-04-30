@@ -1,8 +1,20 @@
+2010-04-30  Masahiro TANAKA  <masa16.tanaka at gmail.com>
+
+	* narray.c (na_s_to_na): 
+	  - the number of arguments was not checked.
+	    Thanks to S D for report.
+
 2010-01-16  Masahiro TANAKA  <masa16.tanaka at gmail.com>
 
 	* na_index.c (na_index_analysis): 
 	  - access out-of-bounds "struct slice" array.
-	    thanks to Yusuke ENDOH.
+	* SPEC.en, SPEC.ja:
+	  - fix wrong explanation in count_false/true.
+	* na_random.c (na_random): 
+	  - modify random method not to change itself.
+	* lib/narray_ext.rb:
+	  - modify randomn! method to replace itself.
+	    Thank Yusuke ENDOH for report and comments.
 
 2009-06-14  Masahiro TANAKA  <masa16.tanaka at gmail.com>
 

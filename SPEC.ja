@@ -1,5 +1,5 @@
 
-	Ruby/NArray  ver 0.5.9p5 (2008-05-28)	by Masahiro TANAKA
+	Ruby/NArray  ver 0.5.9p8 (2010-01-16)	by Masahiro TANAKA
 
 
 クラスメソッド:
@@ -201,8 +201,8 @@
     self.vtoh		
 
 Boolean / マスク関係
-    self.count_false	値 == 0 の要素数 (byte, sint, int のみ)
-    self.count_true	値 == 1 の要素数 (byte, sint, int のみ)
+    self.count_false	値 == 0 の要素数 (byte型のみ)
+    self.count_true	値 == 1 の要素数 (byte型のみ)
     self.mask( mask )	self[ mask ] と同じだかマスキング専用.
 			[] と違い int, sint のマスクも使える.
 
