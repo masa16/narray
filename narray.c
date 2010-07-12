@@ -722,7 +722,7 @@ static VALUE
 
 /* singleton method: 
    NArray.to_na( string, type, size1,size2,...,sizeN )
-   NArray.to_na( object )
+   NArray.to_na( array )
 */
 static VALUE
  na_s_to_na(int argc, VALUE *argv, VALUE klass)
@@ -731,22 +731,23 @@ static VALUE
   VALUE v;
   struct NARRAY *ary;
 
-  if (argc != 1) {
-    rb_raise(rb_eArgError, "wrong number of arguments(%d for 1)", argc);
+  if (argc < 1) {
+    rb_raise(rb_eArgError, "Argument is required");
   }
-  switch(TYPE(argv[0])) {
-  case T_STRING:
+  if (TYPE(argv[0]) == T_STRING) {
     return na_str_to_na(argc-1,argv+1,argv[0]);
-  case T_ARRAY:
-    if (argc>1)
-      rb_raise(rb_eArgError,"extra arguments");
-    return na_ary_to_nary( argv[0], klass );
-  default:
-    v = na_make_object(na_object_type(argv[0]),1,&shape,klass);
-    GetNArray(v,ary);
-    SetFuncs[ary->type][NA_ROBJ](1, ary->ptr,0, argv,0);
-    return v;
   }
+  if (argc > 1) {
+    rb_raise(rb_eArgError, "Only one array argument must be provided");
+  }
+  if (TYPE(argv[0]) == T_ARRAY) {
+    return na_ary_to_nary( argv[0], klass );
+  }
+  if (NA_IsNArray(argv[0])) {
+    return argv[0];
+  }
+  rb_raise(rb_eTypeError, "Argument must be Array or String (or NArray)");
+  return Qnil;
 }
 
 
