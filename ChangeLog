@@ -1,3 +1,13 @@
+2010-09-13  David MacMahon <davidm at astro.berkeley...>
+
+	* narray.c (na_where2):
+	  - Convert to NA_BYTE by calling "obj.ne(0)"
+
+2010-07-12  Masahiro TANAKA  <masa16.tanaka at gmail.com>
+
+	* narray.c (na_s_to_na):
+	  - improve argument check in NArray.to_na
+
 2010-04-30  Masahiro TANAKA  <masa16.tanaka at gmail.com>
 
 	* narray.c (na_s_to_na): 

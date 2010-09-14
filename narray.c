@@ -18,7 +18,7 @@ VALUE cNArray, cNArrayScalar, cComplex;
 
 ID na_id_beg, na_id_end, na_id_exclude_end;
 ID na_id_minus, na_id_abs, na_id_power;
-ID na_id_compare, na_id_and, na_id_or;
+ID na_id_compare, na_id_ne, na_id_and, na_id_or;
 ID na_id_class_dim;
 ID na_id_add, na_id_sbt, na_id_mul, na_id_div, na_id_mod;
 ID na_id_real, na_id_imag;
@@ -1028,8 +1028,12 @@ static VALUE
   int32_t *idx1, *idx0;
   struct NARRAY *ary, *a1, *a0; /* a1=true, a0=false */
 
-  obj = na_cast_object(obj,NA_BYTE);
   GetNArray(obj,ary);
+  /* Convert to NA_BYTE by calling "obj.ne(0)", if needed */
+  if(ary->type != NA_BYTE) {
+    obj = rb_funcall(obj, na_id_ne, 1, INT2FIX(0));
+    GetNArray(obj,ary);
+  }
   n = ary->total;
 
   /* Count true */
@@ -1282,6 +1286,7 @@ void
     na_id_usec 	= rb_intern("usec");
     na_id_now 	= rb_intern("now");
     na_id_compare = rb_intern("<=>");
+    na_id_ne    = rb_intern("ne");
     na_id_and   = rb_intern("&&");
     na_id_or    = rb_intern("||");
     na_id_minus = rb_intern("-@");
