@@ -2,6 +2,7 @@
 
 	* narray.c (na_where2):
 	  - Convert to NA_BYTE by calling "obj.ne(0)"
+	* ver 0.5.9p8
 
 2010-07-12  Masahiro TANAKA  <masa16.tanaka at gmail.com>
 
