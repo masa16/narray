@@ -131,7 +131,7 @@ VALUE na_column_major_p( VALUE self )
 {
     if (TEST_COLUMN_MAJOR(self))
 	return Qtrue;
-    else 
+    else
 	return Qfalse;
 }
 
@@ -139,7 +139,7 @@ VALUE na_row_major_p( VALUE self )
 {
     if (TEST_ROW_MAJOR(self))
 	return Qtrue;
-    else 
+    else
 	return Qfalse;
 }
 
@@ -187,7 +187,7 @@ VALUE na_in_place_p( VALUE self )
 {
     if (TEST_INPLACE(self))
 	return Qtrue;
-    else 
+    else
 	return Qfalse;
 }
 
@@ -200,7 +200,7 @@ VALUE na_out_of_place_bang( VALUE self )
  /*
 order_to_internal: initialize reshape [] slice
 order_to_external: shape each_with_index
-position_to_int: transpose newdim sum avg .. min max sort mean 
+position_to_int: transpose newdim sum avg .. min max sort mean
  */
 
 void
@@ -419,7 +419,7 @@ na_assign_data( VALUE self, VALUE data, size_t offset )
  *  call-seq:
  *     Num::NArray.new( datatype, shape )    => narray
  *     Num::NArray.new( datatype, size )    => narray
- *  
+ *
  *  Constructs a narray using the given <i>datatype</i> and <i>shape</i> or .
  *  <i>size</i>.  If the second argument is an integer, returns 1-d array.
  */
@@ -476,8 +476,8 @@ na_initialize( int argc, VALUE *argv, VALUE self )
 	    data = v;
 	} else if (TYPE(v) == T_HASH) {
 	    rb_scan_kw_args( v,
-			     "offset", &offset, 
-			     "inplace", &inplace, 
+			     "offset", &offset,
+			     "inplace", &inplace,
 			     "column_major", &column_major,
 			     "byte_swapped", &byte_swapped,
 			     NULL );
@@ -524,7 +524,7 @@ na_copy_flags( VALUE src, VALUE dst )
 }
 
 
-/* 
+/*
 VALUE
 rb_narray_view( VALUE self )
 {
@@ -1143,7 +1143,7 @@ na_transpose(int argc, VALUE *argv, VALUE self)
 	    //printf("r=%d\n",r);
 	}
     }
-    
+
  new_object:
  //   view = na_dup( self );
  //   stride = na_get_stride(view);
@@ -1261,7 +1261,7 @@ na_reshape_self(int argc, VALUE *argv, VALUE self)
 
     na_index_arg_to_internal_order( argc, argv, self );
 
-    // get shape from argument 
+    // get shape from argument
     shape = ALLOC_N(size_t,argc);
     for (i=0,total=1; i<argc; i++)
 	switch(TYPE(argv[i])) {
@@ -1275,7 +1275,7 @@ na_reshape_self(int argc, VALUE *argv, VALUE self)
 	default:
 	    rb_raise(rb_eArgError,"illegal type");
 	}
-    
+
     if (unfixed>=0) {
 	if (na->size % total != 0)
 	    rb_raise(rb_eArgError, "Total size size must be divisor");
@@ -1292,7 +1292,7 @@ na_reshape_self(int argc, VALUE *argv, VALUE self)
 	stride[--i] = st;
 	st *= shape[i];
     }
-    
+
     // exchange data
     FREE_STRIDE(na);
     FREE_SHAPE(na);

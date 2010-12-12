@@ -20,8 +20,8 @@
 # include <sys/types.h>
 #endif
 
-#define NARRAY_VERSION "0.7.0"
-#define NARRAY_VERSION_CODE 700
+#define NARRAY_VERSION "0.7.1"
+#define NARRAY_VERSION_CODE 701
 
 /*
   Data types used in NArray :
@@ -158,19 +158,19 @@ extern ID id_contiguous_stride;
 
 //typedef struct NARRAY {
 typedef struct RNArray {
-    //VALUE   type;	// data type  ÅÓÃæ¤Ç¤¹¤ê¤«¤ï¤Ã¤Æ¤Ï¤Ê¤é¤Ê¤¤
-    VALUE   data;	// byte data object 
-    int     ndim;	// # of dimension 
-    size_t  size;	// # of total element 
-    size_t  offset;     // data¥İ¥¤¥ó¥¿¤«¤éÀèÆ¬¥Ç¡¼¥¿¤Î°ÌÃÖ¤Ø¤Î¥ª¥Õ¥»¥Ã¥È
-    	    		// : elm.unit_bits ¤òÃ±°Ì¤È¤¹¤ë 
+    //VALUE   type;	// data type  é€”ä¸­ã§ã™ã‚Šã‹ã‚ã£ã¦ã¯ãªã‚‰ãªã„
+    VALUE   data;	// byte data object
+    int     ndim;	// # of dimension
+    size_t  size;	// # of total element
+    size_t  offset;     // dataãƒã‚¤ãƒ³ã‚¿ã‹ã‚‰å…ˆé ­ãƒ‡ãƒ¼ã‚¿ã®ä½ç½®ã¸ã®ã‚ªãƒ•ã‚»ãƒƒãƒˆ
+    	    		// : elm.unit_bits ã‚’å˜ä½ã¨ã™ã‚‹
     	    		// address_unit  pointer_unit access_unit data_unit
                         // elm.step_unit = elm.bit_size / elm.access_unit
                         // elm.step_unit = elm.size_bits / elm.unit_bits
-    size_t  *shape;	// ³Æ¼¡¸µ¤ÎÍ×ÁÇ¿ô
-    ssize_t *stride;	// ³Æ¼¡¸µ¤Ë¤ª¤±¤ë¥Ç¡¼¥¿¥İ¥¤¥ó¥¿¤ÎÁıÊ¬
-    	   		// : elm.unit_bits ¤òÃ±°Ì¤È¤¹¤ë 
-    ssize_t **index;    // ¥¤¥ó¥Ç¥¯¥¹¥¢¥¯¥»¥¹ÇÛÎó
+    size_t  *shape;	// å„æ¬¡å…ƒã®è¦ç´ æ•°
+    ssize_t *stride;	// å„æ¬¡å…ƒã«ãŠã‘ã‚‹ãƒ‡ãƒ¼ã‚¿ãƒã‚¤ãƒ³ã‚¿ã®å¢—åˆ†
+    	   		// : elm.unit_bits ã‚’å˜ä½ã¨ã™ã‚‹
+    ssize_t **index;    // ã‚¤ãƒ³ãƒ‡ã‚¯ã‚¹ã‚¢ã‚¯ã‚»ã‚¹é…åˆ—
     VALUE   mark;
 } narray_t;
 
@@ -183,7 +183,7 @@ typedef struct RNArray {
    - matrix or not
 */
 #define FL_NA_INPLACE     FL_USER0
-#define FL_NA_INDEX_ORDER FL_USER1 // column_major/row_major 
+#define FL_NA_INDEX_ORDER FL_USER1 // column_major/row_major
 #define FL_NA_BYTE_SWAPPED  FL_USER2 // big_endian/little_endian
 
 #define TEST_COLUMN_MAJOR(x) FL_TEST((x),FL_NA_INDEX_ORDER)

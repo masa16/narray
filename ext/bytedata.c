@@ -353,7 +353,7 @@ mm_open(struct MmapByteData *mm, const char *fname)
     HANDLE hFile;
     HANDLE hMap;
 
-    /* set parameters 
+    /* set parameters
     if (mode == SA_MMAP_RO) {
 	mode1 = GENERIC_READ;
 	mode2 = PAGE_READONLY;
@@ -369,7 +369,7 @@ mm_open(struct MmapByteData *mm, const char *fname)
     mode1 = GENERIC_READ | GENERIC_WRITE;
     mode2 = PAGE_READWRITE;
     mode3 = FILE_MAP_ALL_ACCESS;
- 
+
     //mm->other = sa_malloc(sizeof(MMAP_HANDLES));
     //if (mm->other == NULL)
     //    return 1;
@@ -389,7 +389,7 @@ mm_open(struct MmapByteData *mm, const char *fname)
       rb_raise(rb_eIOError,"CreateFileMapping error");
       return 1;
     }
-				
+
     mm->bd.ptr = MapViewOfFile(hMap, mode3, 0, 0, 0);
     if (mm->bd.ptr == NULL) {
 	CloseHandle(hFile);
@@ -442,8 +442,8 @@ mm_open(struct MmapByteData *mm, const char *fname)
     struct stat stat_buf;
     int flag;
     int prot;
-    
-    /* set parameters 
+
+    /* set parameters
     if (mode == SA_MMAP_RO) {
         flag = O_RDONLY;
         prot = PROT_READ;
@@ -458,20 +458,20 @@ mm_open(struct MmapByteData *mm, const char *fname)
     */
     flag = O_RDWR;
     prot = PROT_READ | PROT_WRITE;
-     
+
     /* open the addressed file */
     if ((fd = open(fname, flag)) == -1) {
 	rb_raise(rb_eIOError,"open(2) error");
         return 1;
     }
- 
+
     /* size of the file */
     if (fstat(fd, &stat_buf) != 0) {
         close(fd);
 	rb_raise(rb_eIOError,"fstat(2) error");
         return 1;
     }
- 
+
     mm->bd.len = stat_buf.st_size;
     mm->prot = prot;
     mm->flag = flag;
@@ -590,5 +590,5 @@ map_anonymous
 ?
 sync
 shared
-File object¤«¤éºîÀ®¡©
+File objectã‹ã‚‰ä½œæˆï¼Ÿ
 */

@@ -199,8 +199,8 @@ void ndfunc_init_md_loop(
 	}
     }
 
-    // ¿ô¥Á¥§¥Ã¥¯ itr[dim][0...nargs].n ¤¬Æ±¤¸¡¢¤Ş¤¿¤Ï 1
-    // ·«¤êÊÖ¤·¼¡¸µ if (itr[dim][j].n==1) itr[dim][j].step=0;
+    // æ•°ãƒã‚§ãƒƒã‚¯ itr[dim][0...nargs].n ãŒåŒã˜ã€ã¾ãŸã¯ 1
+    // ç¹°ã‚Šè¿”ã—æ¬¡å…ƒ if (itr[dim][j].n==1) itr[dim][j].step=0;
     // check the number of iteration for each dimension
     shape = ALLOC_N( size_t, max_nd );
     for (dim=0; dim < loop_nd ; dim++) {
@@ -232,7 +232,7 @@ void ndfunc_init_md_loop(
     //u_len = 1;
     for (dim=0; dim<max_nd; dim++) {
 	shape[dim] = itr[dim][0].n;
-	//u_len *= itr[dim][0].n; //n[i];	
+	//u_len *= itr[dim][0].n; //n[i];
 	//printf("shape[%ld]=%ld\n",dim,shape[dim]);
     }
 
@@ -338,9 +338,9 @@ void ndfunc_init_md_loop(
 
     //printf("itr[0][0].step=%ld\n", 0, itr[0][0].step);
 
-    // ½ÌÌó¼¡¸µ   itr[dim][j].n *= itr[dim-1][j].n; itr[dim-1][j].n = 1;
-    // ¾ò·ï:  itr[dim-1][j].step == itr[dim][j].n * itr[dim][j].step
-    //	      step==0 ¤Ç¤â¤³¤Î¾ò·ï¤Ç¥ª¥±
+    // ç¸®ç´„æ¬¡å…ƒ   itr[dim][j].n *= itr[dim-1][j].n; itr[dim-1][j].n = 1;
+    // æ¡ä»¶:  itr[dim-1][j].step == itr[dim][j].n * itr[dim][j].step
+    //	      step==0 ã§ã‚‚ã“ã®æ¡ä»¶ã§ã‚ªã‚±
     //	      itr[dim][j].pos == 0
     //	      itr[dim][j].idx == NULL
     //	      itr[dim-1][j].idx == NULL
@@ -458,7 +458,7 @@ static void ndfunc_md_loop(
 // ..
 // pos[0] = 32 pos[1] = 56
 // pos[0] = 64 pos[1] = 64
-// 
+//
 // pos = beg + step*i
 // ofs[dim+1] = ofs[dim] + step[dim] * i
 
@@ -533,7 +533,7 @@ VALUE ndfunc_execute_reduce_main( ndfunc_t *nf, VALUE mark, VALUE args )
     ndim = nd-arg_dim;
     if (ndim==0)
 	ni = nd+2;
-    else 
+    else
 	ni = nd+1;
 
     itr = ALLOC_N( na_iterator_t*, ni );
@@ -993,7 +993,7 @@ ndfunc_execute_io( VALUE ary, na_simple_func_t func, VALUE io )
 }
 
 
-VALUE 
+VALUE
 na_info_str( VALUE ary )
 {
     int nd, i;
@@ -1129,9 +1129,9 @@ ndfunc_execute_inspect( VALUE ary, VALUE str, na_text_func_t func, VALUE opt )
 
 
 // #if 0
-// 
-// // cast rule ¤ò»È¤ï¤Ê¤¤¾ì¹ç¡©¡©¢ª °ú¿ô¤ò¶¯À©cast¤¹¤ë
-// 
+//
+// // cast rule ã‚’ä½¿ã‚ãªã„å ´åˆï¼Ÿï¼Ÿâ†’ å¼•æ•°ã‚’å¼·åˆ¶castã™ã‚‹
+//
 // VALUE
 // ndfunc_arg_type( VALUE a )
 // {
@@ -1144,21 +1144,21 @@ ndfunc_execute_inspect( VALUE ary, VALUE str, na_text_func_t func, VALUE opt )
 //     case T_BIGNUM:
 //       type = rb_cInteger;
 //       break;
-//       // À°¿ô¤ÎÃÍ¤ÎÂç¤­¤µ¤ÇÊ¬Îà¤·¤Ê¤¯¤Æ¤è¤¤¤«¡©
+//       // æ•´æ•°ã®å€¤ã®å¤§ãã•ã§åˆ†é¡ã—ãªãã¦ã‚ˆã„ã‹ï¼Ÿ
 //     default:
 //       type = CLASS_OF(a);
 //     }
 //   }
 //   return type;
 // }
-// 
-// 
+//
+//
 // VALUE
 // ndfunc_execute_w_cast( ndfunc_t *func, int argc, VALUE *argv )
 // {
 //   int i;
 //   VALUE a, a_type, f_type;
-// 
+//
 //   for (i=0; i<argc; i++) {
 //     a_type = ndfunc_arg_type(argv[i]);
 //     f_type = func->args[i].type;
@@ -1167,25 +1167,25 @@ ndfunc_execute_inspect( VALUE ary, VALUE str, na_text_func_t func, VALUE opt )
 //   }
 //   return ndfunc_execute( func, argc, argv );
 // }
-// 
-// 
-// 
+//
+//
+//
 // VALUE
 // ndfunc_execute_binary( ndfunc_t *func, VALUE a1, VALUE a2 )
 // {
 //   VALUE args[2];
 //   VALUE a1_elem, a2_elem;
 //   VALUE e1, e2, e3;
-// 
+//
 //   a1_elem = ndfunc_arg_type(a1);
 //   a2_elem = ndfunc_arg_type(a2);
 //   e1 = func->args[0].type;
 //   e2 = func->args[1].type;
 //   e3 = func->args[2].type;
-// 
-//   // °ú¿ô¤Î·¿¤¬´Ø¿ôÄêµÁ¤È°Û¤Ê¤ë¾ì¹ç
+//
+//   // å¼•æ•°ã®å‹ãŒé–¢æ•°å®šç¾©ã¨ç•°ãªã‚‹å ´åˆ
 //   if (a1_elem!=e1 || a2_elem!=e2) {
-//     // cast rule ¤òÄ´¤Ù¤ë
+//     // cast rule ã‚’èª¿ã¹ã‚‹
 //     // elem = NElement::CAST_RULE[[a1_elem,a2_elem]]
 //     VALUE h = rb_const_get( mNElement, rb_intern("CAST_RULE") );
 //     VALUE k = rb_assoc_new( a1_elem, a2_elem );
@@ -1194,11 +1194,11 @@ ndfunc_execute_inspect( VALUE ary, VALUE str, na_text_func_t func, VALUE opt )
 //       rb_raise("cast rule not found");
 //       return Qnil;
 //     } else if (result_type != e3) {
-//       // ·ë²Ì·¿¤¬°Û¤Ê¤ë¾ì¹ç
+//       // çµæœå‹ãŒç•°ãªã‚‹å ´åˆ
 //       return rb_funcall(result_type, func->name, 2, a1, a2);
 //     }
 //     /*
-//     // ·ë²Ì¤¬ DFloat¤Î¾ì¹ç¡¢°ú¿ô¤ò¥­¥ã¥¹¥È¤·¤Æ¼Â¹Ô
+//     // çµæœãŒ DFloatã®å ´åˆã€å¼•æ•°ã‚’ã‚­ãƒ£ã‚¹ãƒˆã—ã¦å®Ÿè¡Œ
 //     a1 = rb_funcall(e1, "cast", 1, a1);
 //     a2 = rb_funcall(e2, "cast", 1, a2);
 //     */
@@ -1208,5 +1208,5 @@ ndfunc_execute_inspect( VALUE ary, VALUE str, na_text_func_t func, VALUE opt )
 //   //return ndfunc_execute( func, 2, args );
 //   return ndfunc_execute_w_cast( func, 2, args );
 // }
-// 
+//
 // #endif
