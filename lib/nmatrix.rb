@@ -132,9 +132,13 @@ class NMatrix < NArray
     shp = self.shape
     idx = NArray.int(shp[0..1].min).indgen! * (shp[0]+1)
     ref = reshape(shp[0]*shp[1],true)
-    val = NArray.to_na(val)
-    raise ArgumentError, "must be 1-d array" if val.dim!=1
-    ref[idx,true] = val.newdim!(-1)
+    if val.kind_of?(Numeric)
+      ref[idx,true] = val
+    else
+      val = NArray.to_na(val)
+      raise ArgumentError, "must be 1-d array" if val.dim!=1
+      ref[idx,true] = val.newdim!(-1)
+    end
     self
   end
 
