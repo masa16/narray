@@ -3,6 +3,7 @@
 	* lib/nmatrix.rb (NMatrix#diagonal!):
 	  - failed due to spec change of NArray.to_na.
 	    Thanks to M. Kikkawa.
+	* ver 0.5.9p9
 
 2010-09-13  David MacMahon <davidm at astro.berkeley...>
 

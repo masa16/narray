@@ -23,8 +23,8 @@
 # include <sys/types.h>
 #endif
 
-#define NARRAY_VERSION "0.5.9p8"
-#define NARRAY_VERSION_CODE 598
+#define NARRAY_VERSION "0.5.9p9"
+#define NARRAY_VERSION_CODE 599
 
 /*
   Data types used in NArray :
@@ -67,7 +67,7 @@ typedef int                    int32_t;  /* NA_LINT */
 typedef uint32_t			u_int32_t;
 # else
 #  if SIZEOF_LONG == 4
-typedef unsigned long                   u_int32_t;  
+typedef unsigned long                   u_int32_t;
 #  else
 #   if SIZEOF_INT == 4
 typedef unsigned int                    u_int32_t;
