@@ -53,6 +53,7 @@ extern na_ufunc_t  AddUFuncs;
 extern na_ufunc_t  SbtUFuncs;
 extern na_ufunc_t  MulUFuncs;
 extern na_ufunc_t  DivUFuncs;
+extern na_ufunc_t  ModUFuncs;
 extern na_bifunc_t AddBFuncs;
 extern na_bifunc_t SbtBFuncs;
 extern na_bifunc_t MulBFuncs;
