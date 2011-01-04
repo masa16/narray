@@ -1,3 +1,28 @@
+2010-01-04  David MacMahon <davidm at astro.berkeley...>
+
+	* mkop.rb, na_func.c, na_linalg.c, narray_local.h:
+	Add NArray#mod! method
+	Also adds NArray#mod as an alias for NArray#%.
+
+2010-01-04  David MacMahon <davidm at astro.berkeley...>
+
+	* mkop.rb: Fix divide-by-zero bug in % operator
+	Prior to this fix, the following would crash Ruby with a floating point
+	exception (at least on Mac OS X 10.6)...
+	  1 % NArray[0]
+	Now that code raises ZeroDivisionError which can be rescued.
+
+2010-01-04  David MacMahon <davidm at astro.berkeley...>
+
+	* Rakefile: Add Rakefile for easy gem creation
+	Just run "rake gem" to create the gem file in the pkg/ subdirectory.
+	Added .gitignore file to ignore pkg/ subdirectory.
+
+2011-01-04  sgwong
+
+	* extconf.rb: failure due to the change of
+	  $DLDFLAGS in ruby1.9
+
 2010-12-14  Masahiro TANAKA  <masa16.tanaka@gmail.com>
 
 	* lib/nmatrix.rb (NMatrix#diagonal!):
