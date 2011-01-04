@@ -53,7 +53,9 @@ else
 end
 
 if /cygwin|mingw/ =~ RUBY_PLATFORM
-  if RUBY_VERSION > '1.8.0'
+  if RUBY_VERSION >= '1.9.0'
+    $DLDFLAGS << " -Wl,--out-implib=libnarray.a"
+  elsif RUBY_VERSION > '1.8.0'
     $DLDFLAGS << ",--out-implib=libnarray.a"
   elsif RUBY_VERSION > '1.8'
     CONFIG["DLDFLAGS"] << ",--out-implib=libnarray.a"
