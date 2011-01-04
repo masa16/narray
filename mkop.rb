@@ -506,7 +506,8 @@ mkfuncs('DivB', $data_types, $data_types,
 
 mkfuncs('ModB', $data_types, $data_types,
  [nil] +
- ["*p1 = *p2 % *p3;"]*3 + 
+ ["if (*p3==0) {na_zerodiv();};
+    *p1 = *p2 % *p3;"]*3 +
  ["*p1 = fmod(*p2, *p3);"]*2 + 
  [nil]*2 +
  ["*p1 = rb_funcall(*p2,'%',1,*p3);"]
