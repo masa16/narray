@@ -819,6 +819,10 @@ static VALUE na_div_bang(VALUE obj1, VALUE obj2)
 static VALUE na_mul_bang(VALUE obj1, VALUE obj2)
 { return na_set_func( obj1, obj2, MulUFuncs ); }
 
+/* method: self.mod!(other) */
+static VALUE na_mod_bang(VALUE obj1, VALUE obj2)
+{ return na_set_func( obj1, obj2, ModUFuncs ); }
+
 /* method: self.conj! */
 static VALUE na_conj_bang(VALUE self)
 { return na_set_func( self, self, ConjFuncs ); }
@@ -1552,6 +1556,7 @@ void Init_na_funcs(void)
   rb_define_method(cNArray, "*",  na_mul, 1);
   rb_define_method(cNArray, "/",  na_div, 1);
   rb_define_method(cNArray, "%",  na_mod, 1);
+  rb_define_alias (cNArray, "mod", "%");
   rb_define_method(cNArray, "&",  na_bit_and, 1);
   rb_define_method(cNArray, "|",  na_bit_or, 1);
   rb_define_method(cNArray, "^",  na_bit_xor, 1);
@@ -1561,6 +1566,7 @@ void Init_na_funcs(void)
   rb_define_method(cNArray, "sbt!", na_sbt_bang, 1);
   rb_define_method(cNArray, "mul!", na_mul_bang, 1);
   rb_define_method(cNArray, "div!", na_div_bang, 1);
+  rb_define_method(cNArray, "mod!", na_mod_bang, 1);
   rb_define_method(cNArray, "imag=",na_imag_set, 1);
 
   rb_define_method(cNArray, "swap_byte", na_swap_byte, 0);

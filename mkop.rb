@@ -186,6 +186,15 @@ mkfuncs('DivU', $data_types, $data_types,
  ["*p1 = rb_funcall(*p1,'/',1,*p2);"]
 )
 
+mkfuncs('ModU', $data_types, $data_types,
+ [nil] +
+ ["if (*p2==0) {na_zerodiv();}
+    *p1 %= *p2;"]*3 +
+ ["*p1 = fmod(*p1, *p2);"]*2 +
+ [nil]*2 +
+ ["*p1 = rb_funcall(*p1,'%',1,*p2);"]
+)
+
 
 # method: imag=
 mkfuncs('ImgSet',$data_types,$real_types,

@@ -32,6 +32,7 @@ typedef struct NARRAY_FUNCSET {
   void (*sbt)();
   void (*mul)();
   void (*div)();
+  void (*mod)();
   void (*muladd)();
   void (*mulsbt)();
   void (*cmp)();
@@ -590,6 +591,7 @@ void Init_na_linalg()
     na_funcset[i].sbt = SbtUFuncs[i];
     na_funcset[i].mul = MulUFuncs[i];
     na_funcset[i].div = DivUFuncs[i];
+    na_funcset[i].mod = ModUFuncs[i];
     na_funcset[i].muladd = MulAddFuncs[i];
     na_funcset[i].mulsbt = MulSbtFuncs[i];
     na_funcset[i].cmp = CmpFuncs[i];
