@@ -11,4 +11,4 @@ na_math.o: na_math.c narray.h $(hdrdir)/ruby.h
 
 
 cleanall:  clean
-	@$(RM)  na_op.c na_math.c
+	@$(RM) -r na_op.c na_math.c src pkg
