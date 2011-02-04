@@ -41,7 +41,7 @@ void
 /* initialize slice structure */
 void na_init_slice( struct slice *s, int rank, int *shape, int elmsz )
 {
-  int r, i, b; 
+  int r, i, b;
   na_index_t *idx;
 
   /*
@@ -79,7 +79,7 @@ void na_init_slice( struct slice *s, int rank, int *shape, int elmsz )
     /* set beginning pointers */
     if ( s[r].idx == NULL )
       s[r].pbeg = s[r].stride * s[r].beg * elmsz;
-    else 
+    else
       s[r].pbeg = s[r].idx[0];
   }
 }
@@ -169,7 +169,7 @@ void na_loop_index_ref( struct NARRAY *a1, struct NARRAY *a2,
   int ps2 = s2[0].pstep;
   int *si;
   na_index_t *idx;
-  
+
   /*
   int copy;
   if (a1->type==a2->type && s1[0].step==1 && s2[0].step==1)
@@ -220,7 +220,7 @@ void na_loop_index_ref( struct NARRAY *a1, struct NARRAY *a2,
     /* array2 may have index */
     if ( s2[i].idx == NULL )
       s2[i].p += s2[i].pstep;
-    else 
+    else
       s2[i].p = s2[i+1].p + s2[i].idx[si[i]]; /* * s2[i].pstep; */
   }
 }
@@ -292,12 +292,12 @@ void na_loop_general( struct NARRAY *a1, struct NARRAY *a2,
     /* next point for a1 */
     if ( s1[i].idx == NULL )
       s1[i].p += s1[i].pstep;
-    else 
+    else
       s1[i].p = s1[i+1].p + s1[i].idx[si[i]];
     /* next point for a2 */
     if ( s2[i].idx == NULL )
       s2[i].p += s2[i].pstep;
-    else 
+    else
       s2[i].p = s2[i+1].p + s2[i].idx[si[i]];
   }
 }
@@ -392,7 +392,7 @@ static int
     return 1;
   else if ( ary_sz == 1 )
     return 0;
-  else 
+  else
     rb_raise(rb_eRuntimeError, "Array size mismatch: %i != %i at %i-th dim",
 	     ary_sz, itr_sz, i);
 }
@@ -435,7 +435,7 @@ int
     }
 
     s1[j].n   =
-    s2[j].n   = 
+    s2[j].n   =
     s3[j].n   = shape[i];
 
     s1[j].beg =
@@ -641,7 +641,7 @@ static VALUE
   if (a2->type==NA_ROBJ && a1->type!=NA_ROBJ) {
     obj1 = na_change_type(obj1,NA_ROBJ);
     GetNArray(obj1,a1);
-  } else 
+  } else
   if (!NA_IsCOMPLEX(a1) && NA_IsCOMPLEX(a2)) {
     obj1 = na_upcast_type(obj1,a2->type);
     GetNArray(obj1,a1);
@@ -1234,10 +1234,52 @@ static VALUE
  na_sum(int argc, VALUE *argv, VALUE self)
 { return na_sum_body(argc,argv,self,0); }
 
-/* method: sum( rank, ... ) */
+/* method: accum( rank, ... ) */
 static VALUE
  na_accum(int argc, VALUE *argv, VALUE self)
 { return na_sum_body(argc,argv,self,1); }
+
+
+
+static VALUE
+ na_prod_body(int argc, VALUE *argv, VALUE self, int flag)
+{
+  int *shape, rankc, *rankv, cl_dim;
+  struct NARRAY *a1, *a2;
+  VALUE obj, klass;
+  int32_t one = 1;
+
+  GetNArray(self,a1);
+
+  rankv = ALLOC_N(int,a1->rank*2);
+  rankc = na_arg_to_rank( argc, argv, a1->rank, rankv, 0 );
+
+  shape = &rankv[a1->rank];
+  na_accum_set_shape( shape, a1->rank, a1->shape, rankc, rankv );
+
+  klass  = CLASS_OF(self);
+  cl_dim = na_class_dim(klass);
+  if (flag==0 && cl_dim>0 && na_shrink_class(cl_dim,rankv))
+    klass = cNArray;
+
+  obj = na_make_object(a1->type,a1->rank,shape,klass);
+  GetNArray(obj,a2);
+
+  SetFuncs[a2->type][NA_LINT](a2->total, a2->ptr, na_sizeof[a2->type], &one, 0);
+
+  na_exec_unary( a2, a1, MulUFuncs[a1->type] );
+
+  if (flag==0)
+    obj = na_shrink_rank(obj,cl_dim,rankv);
+
+  xfree(rankv);
+  return obj;
+}
+
+/* method: prod( rank, ... ) */
+static VALUE
+ na_prod(int argc, VALUE *argv, VALUE self)
+{ return na_prod_body(argc,argv,self,0); }
 
 
 static VALUE
@@ -1294,7 +1336,7 @@ static VALUE
 /* method: mul_add( other, rank, ... ) */
 static VALUE
  na_mul_add(int argc, VALUE *argv, VALUE self)
-{ 
+{
   if (argc<2)
     rb_raise(rb_eArgError, "wrong # of arguments (%d for >=2)", argc);
   return na_mul_add_body(argc-1,argv+1,self,argv[0],Qnil,0);
@@ -1346,6 +1388,36 @@ static VALUE
   na_cumsum(VALUE self)
 {
   return na_cumsum_bang(na_clone(self));
+}
+
+
+/* cumprod!
+ [1 2 3 4 5] -> [1 3 6 10 15]
+*/
+static VALUE
+  na_cumprod_bang(VALUE self)
+{
+  struct NARRAY *a;
+  int step;
+
+  GetNArray(self,a);
+
+  if ( a->rank != 1 )
+    rb_raise( rb_eTypeError, "only for 1-dimensional array" );
+  if ( a->total < 2 )
+    return self; /* do nothing */
+
+  step = na_sizeof[a->type];
+  MulUFuncs[a->type](a->total-1, a->ptr+step,step, a->ptr,step);
+
+  return self;
+}
+
+/* cumprod */
+static VALUE
+  na_cumprod(VALUE self)
+{
+  return na_cumprod_bang(na_clone(self));
 }
 
 
@@ -1613,10 +1685,13 @@ void Init_na_funcs(void)
 
   rb_define_method(cNArray, "sum", na_sum, -1);
   rb_define_method(cNArray, "accum", na_accum, -1);
+  rb_define_method(cNArray, "prod", na_prod, -1);
   rb_define_method(cNArray, "min", na_min, -1);
   rb_define_method(cNArray, "max", na_max, -1);
   rb_define_method(cNArray, "cumsum!", na_cumsum_bang, 0);
   rb_define_method(cNArray, "cumsum", na_cumsum, 0);
+  rb_define_method(cNArray, "cumprod!", na_cumprod_bang, 0);
+  rb_define_method(cNArray, "cumprod", na_cumprod, 0);
   rb_define_method(cNArray, "sort", na_sort, -1);
   rb_define_method(cNArray, "sort!", na_sort_bang, -1);
   rb_define_method(cNArray, "sort_index", na_sort_index, -1);

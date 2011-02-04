@@ -1,3 +1,8 @@
+2011-02-04  Masahiro TANAKA  <masa16.tanaka@gmail.com>
+
+	* na_func.c (na_prod, na_prod_body, na_cumprod, na_cumprod_bang):
+	  New method.
+
 2010-01-04  David MacMahon <davidm at astro.berkeley...>
 
 	* mkop.rb, na_func.c, na_linalg.c, narray_local.h:

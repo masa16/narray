@@ -1,5 +1,5 @@
 
-	Ruby/NArray  ver 0.5.9p8 (2010-12-06)	by Masahiro TANAKA
+	Ruby/NArray  ver 0.5.9p9 (2011-02-04)	by Masahiro TANAKA
 
 
 クラスメソッド:
@@ -48,10 +48,10 @@
     a[ 0, true ]	a[0, 0..-1] と同じ。
     a[ 0, false ]	aが3次元のとき、a[0,true,true] と同じ。
 			省略された次元すべてにtrueを指定したのと同じ。
-    a[ mask ]		マスキング. mask は長さが a と等しい byte 型 
+    a[ mask ]		マスキング. mask は長さが a と等しい byte 型
 			NArray. mask の各要素の値に応じて、a のそれぞ
 			れは落される(0の場合)か、保持される(0以外の場合)。
-			例: 
+			例:
 				a=NArray.float(2,2).indgen!
 				p a[ a.lt 3 ]
 				--> [ 0.0, 1.0, 2.0 ]
@@ -69,7 +69,7 @@
     a[ 0..3, 1..4, 2..5 ] = 2
     a[ [1,3,2,4], true ] = 3
     a[] = 4			a.fill!(4) と同じ。
-  
+
     a[0..2]  = b[1..5]		--> 要素数が異なるのでエラー。
     a[1,2]   = b[0..2,1..3]	[1,2]を始点として代入。
     a[0..2,0..3]  = b[0..2,1]	繰り返し代入。
@@ -129,7 +129,7 @@
     self.ge other
     self >= other
     self.lt other
-    self <  other 
+    self <  other
     self.le other
     self <= other
 
@@ -147,7 +147,10 @@
 	例: idx_t,idx_f = (a>12).where2
 
 統計
-    self.sum(dim,..)	    指定した次元の和。
+    self.sum(dim,..)	    指定した次元の和
+    self.cumsum	            累積和(1次元配列のみ)
+    self.prod(dim,..)	    指定した次元の積
+    self.cumprod	    累積積(1次元配列のみ)
     self.mean(dim,..)       指定した次元の平均。
     self.stddev(dim,..)     指定した次元の標準偏差(標本標準偏差)。
     self.rms(dim,..)        指定した次元のroot mean square。
@@ -183,7 +186,7 @@
     self.ceil  selfより大きい最小の整数を返す。
     self.round selfにもっとも近い整数を返す。
     self.to_f  値を浮動小数点数に変換する。
-    self.to_i  値を整数に変換する。 
+    self.to_i  値を整数に変換する。
     self.to_a  値をRubyの配列に変換する。
     self.to_s  バイナリデータをそのままRubyの文字列データに変換する。
     self.to_string  各要素を文字列に変換する。
@@ -196,9 +199,9 @@
 バイトスワップ
     self.swap_byte	バイトスワップ
     self.hton		ネットワークバイトオーダーに変換
-    self.ntoh		
+    self.ntoh
     self.htov		VAXバイトオーダーに変換
-    self.vtoh		
+    self.vtoh
 
 Boolean / マスク関係
     self.count_false	値 == 0 の要素数 (byte型のみ)
