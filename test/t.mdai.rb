@@ -1,5 +1,5 @@
 require "complex"
-require "./narray.so"
+require "narray"
 
 
 #Num::NArray.mdai([[[1,2,2],[3,4]]])

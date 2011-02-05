@@ -1,5 +1,5 @@
 require "complex"
-require "./narray.so"
+require "narray"
 
 s = "Num::DFloat.cast([1,[1,[2,4]],3,[[3,4],5],2])"
 puts s
