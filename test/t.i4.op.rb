@@ -1,6 +1,6 @@
 require 'test/unit'
 #require "complex"
-require "narray"
+require "./narray.so"
 #require 'irb/xmp'
 
 $p = true

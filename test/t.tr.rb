@@ -1,17 +1,19 @@
 require 'test/unit'
-require "narray"
+require "./narray.so"
 #require 'irb/xmp'
 
 $p = true
+
+NArray.debug=true
 
 class TestBinData < Test::Unit::TestCase
 
   def px(s)
     puts s
     p a = eval(s)
-    if a.kind_of? Num::NArray
+    if a.kind_of? NArray
       a.debug_info
-      a.debug_print
+      p a
       #p a.to_a
     end
     puts
@@ -19,7 +21,8 @@ class TestBinData < Test::Unit::TestCase
   end
 
   def test_transpose
-    px "$b = Num::DFloat.new([3,4,5]).seq"
+    px "$b = NArray::DFloat.new([3,4,5]).seq"
+    px "$b.flatten"
     px "$b.transpose"
     px "$b.transpose(2,1,0)"
     px "$b.transpose(-2..-1,0)"

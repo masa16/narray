@@ -1,7 +1,7 @@
 /*
-  na_array.c
+  array.c
   Numerical Array Extention for Ruby
-    (C) Copyright 1999-2003 by Masahiro TANAKA
+    (C) Copyright 1999-2011 by Masahiro TANAKA
 
   This program is free software.
   You can distribute/modify this program
@@ -347,7 +347,7 @@ na_range_to_sequence(VALUE obj, size_t *n, size_t *beg, size_t *step)
 	if (!EXCL(obj)) {
 	    len++;
 	}
-    } 
+    }
     *n = len;
 }
 
@@ -370,6 +370,8 @@ na_mdai_investigate(na_mdai_t *mdai, int ndim)
     //for (i=0; i < ary->len; i++) {
     for (i=0; i < RARRAY_LEN(val); i++) {
 
+	//printf("i=%d\n",i);
+
         //v = ary->ptr[i];
         v = RARRAY_PTR(val)[i];
 
@@ -391,8 +393,8 @@ na_mdai_investigate(na_mdai_t *mdai, int ndim)
 	else
 	//if ( rb_obj_is_kind_of(v, rb_cRange) ) {
 	//    na_range_to_sequence(v,&length,&start,&dir);
-        if (rb_obj_is_kind_of(v, rb_cRange) || rb_obj_is_kind_of(v, num_cStep)) {
-	    num_step_sequence(v,&length,&dbeg,&dstep);
+        if (rb_obj_is_kind_of(v, rb_cRange) || rb_obj_is_kind_of(v, na_cStep)) {
+	    nary_step_sequence(v,&length,&dbeg,&dstep);
 	    len += length-1;
 	    //mdai->type[ na_object_type(rb_ivar_get(v, rb_intern("beg"))) ] = 1;
 	    //mdai->type[ na_object_type(rb_ivar_get(v, rb_intern("end"))) ] = 1;
@@ -400,7 +402,7 @@ na_mdai_investigate(na_mdai_t *mdai, int ndim)
 	    na_mdai_object_type(mdai,rb_ivar_get(v, rb_intern("end")));
 	}
 	else {
-		
+
 	    //mdai->type[ na_object_type(v) ] = 1;
 	    na_mdai_object_type(mdai,v);
 
@@ -431,128 +433,6 @@ na_mdai_investigate(na_mdai_t *mdai, int ndim)
     return 0;
 }
 
-
-// /* get index from multiple-index  */
-// static int
-//  na_index_pos(struct NARRAY *ary, int *idxs)
-// {
-//   int i, idx, pos = 0;
-// 
-//   for ( i = ary->ndim; (i--)>0; ) {
-//     idx = idxs[i];
-//     if (idx < 0 || ary->shape[i] <= idx) {
-//       abort();
-//       rb_raise(rb_eRuntimeError,
-// 	       "Subsctipt out of range: accessing shape[%i]=%i with %i",
-// 	       i, ary->shape[i], idx );
-//     }
-//     pos = pos * ary->shape[i] + idx;
-//   }
-//   return pos;
-// }
-// 
-// 
-// static void
-//  na_copy_nary_to_nary(VALUE obj, struct NARRAY *dst,
-// 		      int thisndim, int *idx)
-// {
-//   struct NARRAY *src;
-//   struct slice *s;
-//   int  i, n;
-// 
-//   GetNArray(obj,src);
-//   n = thisndim - src->ndim + 1;
-// 
-//   s = ALLOCA_N(struct slice, dst->ndim+1);
-//   for (i=0; i < n; i++) {
-//     s[i].n    = 1;
-//     s[i].beg  = 0;
-//     s[i].step = 0;
-//     s[i].idx  = NULL;
-//   }
-//   for (   ; i <= thisndim; i++) {
-//     s[i].n    = src->shape[i-n];
-//     s[i].beg  = 0;
-//     s[i].step = 1;
-//     s[i].idx  = NULL;
-//   }
-//   for (   ; i < dst->ndim; i++) {
-//     s[i].n    = 1;
-//     s[i].beg  = idx[i];
-//     s[i].step = 0;
-//     s[i].idx  = NULL;
-//   }
-//   na_aset_slice(dst,src,s);
-// }
-// 
-// 
-// /* copy Array to NArray */
-// static void
-//  na_copy_ary_to_nary( struct RArray *ary, struct NARRAY *na,
-// 		      int thisndim, int *idx, int type )
-// {
-//   int i, j, pos, len, start, step, dir;
-//   VALUE v;
-// 
-//   if (thisndim==0) {
-//     for (i = idx[0] = 0; i < ary->len; i++) {
-//       v = ary->ptr[i];
-//       if (rb_obj_is_kind_of(v, rb_cRange)) {
-// 	na_range_to_sequence(v,&len,&start,&dir);
-// 	if (len>0) {
-// 	  pos = na_index_pos(na,idx);
-// 	  IndGenFuncs[type](len, NA_PTR(na,pos),na_sizeof[type], start,dir);
-// 	  idx[0] += len;
-// 	}
-//       }
-//       else if (TYPE(v) != T_ARRAY) {
-// 	/* NIL if empty */
-// 	if (v != Qnil) {
-// 	  pos = na_index_pos(na,idx);
-// 	  SetFuncs[type][NA_ROBJ]( 1, NA_PTR(na,pos), 0, &v, 0 );
-// 	  /* copy here */
-// 	}
-// 	idx[0] ++;
-//       }
-//     }
-//   }
-//   else /* thisndim > 0 */
-//   { 
-//     for (i = idx[thisndim] = 0; i < ary->len; i++) {
-//       v = ary->ptr[i];
-//       if (TYPE(v) == T_ARRAY) {
-// 	na_copy_ary_to_nary(RARRAY(v),na,thisndim-1,idx,type);
-// 	if (idx[thisndim-1]>0) idx[thisndim]++;
-//       }
-//       else if (IsNArray(v)) {
-// 	na_copy_nary_to_nary(v,na,thisndim-1,idx);
-// 	idx[thisndim]++;
-//       }
-//       else {
-// 	for (j=thisndim; j; ) idx[--j] = 0;
-// 
-// 	if (rb_obj_is_kind_of(v, rb_cRange)) {
-// 	  na_range_to_sequence(v,&len,&start,&dir);
-// 	  if (len>0) {
-// 	    pos = na_index_pos(na,idx);
-// 	    idx[thisndim]++;
-// 	    step = na_index_pos(na,idx)-pos;
-// 	    IndGenFuncs[type]( len, NA_PTR(na,pos), na_sizeof[type]*step,
-// 			       start, dir );
-// 	    idx[thisndim] += len-1;
-// 	  }
-// 	}
-// 	else {
-// 	  pos = na_index_pos(na,idx);
-// 	  SetFuncs[type][NA_ROBJ]( 1, NA_PTR(na,pos), 0, ary->ptr+i, 0 );
-// 	  idx[thisndim]++;
-// 	}
-// 	/* copy here */
-//       }
-//     }
-//   }
-// }
-// 
 
 
 static VALUE
@@ -684,311 +564,3 @@ Init_na_array()
     rb_define_singleton_method(cNArray, "array_type", na_s_array_type, 1);
 }
 
-
-// static VALUE
-//  na_ary_to_nary_w_type(VALUE ary, int type_spec, VALUE klass)
-// {
-//   int  i, ndim;
-//   int  type = NA_BYTE;
-//   int *shape, *idx;
-//   na_mdai_t *mdai;
-//   struct NARRAY *na;
-//   VALUE v;
-// 
-//   /* empty array */
-//   if (RARRAY(ary)->len < 1) {
-//     return na_make_empty( type, klass );
-//   }
-// 
-//   mdai  = na_mdai_alloc(ary);
-//   na_mdai_investigate(mdai,1);
-//   shape = na_mdai_free(mdai,&ndim,&type);
-// 
-//   /*
-//   printf("ndim=%i\n", ndim);
-//   printf("type=%i\n", type);
-//   for (i=0; i<ndim; i++) {
-//     printf("shape[%i]=%i\n", i, shape[i]);
-//   }
-//   */
-// 
-//   /* type specification */
-//   if (type_spec!=NA_NONE)
-//     type = type_spec;
-// 
-//   /* empty array */
-//   if (ndim==0)
-//     return na_make_empty( type, klass );
-// 
-//   /* Create NArray */
-//   v  = na_make_object(type,ndim,shape,klass);
-//   xfree(shape);
-// 
-//   GetNArray(v,na);
-//   na_clear_data(na);
-// 
-//   idx = ALLOCA_N(int,ndim);
-//   for (i=0; i<ndim; i++) idx[i]=0;
-// 
-//   na_copy_ary_to_nary( RARRAY(ary), na, ndim-1, idx, type );
-// 
-//   return v;
-// }
-// 
-// 
-// VALUE
-//  na_ary_to_nary(VALUE ary, VALUE klass)
-// {
-//   return na_ary_to_nary_w_type( ary, NA_NONE, klass );
-// }
-
-
-// /* obj.kind_of?(NArray) == true */
-// 
-// VALUE
-//  na_dup_w_type(VALUE v2, int type)
-// {
-//   VALUE  v1;
-//   struct NARRAY *a1, *a2;
-// 
-//   GetNArray(v2,a2);
-//   v1 = na_make_object(type, a2->ndim, a2->shape, CLASS_OF(v2));
-//   GetNArray(v1,a1);
-//   na_copy_nary(a1,a2);
-//   return v1;
-// }
-// 
-// 
-// VALUE
-//  na_change_type(VALUE obj, int type)
-// {
-//   struct NARRAY *a2;
-// 
-//   GetNArray(obj,a2);
-// 
-//   if (a2->type == type)
-//     return obj;
-// 
-//   return na_dup_w_type(obj, type);
-// }
-// 
-// 
-// VALUE
-//  na_upcast_type(VALUE obj, int type)  /* na_upcast_narray */
-// {
-//   int newtype;
-//   struct NARRAY *a2;
-// 
-//   GetNArray(obj,a2);
-//   newtype = na_upcast[a2->type][type];
-// 
-//   if (newtype == a2->type)
-//     return obj;
-// 
-//   return na_dup_w_type(obj, newtype);
-// }
-// 
-// 
-// /* obj.kind_of?(Object) == true */
-// 
-// VALUE
-//  na_cast_object(VALUE obj, int type) /* na_cast_certain */
-// {
-//   if (IsNArray(obj)) {
-//     return na_change_type(obj,type);
-//   }
-//   if (TYPE(obj) == T_ARRAY) {
-//     return na_ary_to_nary_w_type(obj,type,cNArray);
-//   }
-//   return na_make_scalar(obj,type);
-// }
-// 
-// 
-// VALUE
-//  na_cast_unless_narray(VALUE obj, int type)
-// {
-//   if (IsNArray(obj)) {
-//     return obj;
-//   }
-//   if (TYPE(obj) == T_ARRAY) {
-//     return na_ary_to_nary_w_type(obj,type,cNArray);
-//   }
-//   return na_make_scalar(obj,type);
-// }
-// 
-// 
-// VALUE
-//  na_cast_unless_array(VALUE obj, int type)
-// {
-//   if (IsNArray(obj)) {
-//     return obj;
-//   }
-//   if (TYPE(obj) == T_ARRAY) {
-//     return na_ary_to_nary(obj,cNArray);
-//   }
-//   return na_make_scalar(obj,type);
-// }
-// 
-// 
-// VALUE
-//  na_upcast_object(VALUE obj, int type)
-// {
-//   if (IsNArray(obj)) {
-//     return na_upcast_type(obj,type);
-//   }
-//   if (TYPE(obj) == T_ARRAY) {
-//     return na_ary_to_nary_w_type(obj,type,cNArray);
-//   }
-//   return na_make_scalar(obj,type);
-// }
-// 
-// 
-// VALUE
-//  na_to_narray(VALUE obj)
-// {
-//   if (IsNArray(obj)) {
-//     return obj;
-//   }
-//   if (TYPE(obj) == T_ARRAY) {
-//     return na_ary_to_nary(obj,cNArray);
-//   }
-//   return na_make_scalar(obj,na_object_type(obj));
-// }
-// 
-// 
-// /* convert NArray to Array */
-// static VALUE
-//  na_to_array0(struct NARRAY* na, int *idx, int thisndim, void (*func)())
-// {
-//   int i, elmsz;
-//   char *ptr;
-//   VALUE ary, val;
-// 
-//   /* Create New Array */
-//   ary = rb_ary_new2(na->shape[thisndim]);
-// 
-//   if (thisndim == 0) {
-//     ptr   = NA_PTR( na, na_index_pos(na,idx) );
-//     elmsz = na_sizeof[na->type];
-//     for (i = na->shape[0]; i; i--) {
-//       (*func)( 1, &val, 0, ptr, 0 );
-//       ptr += elmsz;
-//       rb_ary_push( ary, val );
-//     }
-//   }
-//   else {
-//     for (i = 0; i < na->shape[thisndim]; i++) {
-//       idx[thisndim] = i;
-//       rb_ary_push( ary, na_to_array0(na,idx,thisndim-1,func) );
-//     }
-//   }
-//   return ary;
-// }
-// 
-// 
-// /* method: to_a -- convert itself to Array */
-// VALUE
-//  na_to_array(VALUE obj)
-// {
-//   struct NARRAY *na;
-//   int *idx, i;
-// 
-//   GetNArray(obj,na);
-// 
-//   if (na->ndim<1)
-//     return rb_ary_new();
-// 
-//   idx = ALLOCA_N(int,na->ndim);
-//   for (i = 0; i<na->ndim; i++) idx[i] = 0;
-//   return na_to_array0(na,idx,na->ndim-1,SetFuncs[NA_ROBJ][na->type]);
-// }
-// 
-// 
-// static VALUE
-//  na_inspect_col( int n, char *p2, int p2step, void (*tostr)(),
-// 		 VALUE sep, int ndim )
-// {
-//   VALUE str=Qnil, tmp;
-//   int max_col = 77;
-//   int sep_len = RSTRING(sep)->len;
-// 
-//   if (n>0)
-//     (*tostr)(&str,p2);
-// 
-//   for (n--; n>0; n--) {
-//     p2 += p2step;
-//     (*tostr)(&tmp,p2);
-// 
-//     if (!NIL_P(sep)) rb_str_concat(str, sep);
-// 
-//     if (RSTRING(str)->len + RSTRING(tmp)->len + ndim*4 + sep_len < max_col) {
-//       rb_str_concat(str, tmp);
-//     } else {
-//       rb_str_cat(str,"...",3);
-//       return str;
-//     }
-//   }
-//   return str;
-// }
-// 
-// 
-// /*
-//  *   Create inspect string ... under construction
-//  */
-// 
-// VALUE
-//  na_make_inspect(VALUE val)
-// {
-//   int   i, ii, ndim, count_line=0, max_line=10;
-//   int  *si;
-//   struct NARRAY *ary;
-//   struct slice *s1;
-// 
-//   VALUE fs = rb_str_new(", ",2);
-// 
-//   GetNArray(val,ary);
-//   if (ary->total < 1) return rb_str_new(0, 0);
-// 
-//   /* Allocate Structure */
-//   ndim = ary->ndim;
-//   s1 = ALLOCA_N(struct slice, ndim+1);
-//   si = ALLOCA_N(int,ndim);
-//   na_set_slice_1obj(ndim,s1,ary->shape);
-// 
-//   /* Iteration */
-//   na_init_slice(s1, ndim, ary->shape, na_sizeof[ary->type]);
-//   i = ndim;
-//   s1[i].p = ary->ptr;
-//   val = rb_str_new(0,0);
-//   for(;;) {
-//     /* set pointers */
-//     while (i > 0) {
-//       i--;
-//       rb_str_cat(val, "[ ", 2);
-//       s1[i].p = s1[i].pbeg + s1[i+1].p;
-//       si[i] = s1[i].n;
-//     }
-// 
-//     rb_str_concat(val, na_inspect_col( s1[0].n, s1[0].p, s1[0].pstep,
-// 				       InspFuncs[ary->type], fs, ndim ));
-// 
-//     /* ndim up */
-//     do {
-//       rb_str_cat(val, " ]", 2);
-//       if ( ++i == ndim ) return val;
-//     } while ( --si[i] == 0 );
-//     s1[i].p += s1[i].pstep;
-// 
-//     rb_str_concat(val, fs);
-//     rb_str_cat(val, "\n", 1);
-// 
-//     /* count check */
-//     if (++count_line>=max_line) {
-//       rb_str_cat(val, " ...", 4);
-//       return val;
-//     }
-//     /* indent */
-//     for (ii=i; ii<ndim; ii++)
-//       rb_str_cat(val, "  ", 2);
-//   }
-// }

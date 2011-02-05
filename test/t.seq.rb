@@ -1,5 +1,5 @@
 #require 'test/unit'
-require "narray"
+require "./narray.so"
 #require 'irb/xmp'
 
 

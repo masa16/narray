@@ -1,4 +1,10 @@
+require 'rbconfig.rb'
+
+RbConfig::MAKEFILE_CONFIG["optflags"] = "-g3 -gdwarf-2"
+
 require 'mkmf'
+
+# $CFLAGS="-O0"
 
 srcs = %w(
 bytedata
@@ -23,6 +29,20 @@ rand
 SFMT
 )
 
+srcs = %w(
+narray
+array
+step
+index
+ndloop
+data
+dfloat
+int32
+bit
+SFMT
+rand
+)
+
 # util method
 def create_conf_h(file)
   print "creating #{file}\n"
@@ -34,6 +54,7 @@ def create_conf_h(file)
   hfile.close
 end
 
+=begin
 have_header("atlas/cblas.h")
 have_library("atlas")
 
@@ -45,6 +66,7 @@ if have_library("blas")
     #$defs.delete "-DHAVE_LAPACK"
   end
 end
+=end
 
 if have_header("sys/types.h")
   header = "sys/types.h"
@@ -52,10 +74,15 @@ else
   header = nil
 end
 
+have_type("boolean", header)
 have_type("int32_t", header)
-have_type("u_int32_t", header)
+unless have_type("u_int32_t", header)
+ have_type("uint32_t",header)
+end
 have_type("int64_t", header)
-have_type("u_int64_t", header)
+unless have_type("u_int64_t", header)
+ have_type("uint64_t", header)
+end
 #have_library("m")
 #have_func("sincos")
 #have_func("asinh")
