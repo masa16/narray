@@ -21,7 +21,7 @@ int n_bits(u_int64_t a)
     x  = 1<<n;
     xu = 1<<(n+1);
     xl = 0;
-    //printf("%3i, [%3i, %3i], %i\n", i, xu, xl, x); 
+    //printf("%3i, [%3i, %3i], %i\n", i, xu, xl, x);
 
     for (i=n; i>=0; i--) {
 	m = ~((1<<(x-1))-1);
@@ -32,7 +32,7 @@ int n_bits(u_int64_t a)
 	    xu = x;
 	    x -= 1<<(i-1);
 	}
-	//printf("%3i, [%3i, %3i], %i, 0x%lx, 0x%lx\n", i, xu, xl, x, m, m&a); 
+	//printf("%3i, [%3i, %3i], %i, 0x%lx, 0x%lx\n", i, xu, xl, x, m, m&a);
     }
     return xl;
 }
@@ -63,7 +63,7 @@ static u_int64_t
 }
 
 static VALUE
- na_s_srand(int argc, VALUE *argv, VALUE obj)
+ nary_s_srand(int argc, VALUE *argv, VALUE obj)
 {
     VALUE vseed;
     u_int64_t seed;
@@ -80,7 +80,7 @@ static VALUE
     return Qnil;
 }
 
-Init_na_rand() {
-    rb_define_singleton_method(cNArray, "srand", na_s_srand, -1);
+Init_nary_rand() {
+    rb_define_singleton_method(cNArray, "srand", nary_s_srand, -1);
     init_gen_rand(0);
 }

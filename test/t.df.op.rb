@@ -1,6 +1,6 @@
 require 'test/unit'
-require "complex"
-require "narray"
+#require "complex"
+require "./narray.so"
 #require 'irb/xmp'
 
 $p = true
@@ -10,9 +10,9 @@ class TestBinData < Test::Unit::TestCase
   def px(s)
     puts s
     p a = eval(s)
-    if a.kind_of? Num::NArray # a.class < Num::NArray
+    if a.kind_of? NArray # a.class < Num::NArray
       a.debug_info
-      a.debug_print
+      p a
     end
     puts
     a
@@ -20,7 +20,7 @@ class TestBinData < Test::Unit::TestCase
 
   def test_dfloat_op
     #GC.disable
-    px "$a = Num::DFloat.new([5]).seq"
+    px "$a = NArray::DFloat.new([5]).seq"
     px "$a + 1"
     px "$a * 2"
     px "$a - 4.5"

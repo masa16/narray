@@ -20,8 +20,8 @@
 # include <sys/types.h>
 #endif
 
-#define NARRAY_VERSION "0.7.1"
-#define NARRAY_VERSION_CODE 701
+#define NARRAY_VERSION "0.9.0.1"
+#define NARRAY_VERSION_CODE 901
 
 /*
   Data types used in NArray :
@@ -52,7 +52,7 @@ typedef int                    int32_t;  /* NA_LINT */
 # endif
 #endif /* HAVE_INT32_T */
 
-#ifndef HAVE_U_INT32_T
+#ifndef HAVE_U_INT32_T || HAVE_UINT32_T
 # if SIZEOF_LONG == 4
 typedef unsigned long                   u_int32_t;  /* NA_LINT */
 # else
@@ -65,6 +65,20 @@ typedef unsigned int                    u_int32_t;  /* NA_LINT */
 #endif /* HAVE_U_INT32_T */
 
 #endif // 0
+
+#ifndef HAVE_U_INT32_T
+#ifdef HAVE_UINT32_T
+  typedef uint32_t u_int32_t;
+#endif
+#endif
+
+#ifndef HAVE_U_INT64_T
+#ifdef HAVE_UINT64_T
+  typedef uint64_t u_int64_t;
+#endif
+#endif
+
+
 
 #if   SIZEOF_VOIDP==SIZEOF_LONG
 #define NUM2SIZE(x) NUM2ULONG(x)
@@ -114,7 +128,7 @@ typedef unsigned int                    u_int32_t;  /* NA_LINT */
 //typedef struct { double r,i; } dcomplex;
 
 
-#ifndef HAVE_BOOLEAN
+#ifndef HAVE_TYPE_BOOLEAN
 typedef int boolean;
 #endif
 #ifndef FALSE                   /* in case these macros already exist */
@@ -128,10 +142,13 @@ typedef struct { float dat[2]; }  scomplex;
 typedef struct { double dat[2]; } dcomplex;
 typedef int fortran_integer;
 
+
+extern int na_debug_flag;
+
 #ifndef NARRAY_C
 extern VALUE cNArray;
-extern VALUE num_eCastError;
-extern VALUE num_eShapeError;
+extern VALUE nary_eCastError;
+extern VALUE nary_eShapeError;
 
 //EXTERN const int na_sizeof[NA_NTYPES+1];
 #endif
@@ -141,38 +158,178 @@ extern VALUE num_eShapeError;
 extern VALUE mNum, cNArray;
 extern VALUE cBit;
 extern VALUE cDFloat, cDComplex;
-extern VALUE cInt32, cInt24, cInt16, cInt8;
-extern VALUE cUInt32, cUInt24, cUInt16, cUInt8;
-extern VALUE cInt64, cInt48;
-extern VALUE cUInt64, cUInt48;
+extern VALUE cInt32, cInt16, cInt8;
+extern VALUE cUInt32, cUInt16, cUInt8;
+extern VALUE cInt64;
+extern VALUE cUInt64;
 extern VALUE cRObject;
 extern VALUE cPointer;
-extern VALUE num_cStep;
+extern VALUE na_cStep;
 extern VALUE cComplex;
 extern ID id_contiguous_stride;
 extern ID id_element_bit_size;
 extern ID id_element_byte_size;
 extern ID id_contiguous_stride;
 
+extern ID id_add;
+extern ID id_sub;
+extern ID id_mul;
+extern ID id_div;
+extern ID id_mod;
+extern ID id_pow;
+extern ID id_bit_and;
+extern ID id_bit_or;
+extern ID id_bit_xor;
+extern ID id_eq;
+extern ID id_ne;
+extern ID id_gt;
+extern ID id_ge;
+extern ID id_lt;
+extern ID id_le;
 
+extern ID id_mark;
+extern ID id_info;
+extern VALUE sym_mark;
+extern VALUE sym_info;
 
-//typedef struct NARRAY {
+#define NARRAY_DATA_T     0x1
+#define NARRAY_VIEW_T     0x2
+#define NARRAY_FILEMAP_T  0x3
+
 typedef struct RNArray {
-    //VALUE   type;	// data type  途中ですりかわってはならない
-    VALUE   data;	// byte data object
-    int     ndim;	// # of dimension
-    size_t  size;	// # of total element
-    size_t  offset;     // dataポインタから先頭データの位置へのオフセット
-    	    		// : elm.unit_bits を単位とする
-    	    		// address_unit  pointer_unit access_unit data_unit
-                        // elm.step_unit = elm.bit_size / elm.access_unit
-                        // elm.step_unit = elm.size_bits / elm.unit_bits
-    size_t  *shape;	// 各次元の要素数
-    ssize_t *stride;	// 各次元におけるデータポインタの増分
-    	   		// : elm.unit_bits を単位とする
-    ssize_t **index;    // インデクスアクセス配列
-    VALUE   mark;
+    unsigned char ndim;     // # of dimensions
+    unsigned char type;
+    unsigned char flag[2];  // flags
+    size_t   size;          // # of total elements
+    size_t  *shape;         // # of elements for each dimension
+    VALUE    mark;
 } narray_t;
+
+
+typedef struct RNArrayData {
+    narray_t base;
+    char    *ptr;
+} narray_data_t;
+
+
+typedef union {
+    ssize_t stride;
+    size_t *index;
+} stridx_t;
+
+typedef struct RNArrayView {
+    narray_t base;
+    VALUE    data;       // data object
+    size_t   offset;     // data�ݥ��󥿤�����Ƭ�ǡ����ΰ��֤ؤΥ��ե��å�
+                         // : elm.unit_bits ��ñ�̤Ȥ���
+                         // address_unit  pointer_unit access_unit data_unit
+                         // elm.step_unit = elm.bit_size / elm.access_unit
+                         // elm.step_unit = elm.size_bits / elm.unit_bits
+    stridx_t *stridx;    // stride or indices of data pointer for each dimension
+} narray_view_t;
+
+
+typedef struct RNArrayFileMap {
+    narray_t base;
+    char    *ptr;
+#ifdef WIN32
+    HANDLE hFile;
+    HANDLE hMap;
+#else // POSIX mmap
+    int prot;
+    int flag;
+#endif
+} narray_filemap_t;
+
+
+static inline narray_t *
+na_get_narray_t(VALUE obj)
+{
+    narray_t *na;
+
+    Check_Type(obj, T_DATA);
+    na = (narray_t*)DATA_PTR(obj);
+    return na;
+}
+
+static inline narray_t *
+_na_get_narray_t(VALUE obj, unsigned char na_type)
+{
+    narray_t *na;
+
+    Check_Type(obj, T_DATA);
+    na = (narray_t*)DATA_PTR(obj);
+    if (na->type != na_type) {
+	rb_bug("unknown type 0x%x (0x%x given)", na_type, na->type);
+    }
+    return na;
+}
+
+#define na_get_narray_data_t(obj) (narray_data_t*)_na_get_narray_t(obj,NARRAY_DATA_T)
+#define na_get_narray_view_t(obj) (narray_view_t*)_na_get_narray_t(obj,NARRAY_VIEW_T)
+#define na_get_narray_filemap_t(obj) (narray_filemap_t*)_na_get_narray_t(obj,NARRAY_FILEMAP_T)
+
+#define GetNArray(obj,var)  Data_Get_Struct(obj, narray_t, var)
+#define GetNArrayView(obj,var)  Data_Get_Struct(obj, narray_view_t, var)
+#define GetNArrayData(obj,var)  Data_Get_Struct(obj, narray_data_t, var)
+
+#define SDX_IS_STRIDE(x) ((x).stride&0x1)
+#define SDX_IS_INDEX(x)  (!SDX_IS_STRIDE(x))
+#define SDX_GET_STRIDE(x) ((x).stride>>1)
+#define SDX_GET_INDEX(x)  ((x).index)
+
+#define SDX_SET_STRIDE(x,s) ((x).stride=((s)<<1)|0x1)
+#define SDX_SET_INDEX(x,idx) ((x).index=idx)
+
+#define RNARRAY(val)		((narray_t*)DATA_PTR(val))
+#define RNARRAY_DATA(val)	((narray_data_t*)DATA_PTR(val))
+#define RNARRAY_VIEW(val)	((narray_view_t*)DATA_PTR(val))
+#define RNARRAY_FILEMAP(val)	((narray_filemap_t*)DATA_PTR(val))
+
+#define RNARRAY_NDIM(val)	(RNARRAY(val)->ndim)
+#define RNARRAY_TYPE(val)	(RNARRAY(val)->type)
+#define RNARRAY_FLAG(val)	(RNARRAY(val)->flag)
+#define RNARRAY_SIZE(val)	(RNARRAY(val)->size)
+#define RNARRAY_SHAPE(val)	(RNARRAY(val)->shape)
+#define RNARRAY_MARK(val)	(RNARRAY(val)->mark)
+
+#define RNARRAY_DATA_PTR(val)	 (RNARRAY_DATA(val)->ptr)
+#define RNARRAY_VIEW_DATA(val)	 (RNARRAY_VIEW(val)->data)
+#define RNARRAY_VIEW_OFFSET(val) (RNARRAY_VIEW(val)->offset)
+#define RNARRAY_VIEW_STRIDX(val) (RNARRAY_VIEW(val)->stridx)
+
+#define NA_NDIM(na)	(((narray_t*)na)->ndim)
+#define NA_TYPE(na)	(((narray_t*)na)->type)
+#define NA_FLAG(na)	(((narray_t*)na)->flag)
+#define NA_FLAG0(na)	(((narray_t*)na)->flag[0])
+#define NA_FLAG1(na)	(((narray_t*)na)->flag[1])
+#define NA_SIZE(na)	(((narray_t*)na)->size)
+#define NA_SHAPE(na)	(((narray_t*)na)->shape)
+#define NA_MARK(na)	(((narray_t*)na)->mark)
+
+#define NA_DATA_PTR(na)         (((narray_data_t*)na)->ptr)
+#define NA_VIEW_DATA(na)	(((narray_view_t*)na)->data)
+#define NA_VIEW_OFFSET(na)	(((narray_view_t*)na)->offset)
+#define NA_VIEW_STRIDX(na)	(((narray_view_t*)na)->stridx)
+
+#define NA_FILEMAP_PTR(na)	(((narray_filemap_t*)na)->ptr)
+
+
+#define NA_FL0_TEST(x,f) (NA_FLAG0(x)&(f))
+#define NA_FL1_TEST(x,f) (NA_FLAG1(x)&(f))
+
+#define NA_FL0_SET(x,f) do {NA_FLAG0(x) |= (f);} while(0)
+#define NA_FL1_SET(x,f) do {NA_FLAG1(x) |= (f);} while(0)
+
+#define NA_FL0_UNSET(x,f) do {NA_FLAG0(x) &= ~(f);} while(0)
+#define NA_FL1_UNSET(x,f) do {NA_FLAG1(x) &= ~(f);} while(0)
+
+#define NA_FL0_REVERSE(x,f) do {NA_FLAG0(x) ^= (f);} while(0)
+#define NA_FL1_REVERSE(x,f) do {NA_FLAG1(x) ^= (f);} while(0)
+
+#define NA_TEST_LOCK(x)  NA_FL0_TEST(x,NA_FL_LOCK)
+#define NA_SET_LOCK(x)   NA_FL0_SET(x,NA_FL_LOCK)
+#define NA_UNSET_LOCK(x) NA_FL0_UNSET(x,NA_FL_LOCK)
 
 
 /* FLAGS
@@ -182,25 +339,22 @@ typedef struct RNArray {
    - Extensible?
    - matrix or not
 */
-#define FL_NA_INPLACE     FL_USER0
-#define FL_NA_INDEX_ORDER FL_USER1 // column_major/row_major
-#define FL_NA_BYTE_SWAPPED  FL_USER2 // big_endian/little_endian
 
-#define TEST_COLUMN_MAJOR(x) FL_TEST((x),FL_NA_INDEX_ORDER)
-#define TEST_ROW_MAJOR(x)    (!FL_TEST((x),FL_NA_INDEX_ORDER))
-#define TEST_INPLACE(x)		FL_TEST((x),FL_NA_INPLACE)
-#define TEST_BYTE_SWAPPED(x)	FL_TEST((x),FL_NA_BYTE_SWAPPED)
-#define TEST_HOST_ORDER(x)	(!FL_TEST((x),FL_NA_BYTE_SWAPPED))
-#define TEST_COLUMN_MAJOR(x) FL_TEST((x),FL_NA_INDEX_ORDER)
+#define NA_FL_LOCK         (0x1<<0)
+#define NA_FL_COLUMN_MAJOR (0x1<<1)
+#define NA_FL_BYTE_SWAPPED (0x1<<2)
+#define NA_FL_INPLACE      (0x1<<3)
 
-#define SET_COLUMN_MAJOR(x)     FL_SET((x),FL_NA_INDEX_ORDER)
-#define SET_ROW_MAJOR(x)     FL_UNSET((x),FL_NA_INDEX_ORDER)
+#define TEST_COLUMN_MAJOR(x)   NA_FL0_TEST(x,NA_FL_COLUMN_MAJOR)
+#define TEST_ROW_MAJOR(x)    (!NA_FL0_TEST(x,NA_FL_COLUMN_MAJOR))
+#define TEST_BYTE_SWAPPED(x)   NA_FL0_TEST(x,NA_FL_BYTE_SWAPPED)
+#define TEST_HOST_ORDER(x)   (!TEST_BYTE_SWAPPED(x))
 
-#define SET_INPLACE(x)     FL_SET((x),FL_NA_INPLACE)
-#define UNSET_INPLACE(x)     FL_UNSET((x),FL_NA_INPLACE)
+#define TEST_INPLACE(x)        NA_FL0_TEST(x,NA_FL_INPLACE)
+#define SET_INPLACE(x)         NA_FL0_SET(x,NA_FL_INPLACE)
+#define UNSET_INPLACE(x)       NA_FL0_UNSET(x,NA_FL_INPLACE)
 
-#define REVERSE_BYTE_SWAPPED(x)	FL_REVERSE((x),FL_NA_BYTE_SWAPPED)
-
+#define REVERSE_BYTE_SWAPPED(x)	NA_FL0_REVERSE((x),NA_FL_BYTE_SWAPPED)
 
 #ifdef DYNAMIC_ENDIAN
 #else
@@ -219,7 +373,7 @@ typedef struct RNArray {
 */
 
 
-
+/*
 typedef struct NA_ITERATOR {
     size_t   n;
     size_t   pos;
@@ -229,15 +383,16 @@ typedef struct NA_ITERATOR {
     char    *ptr;
 } na_iterator_t;
 
-
 //typedef void (*na_iter_func_t) _((na_iterator_t *const));
 typedef void (*na_iter_func_t) _((na_iterator_t *const, VALUE info));
 
 typedef void (*na_simple_func_t) _((char*ptr, size_t pos, VALUE opt));
 
 typedef VALUE (*na_text_func_t) _((char*ptr, size_t pos, VALUE opt));
+*/
 
 
+/*
 typedef struct NA_FUNC_ARG {
     VALUE type;
     VALUE init;
@@ -249,41 +404,34 @@ typedef struct NA_FUNC_ARG {
 } na_func_arg_t;
 
 typedef struct NDFUNCTION {
-    //void (*func)(na_iterator_t *const);
     //char *name;
     na_iter_func_t func;
-    //boolean has_loop;
-    //boolean keep_dim;
-    int flag;
+    unsigned int flag;
     int narg;
     int nres;
     na_func_arg_t *args;
-    /*
-    na_arg_t *ress;
-    */
-    //VALUE info;
 } ndfunc_t;
 
 
-#define NDF_HAS_LOOP		7
-#define NDF_CONTIGUOUS_LOOP	(1<<0)
-#define NDF_STEP_LOOP		(1<<1)
-#define NDF_INDEX_LOOP		(1<<2)
+#define NDF_CONTIGUOUS_LOOP	(1<<0) // x[i]
+#define NDF_STRIDE_LOOP		(1<<1) // *(x+stride*i)
+#define NDF_INDEX_LOOP		(1<<2) // *(x+idx[i])
+
 #define NDF_KEEP_DIM		(1<<3)
 #define NDF_ACCEPT_SWAP		(1<<4)
 
-#define HAS_LOOP       7
-#define HAS_INDEX_LOOP 7
-#define HAS_STEP_LOOP  3
-#define HAS_CONTIGUOUS_LOOP 1
+#define NDF_FULL_LOOP (NDF_CONTIGUOUS_LOOP|NDF_STRIDE_LOOP|NDF_INDEX_LOOP)
+
+#define HAS_LOOP       NDF_FULL_LOOP
+//#define HAS_INDEX_LOOP 7
+//#define HAS_STEP_LOOP  3
+//#define HAS_CONTIGUOUS_LOOP 1
 #define NO_LOOP	       0
 
 #define NDF_TEST(nf,fl)  ((nf)->flag&(fl))
 #define NDF_SET(nf,fl)  {(nf)->flag |= (fl);}
+*/
 
-
-#define GetNArray(obj,var)  Data_Get_Struct(obj, narray_t, var)
-//#define GetNdfunction(obj,var)  Data_Get_Struct(obj, ndfunc_t, var)
 
 #define IsNArray(obj) (rb_obj_is_kind_of(obj,cNArray)==Qtrue)
 //#define IsNElement(obj) (rb_obj_is_kind_of(obj,cNElement)==Qtrue)
@@ -292,57 +440,14 @@ typedef struct NDFUNCTION {
 #define DEBUG_PRINT(v) puts(StringValueCStr(rb_funcall(v,rb_intern("inspect"),0)))
 
 
-#define RNARRAY(val)		((narray_t*)DATA_PTR(val))
-#define RNARRAY_TYPE(val)	(RNARRAY(val)->type)
-#define RNARRAY_SIZE(val)	(RNARRAY(val)->size)
-#define RNARRAY_NDIM(val)	(RNARRAY(val)->ndim)
-#define RNARRAY_SHAPE(val)	(RNARRAY(val)->shape)
-#define RNARRAY_OFFSET(val)	(RNARRAY(val)->offset)
-#define RNARRAY_STRIDE(val)	(RNARRAY(val)->stride)
-#define RNARRAY_INDEX(val)	(RNARRAY(val)->index)
-#define RNARRAY_MARK(val)	(RNARRAY(val)->mark)
-
-//#define NA_TYPE(val)	(RNARRAY(val)->type)
-#define NA_SIZE(val)	(RNARRAY(val)->size)
-#define NA_NDIM(val)	(RNARRAY(val)->ndim)
-#define NA_SHAPE(val)	(RNARRAY(val)->shape)
-#define NA_OFFSET(val)	(RNARRAY(val)->offset)
-#define NA_STRIDE(val)	(RNARRAY(val)->stride)
-#define NA_INDEX(val)	(RNARRAY(val)->index)
-#define NA_MARK(val)	(RNARRAY(val)->mark)
-
-
-#define NA_PTR(a,p)    ((a)->ptr+(p)*na_sizeof[(a)->type])
-#define NA_STRUCT(val) ((narray_t*)DATA_PTR(val))
-#define NA_PTR_TYPE(val,type) (type)(((narray_t*)DATA_PTR(val))->ptr)
-#define NA_RANK(val)   (((narray_t*)DATA_PTR(val))->rank)
-#define NA_TYPE(val)   (((narray_t*)DATA_PTR(val))->type)
-#define NA_TOTAL(val)  (((narray_t*)DATA_PTR(val))->total)
-#define NA_SHAPE0(val) (((narray_t*)DATA_PTR(val))->shape[0])
-#define NA_SHAPE1(val) (((narray_t*)DATA_PTR(val))->shape[1])
 
 #define NA_IsNArray(obj) \
   (rb_obj_is_kind_of(obj,cNArray)==Qtrue)
 #define NA_IsArray(obj) \
   (TYPE(obj)==T_ARRAY || rb_obj_is_kind_of(obj,cNArray)==Qtrue)
-#define NA_IsROBJ(d) ((d)->type==NA_ROBJ)
-#define NA_IsINTEGER(a) \
-  ((a)->type==NA_BYTE || (a)->type==NA_SINT || (a)->type==NA_LINT )
-#define NA_IsCOMPLEX(a) \
-  ((a)->type==NA_SCOMPLEX || (a)->type==NA_DCOMPLEX)
-#define NA_MAX(a,b) (((a)>(b))?(a):(b))
-#define NA_SWAP(a,b,tmp) {(tmp)=(a);(a)=(b);(b)=(tmp);}
-
-#define na_class_dim(klass) NUM2INT(rb_const_get(klass, na_id_class_dim))
 
 #define NUM2REAL(v)  NUM2DBL( rb_funcall((v),na_id_real,0) )
 #define NUM2IMAG(v)  NUM2DBL( rb_funcall((v),na_id_imag,0) )
-
-#define NA_ALLOC_SLICE(slc,nc,shp,np) \
-{ slc = (struct slice*)xmalloc( sizeof(struct slice)*(nc) + \
-				sizeof(int)*(np) );\
-  shp = (int*)&( (slc)[nc] ); }
-
 
 
 /* Function Prototypes */
@@ -360,80 +465,6 @@ typedef struct {
     int shift;
 } rand_opt_t;
 
-void rand_norm(double *a);
-
-
-VALUE rb_narray_new( VALUE elem, int ndim, size_t *shape );
-VALUE rb_narray_debug_info( VALUE self );
-
-void na_copy_flags( VALUE src, VALUE dst );
-
-void *na_data_pointer_for_write( VALUE self );
-void *na_data_pointer_for_read( VALUE self );
-
-VALUE rb_narray_single_dim_view( VALUE self );
-
-ssize_t *na_get_stride(VALUE v);
-
-VALUE na_mark_dimension(int argc, VALUE *argv, VALUE self);
-
-VALUE na_transpose_map(VALUE self, int *map);
-
-VALUE na_check_ladder(VALUE self, int start_dim);
-
-
-ndfunc_t * ndfunc_alloc( na_iter_func_t func, int has_loop, int narg, int nres, ... );
-void ndfunc_free( ndfunc_t* nf );
-
-VALUE ndfunc_execute( ndfunc_t *nf, int argc, ... );
-VALUE ndfunc_execute_reduce( ndfunc_t *nf, VALUE mark, int argc, ... );
-VALUE ndfunc_execute_to_rarray( ndfunc_t *nf, VALUE arg, VALUE info );
-//VALUE ndfunc_execute_from_rarray( ndfunc_t *nf, VALUE arg );
-void ndloop_execute_store_array( ndfunc_t *nf, VALUE rary, VALUE nary );
-void ndfunc_debug_print( VALUE ary, na_simple_func_t func, VALUE opt );
-//void ndfunc_execute_io( VALUE ary, na_simple_func_t func, VALUE io );
-//VALUE ndfunc_execute_to_text( VALUE ary, na_text_func_t func, VALUE opt );
-void ndfunc_execute_inspect( VALUE ary, VALUE str, na_text_func_t func, VALUE opt );
-VALUE na_info_str( VALUE ary );
-
-
-VALUE na_s_allocate( VALUE klass );
-void na_alloc_shape( narray_t *na, int ndim );
-void na_alloc_index( narray_t *na );
-void na_alloc_data( VALUE self );
-
-VALUE na_flatten(VALUE self);
-VALUE na_dup(VALUE self);
-VALUE na_copy(VALUE);
-
-VALUE na_flatten_dim(VALUE self, int sd);
-VALUE na_flatten_by_mark( int argc, VALUE *argv, VALUE self );
-
-boolean na_test_mark( VALUE mark, int dim );
-
-int na_parse_dimension(int argc, VALUE *argv, int dimc, int *dimv, int flag);
-
-
-size_t *na_mdarray_investigate(VALUE ary, int *ndim, VALUE *type);
-
-
-void num_step_array_index( VALUE self, size_t ary_size, size_t *plen, ssize_t *pbeg, ssize_t *pstep );
-void num_step_sequence( VALUE self, size_t *plen, double *pbeg, double *pstep );
-
-VALUE num_type_s_upcast(VALUE type1, VALUE type2);
-
-void na_copy_bytes( na_iterator_t *const itr, VALUE info );
-
-void rb_scan_kw_args __((VALUE, ...));
-
-VALUE na_aref(int argc, VALUE *argv, VALUE self);
-VALUE na_aref_md(int argc, VALUE *argv, VALUE self, int keep_dim);
-VALUE num_init_accum_aref0( VALUE self, VALUE mark );
-
-int n_bits(u_int64_t a);
-
-VALUE num_pointer_new( VALUE a1 );
-VALUE num_pointer_index( VALUE ptr, void *beg, ssize_t step, VALUE idxclass );
 
 
 typedef unsigned int BIT_DIGIT;
@@ -447,5 +478,10 @@ typedef unsigned int BIT_DIGIT;
 #define ELEMENT_BIT_SIZE  "ELEMENT_BIT_SIZE"
 #define ELEMENT_BYTE_SIZE "ELEMENT_BYTE_SIZE"
 #define CONTIGUOUS_STRIDE "CONTIGUOUS_STRIDE"
+
+#include "ndloop.h"
+//#include "ndfunc.h"
+
+#include "intern.h"
 
 #endif /* ifndef NARRAY_H */
