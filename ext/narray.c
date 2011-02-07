@@ -991,6 +991,34 @@ VALUE na_debug_set(VALUE mod, VALUE flag)
 }
 
 
+VALUE
+na_equal(VALUE self, volatile VALUE other)
+{
+    volatile VALUE bool;
+    narray_t *na1, *na2;
+    int i;
+
+    GetNArray(self,na1);
+
+    if (!rb_obj_is_kind_of(other,cNArray)) {
+        other = rb_funcall(CLASS_OF(self), rb_intern("cast"), 1, other);
+    }
+
+    GetNArray(other,na2);
+    if (na1->ndim != na2->ndim) {
+        return Qfalse;
+    }
+    for (i=0; i<na1->ndim; i++) {
+        if (na1->shape[i] != na2->shape[i]) {
+            return Qfalse;
+        }
+    }
+    bool = rb_funcall(self, rb_intern("eq"), 1, other);
+    return (rb_funcall(bool, rb_intern("count_false"), 0)==INT2FIX(0)) ? Qtrue : Qfalse;
+}
+
+
+
 /* initialization of NArray Class */
 void
 Init_narray()
@@ -1039,6 +1067,9 @@ Init_narray()
     rb_define_method(cNArray, "out_of_place!", na_out_of_place_bang, 0);
     rb_define_alias (cNArray, "not_in_place!", "out_of_place!");
     rb_define_alias (cNArray, "not_inplace!", "out_of_place!");
+
+
+    rb_define_method(cNArray, "==", na_equal, 1);
 
 
     id_contiguous_stride = rb_intern(CONTIGUOUS_STRIDE);

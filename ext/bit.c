@@ -101,14 +101,6 @@ void iter_bit_print(char *ptr, size_t pos, VALUE opt)
     printf("%d", x);
 }
 
-//VALUE
-//nary_bit_debug_print(VALUE ary)
-//{
-//    ndfunc_debug_print(ary, iter_bit_print, Qnil);
-//    return Qnil;
-//}
-
-
 
 static VALUE
 format_bit(VALUE fmt, int x)
@@ -260,6 +252,7 @@ iter_bit_fill(na_loop_t *const lp)
     }
 }
 
+
 static VALUE
 nary_bit_fill(VALUE self, volatile VALUE val)
 {
@@ -314,45 +307,6 @@ nary_bit_cast_to_rarray(VALUE self)
     return v;
 }
 
-
-/*
-static void
-//store_array_to_bit_loop
-iter_cast_rarray_to_bit(na_loop_t *const lp)
-{
-    size_t  i, n;
-    ssize_t s1, s2;
-    size_t *idx1, *idx2;
-    char   *p1;
-    size_t  p2;
-    BIT_DIGIT *a2;
-    VALUE     x;
-    BIT_DIGIT y;
-
-    INIT_COUNTER(lp, n);
-    INIT_PTR    (lp, 0,     p1, s1, idx1);
-    INIT_PTR_BIT(lp, 1, a2, p2, s2, idx2);
-
-    for (i=0; i<n; i++) {
-        LOAD_DATA_STEP(p1, s1, idx1, VALUE, x);
-        if (TYPE(x) != T_ARRAY) {
-            // NIL if empty
-            y = 2;
-            if (FIXNUM_P(x)) {
-                y = FIX2INT(x);
-            } else if (x==Qtrue) {
-                y = 1;
-            } else if (x==Qfalse) {
-                y = 0;
-            }
-            if (y!=0 && y!=1) {
-                rb_raise(rb_eArgError, "bit can be cast from 0 or 1 or true or false");
-            }
-            STORE_BIT_STEP(a2, p2, s2, idx2, y);
-        }
-    }
-}
-*/
 
 static void
 iter_cast_rarray_to_bit(na_loop_t *const lp)
@@ -426,40 +380,6 @@ nary_cast_array_to_bit(VALUE rary)
 }
 
 
-/*
-static VALUE
-//nary_bit_store_array(VALUE nary, VALUE rary)
-nary_cast_array_to_bit(VALUE rary)
-{
-    VALUE v;
-    ndfunc_t *func;
-
-    func = ndfunc_alloc(store_array_to_bit_loop, FULL_LOOP,
-                        2, 0, Qnil, rb_cArray);
-    puts("pass2");
-    //nary_bit_fill(nary, INT2FIX(0));
-    puts("pass3");
-    ndloop_cast_rarray_to_narray(func, rary, nary);
-    //ndloop_execute_store_array(func, rary, nary);
-    ndfunc_free(func);
-    return nary;
-}
-
-static VALUE
-nary_cast_array_to_bit(VALUE rary)
-{
-    int nd;
-    size_t *shape;
-    VALUE tp, nary;
-    ndfunc_t *func;
-
-    shape = na_mdarray_investigate(rary, &nd, &tp);
-    nary = rb_narray_new(cBit, nd, shape);
-    xfree(shape);
-    nary_bit_store_array(nary, rary);
-    return nary;
-}
-*/
 
 static VALUE
 nary_bit_extract(VALUE self)
@@ -483,7 +403,7 @@ nary_bit_extract(VALUE self)
 
 #define DEF_UNARY_BIT(opname, operation)                        \
 static void                                                     \
- iter_bit_##opname(na_loop_t *const lp)                        \
+ iter_bit_##opname(na_loop_t *const lp)                         \
 {                                                               \
     size_t  n;                                                  \
     size_t  p1, p3;                                             \
@@ -493,9 +413,9 @@ static void                                                     \
     BIT_DIGIT *a1, *a3;                                         \
     BIT_DIGIT  x;                                               \
                                                                 \
-    INIT_COUNTER(lp, n);                                       \
-    INIT_PTR_BIT(lp, 0, a1, p1, s1, idx1);                     \
-    INIT_PTR_BIT(lp, 1, a3, p3, s3, idx3);                     \
+    INIT_COUNTER(lp, n);                                        \
+    INIT_PTR_BIT(lp, 0, a1, p1, s1, idx1);                      \
+    INIT_PTR_BIT(lp, 1, a3, p3, s3, idx3);                      \
     if (s1!=1 || s3!=1 || idx1 || idx3) {                       \
         for (; n--;) {                                          \
             LOAD_BIT_STEP(a1, p1, s1, idx1, x);                 \
@@ -549,9 +469,9 @@ static VALUE                                                    \
  {                                                              \
      ndfunc_t *func;                                            \
      VALUE v;                                                   \
-     func = ndfunc_alloc(iter_bit_##opname, FULL_LOOP,        \
+     func = ndfunc_alloc(iter_bit_##opname, FULL_LOOP,          \
                          1, 1, cBit, cBit);                     \
-     v = ndloop_do(func, 1, self);                         \
+     v = ndloop_do(func, 1, self);                              \
      ndfunc_free(func);                                         \
      return v;                                                  \
 }
@@ -592,7 +512,7 @@ nary_bit_aset(int argc, VALUE *argv, VALUE self)
 
 #define DEF_BINARY_BIT(opname, operation)                       \
 static void                                                     \
- iter_bit_##opname(na_loop_t *const lp)                        \
+ iter_bit_##opname(na_loop_t *const lp)                         \
 {                                                               \
     size_t  n;                                                  \
     size_t  p1, p2, p3;                                         \
@@ -602,10 +522,10 @@ static void                                                     \
     BIT_DIGIT *a1, *a2, *a3;                                    \
     BIT_DIGIT  x, y;                                            \
                                                                 \
-    INIT_COUNTER(lp, n);                                       \
-    INIT_PTR_BIT(lp, 0, a1, p1, s1, idx1);                     \
-    INIT_PTR_BIT(lp, 1, a2, p2, s2, idx2);                     \
-    INIT_PTR_BIT(lp, 2, a3, p3, s3, idx3);                     \
+    INIT_COUNTER(lp, n);                                        \
+    INIT_PTR_BIT(lp, 0, a1, p1, s1, idx1);                      \
+    INIT_PTR_BIT(lp, 1, a2, p2, s2, idx2);                      \
+    INIT_PTR_BIT(lp, 2, a3, p3, s3, idx3);                      \
     if (s1!=1 || s2!=1 || s3!=1 || idx1 || idx2 || idx3) {      \
         for (; n--;) {                                          \
             LOAD_BIT_STEP(a1, p1, s1, idx1, x);                 \
@@ -677,7 +597,7 @@ static VALUE                                                    \
      VALUE v;                                                   \
      func = ndfunc_alloc(iter_bit_##opname, FULL_LOOP,          \
                              2, 1, cBit, cBit, cBit);           \
-     v = ndloop_do(func, 2, a1, a2);                       \
+     v = ndloop_do(func, 2, a1, a2);                            \
      ndfunc_free(func);                                         \
      return v;                                                  \
 }
@@ -692,7 +612,7 @@ DEF_UNARY_BIT(not, x=~x)
 
 #define DEF_ACCUM_UNARY(type, opname, condition)                \
 static void                                                     \
- iter_bit_##opname##_##type(na_loop_t *const lp)               \
+ iter_bit_##opname##_##type(na_loop_t *const lp)                \
 {                                                               \
     size_t  i;                                                  \
     BIT_DIGIT *a1;                                              \
@@ -704,9 +624,9 @@ static void                                                     \
     type    y;                                                  \
     type   *p;                                                  \
                                                                 \
-    INIT_COUNTER(lp, i);                                       \
-    INIT_PTR_BIT(lp, 0, a1, p1, s1, idx1);                     \
-    INIT_PTR(lp, 1, p2, s2, idx2);                             \
+    INIT_COUNTER(lp, i);                                        \
+    INIT_PTR_BIT(lp, 0, a1, p1, s1, idx1);                      \
+    INIT_PTR(lp, 1, p2, s2, idx2);                              \
     if (idx1||idx2) {                                           \
         for (; i--;) {                                          \
             LOAD_BIT_STEP(a1, p1, s1, idx1, x);                 \
@@ -994,6 +914,23 @@ static VALUE
     return result;
 }
 
+VALUE
+nary_bit_all_p(VALUE self)
+{
+    return (rb_funcall(self, rb_intern("count_false"), 0)==INT2FIX(0)) ? Qtrue : Qfalse;
+}
+
+VALUE
+nary_bit_any_p(VALUE self)
+{
+    return (rb_funcall(self, rb_intern("count_true"), 0)!=INT2FIX(0)) ? Qtrue : Qfalse;
+}
+
+VALUE
+nary_bit_none_p(VALUE self)
+{
+    return (rb_funcall(self, rb_intern("count_true"), 0)==INT2FIX(0)) ? Qtrue : Qfalse;
+}
 
 
 void
@@ -1028,6 +965,10 @@ Init_nary_bit()
     rb_define_method(cBit, "where", nary_bit_where, 0);
     rb_define_method(cBit, "where2", nary_bit_where2, 0);
     rb_define_method(cBit, "mask", nary_bit_mask, 1);
+
+    rb_define_method(cBit, "all?", nary_bit_all_p, 0);
+    rb_define_method(cBit, "any?", nary_bit_any_p, 0);
+    rb_define_method(cBit, "none?", nary_bit_none_p, 0);
 
     //rb_define_method(cBit, "debug_print", nary_bit_debug_print, 0);
     rb_define_method(cBit, "inspect", nary_bit_inspect, 0);

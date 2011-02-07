@@ -10,25 +10,25 @@
 */
 
 
-#define DEBUG_PRINT_INT(intname,esz,type,fmt)   \
-static void                                     \
- iter_##intname##_print(char *ptr, size_t pos, VALUE opt)      \
-{                                               \
-    type x;                                     \
-    LOAD_INT(ptr+pos, esz, x);          \
-    printf(fmt, x);                             \
-}                                               \
-static VALUE                                    \
- nary_##intname##_debug_print(VALUE ary)        \
-{                                               \
+#define DEBUG_PRINT_INT(intname,esz,type,fmt)                   \
+static void                                                     \
+ iter_##intname##_print(char *ptr, size_t pos, VALUE opt)       \
+{                                                               \
+    type x;                                                     \
+    LOAD_INT(ptr+pos, esz, x);                                  \
+    printf(fmt, x);                                             \
+}                                                               \
+ static VALUE                                                   \
+ nary_##intname##_debug_print(VALUE ary)                        \
+{                                                               \
     ndfunc_debug_print(ary, iter_##intname##_print, Qnil);      \
-    return Qnil;                                \
+    return Qnil;                                                \
 }
 
 
 #define DEF_BINARY_INT(tpname, tpclass, type, opname, operation)        \
 static void                                                             \
- iter_##tpname##_##opname(na_loop_t *const lp)                         \
+ iter_##tpname##_##opname(na_loop_t *const lp)                          \
 {                                                                       \
     size_t  i;                                                          \
     char   *p1, *p2, *p3;                                               \
@@ -36,10 +36,10 @@ static void                                                             \
     ssize_t *idx1, *idx2, *idx3;                                        \
     int     e1, e2, e3;                                                 \
     type    x, y;                                                       \
-    INIT_COUNTER(lp, i);                                               \
-    INIT_PTR_ELM(lp, 0, p1, s1, idx1, e1);                             \
-    INIT_PTR_ELM(lp, 1, p2, s2, idx2, e2);                             \
-    INIT_PTR_ELM(lp, 2, p3, s3, idx3, e3);                             \
+    INIT_COUNTER(lp, i);                                                \
+    INIT_PTR_ELM(lp, 0, p1, s1, idx1, e1);                              \
+    INIT_PTR_ELM(lp, 1, p2, s2, idx2, e2);                              \
+    INIT_PTR_ELM(lp, 2, p3, s3, idx3, e3);                              \
     if (idx1||idx2||idx3||                                              \
         e1!=sizeof(type)||e2!=sizeof(type)||e3!=sizeof(type)) {         \
         for (; i--;) {                                                  \
@@ -77,7 +77,7 @@ static VALUE                                                            \
     }                                                                   \
     func = ndfunc_alloc(iter_##tpname##_##opname, FULL_LOOP,            \
                         2, 1, c1, c2, mod);                             \
-    v = ndloop_do(func, 2, a1, a2);                                \
+    v = ndloop_do(func, 2, a1, a2);                                     \
     ndfunc_free(func);                                                  \
     return v;                                                           \
 }                                                                       \
@@ -95,9 +95,9 @@ static VALUE                                                            \
 }                                                                       \
 
 
-#define DEF_UNARY_INT(tpname, tpclass, type, opname, operation) \
+#define DEF_UNARY_INT(tpname, tpclass, type, opname, operation)         \
 static void                                                             \
- tpname##_##opname##_loop(na_loop_t *const lp)                         \
+ tpname##_##opname##_loop(na_loop_t *const lp)                          \
 {                                                                       \
     size_t  i;                                                          \
     char   *p1, *p2;                                                    \
@@ -105,15 +105,15 @@ static void                                                             \
     ssize_t *idx1, *idx2;                                               \
     int     e1, e2;                                                     \
     type    x;                                                          \
-    INIT_COUNTER(lp, i);                                               \
-    INIT_PTR_ELM(lp, 0, p1, s1, idx1, e1);                             \
-    INIT_PTR_ELM(lp, 1, p2, s2, idx2, e2);                             \
+    INIT_COUNTER(lp, i);                                                \
+    INIT_PTR_ELM(lp, 0, p1, s1, idx1, e1);                              \
+    INIT_PTR_ELM(lp, 1, p2, s2, idx2, e2);                              \
     if (idx1||idx2||                                                    \
         e1!=sizeof(type)||e2!=sizeof(type)) {                           \
         for (; i--;) {                                                  \
             LOAD_INT_STEP(p1, s1, idx1, e1, type, x);                   \
             operation;                                                  \
-            STORE_INT_STEP(p2, s2, idx2, e2, type, x);          \
+            STORE_INT_STEP(p2, s2, idx2, e2, type, x);                  \
         }                                                               \
     } else {                                                            \
         for (; i--;) {                                                  \
@@ -133,15 +133,15 @@ nary_##tpname##_##opname(VALUE a1)                                      \
     klass = CLASS_OF(a1);                                               \
     func = ndfunc_alloc(tpname##_##opname##_loop, FULL_LOOP,            \
                             1, 1, klass, klass);                        \
-    v = ndloop_do(func, 1, a1);                                    \
-    ndfunc_free(func);                                          \
+    v = ndloop_do(func, 1, a1);                                         \
+    ndfunc_free(func);                                                  \
     return v;                                                           \
 }
 
 
 #define DEF_CMP_BINARY_INT(tpname, tpclass, type, opname, operation)    \
 static void                                                             \
- tpname##_##opname##_loop(na_loop_t *const lp)                         \
+ tpname##_##opname##_loop(na_loop_t *const lp)                          \
 {                                                                       \
     size_t  i;                                                          \
     char   *p1, *p2;                                                    \
@@ -152,10 +152,10 @@ static void                                                             \
     int     e1, e2;                                                     \
     type    x, y;                                                       \
     BIT_DIGIT b;                                                        \
-    INIT_COUNTER(lp, i);                                               \
-    INIT_PTR_ELM(lp, 0, p1, s1, idx1, e1);                             \
-    INIT_PTR_ELM(lp, 1, p2, s2, idx2, e2);                             \
-    INIT_PTR_BIT(lp, 2, a3, p3, s3, idx3);                             \
+    INIT_COUNTER(lp, i);                                                \
+    INIT_PTR_ELM(lp, 0, p1, s1, idx1, e1);                              \
+    INIT_PTR_ELM(lp, 1, p2, s2, idx2, e2);                              \
+    INIT_PTR_BIT(lp, 2, a3, p3, s3, idx3);                              \
     if (idx1||idx2||idx3||                                              \
         e1!=sizeof(type)||e2!=sizeof(type)) {                           \
         for (; i--;) {                                                  \
@@ -181,15 +181,9 @@ nary_##tpname##_s_##opname(VALUE mod, VALUE a1, VALUE a2)               \
 {                                                                       \
     VALUE v;                                                            \
     ndfunc_t *func;                                                     \
-    if (!rb_obj_is_kind_of(a1,tpclass))                                 \
-        rb_raise(rb_eTypeError,"wrong class: %s, expected: %s",         \
-                 rb_obj_classname(a1),rb_class2name(tpclass));          \
-    if (!rb_obj_is_kind_of(a2,tpclass))                                 \
-        rb_raise(rb_eTypeError,"wrong class: %s, expected: %s",         \
-                 rb_obj_classname(a2),rb_class2name(tpclass));          \
     func = ndfunc_alloc(tpname##_##opname##_loop, FULL_LOOP,            \
-                            2, 1, CLASS_OF(a1), CLASS_OF(a2), cBit);    \
-    v = ndloop_do(func, 2, a1, a2);                                \
+                        2, 1, tpclass, tpclass, cBit);                  \
+    v = ndloop_do(func, 2, a1, a2);                                     \
     ndfunc_free(func);                                                  \
     return v;                                                           \
 }                                                                       \
@@ -207,7 +201,7 @@ static VALUE                                                            \
 
 #define DEF_ACCUM_UNARY_INT(tpname, tpclass, type, opname, init, condition, operation) \
 static void                                                             \
- tpname##_##opname##_loop(na_loop_t *const lp)                         \
+ tpname##_##opname##_loop(na_loop_t *const lp)                          \
 {                                                                       \
     size_t  i;                                                          \
     char   *p1, *p2;                                                    \
@@ -217,9 +211,9 @@ static void                                                             \
     int     e1, e2;                                                     \
     type    x, y;                                                       \
                                                                         \
-    INIT_COUNTER(lp, i);                                               \
-    INIT_PTR_ELM(lp, 0, p1, s1, idx1, e1);                             \
-    INIT_PTR_ELM(lp, 1, p2, s2, idx2, e2);                             \
+    INIT_COUNTER(lp, i);                                                \
+    INIT_PTR_ELM(lp, 0, p1, s1, idx1, e1);                              \
+    INIT_PTR_ELM(lp, 1, p2, s2, idx2, e2);                              \
     if (idx1||idx2||                                                    \
         e1!=sizeof(type)||e2!=sizeof(type)) {                           \
         for (; i--;) {                                                  \
@@ -320,18 +314,18 @@ static VALUE                                                    \
 
 
 #define DEF_FILL_INT_WITH_NUM(tpname, type, operation)          \
-static void                                                     \
- tpname##_fill_loop(na_loop_t *const lp)                       \
+    static void                                                 \
+ tpname##_fill_loop(na_loop_t *const lp)                        \
 {                                                               \
     size_t   i;                                                 \
     char    *p1;                                                \
     size_t   e1;                                                \
     ssize_t  s1;                                                \
     ssize_t *idx1;                                              \
-    VALUE    x = *(VALUE*)(lp->opt_ptr);                       \
+    VALUE    x = *(VALUE*)(lp->opt_ptr);                        \
     type     y;                                                 \
-    INIT_COUNTER(lp, i);                                       \
-    INIT_PTR_ELM(lp, 0, p1, s1, idx1, e1);                     \
+    INIT_COUNTER(lp, i);                                        \
+    INIT_PTR_ELM(lp, 0, p1, s1, idx1, e1);                      \
     {operation;}                                                \
     if (idx1) {                                                 \
         for (; i--;) {                                          \
@@ -359,7 +353,7 @@ static void                                                     \
 
 #define DEF_RAND_INT(tpname,type,genrand,genbits,issigned)      \
 static void                                                     \
- tpname##_rand_loop(na_loop_t *const lp)                       \
+ tpname##_rand_loop(na_loop_t *const lp)                        \
 {                                                       \
     size_t   i;                                         \
     char    *p1;                                        \
@@ -369,13 +363,13 @@ static void                                                     \
     type     max, x;                                    \
     int      shift;                                     \
     rand_opt_t *g;                                      \
-    /*VALUE    opt = lp->info;*/                       \
+    /*VALUE    opt = lp->info;*/                        \
     /*Data_Get_Struct(opt,rand_opt_t,g);*/              \
-    g = (rand_opt_t*)(lp->opt_ptr);                    \
+    g = (rand_opt_t*)(lp->opt_ptr);                     \
     max   = g->max;                                     \
     shift = g->shift;                                   \
-    INIT_COUNTER(lp, i);                               \
-    INIT_PTR_ELM(lp, 0, p1, s1, idx1, e1);             \
+    INIT_COUNTER(lp, i);                                \
+    INIT_PTR_ELM(lp, 0, p1, s1, idx1, e1);              \
     if (idx1) {                                         \
         for (; i--;) {                                  \
             do {x=genrand()>>shift;}                    \

@@ -8,11 +8,15 @@ for klass in [NArray::DFloat, NArray::Int32, NArray::Int16, NArray::Int8]
       @narray = klass.cast(array)
     end
 
-    it "should be kind_of #{klass}" do
+    it "== #{array} " do
+      @narray.should == array
+    end
+
+    it "kind_of #{klass}" do
       @narray.should be_kind_of klass
     end
 
-    it "should to_a == #{array} " do
+    it ".to_a == #{array} " do
       @narray.to_a.should == array
     end
 
@@ -28,12 +32,30 @@ for klass in [NArray::DFloat, NArray::Int32, NArray::Int16, NArray::Int8]
       @narray = klass.new([result.size]).seq
     end
 
-    it "should be kind_of #{klass}" do
+    it "kind_of #{klass}" do
       @narray.should be_kind_of klass
     end
 
-    it "should == #{result} " do
-      @narray.eq(result).all?.should be_true
+    it "== #{result} " do
+      @narray == result
+    end
+
+    after do
+      @narray = nil
+    end
+  end
+
+  describe klass, "when new([5]).seq" do
+    before do
+      @narray = klass.new([5]).seq
+    end
+
+    it "kind_of #{klass}" do
+      @narray.should be_kind_of klass
+    end
+
+    it "== #{result} " do
+      @narray.should == result
     end
 
     after do
@@ -48,14 +70,17 @@ for klass in [NArray::DFloat, NArray::Int32, NArray::Int16, NArray::Int8]
       @narray = klass.new([3,2]).seq
     end
 
-    it "should to_a == #{result2} " do
-      @narray.to_a.should == result2
+    it "== #{result2} " do
+      @narray == result2
     end
 
     after do
       @narray = nil
     end
   end
+
+
+
 end
 
 for klass in [NArray::DFloat, NArray::Int32, NArray::Bit]
@@ -68,23 +93,23 @@ for klass in [NArray::DFloat, NArray::Int32, NArray::Bit]
         @narray_dfloat = klass.new(shape)
       end
 
-      it "should be kind_of #{klass}" do
+      it "is kind_of #{klass}" do
         @narray_dfloat.should be_kind_of klass
       end
 
-      it "fill should be kind_of #{klass}" do
+      it ".fill(1) is kind_of #{klass}" do
         @narray_dfloat.fill(1).should be_kind_of klass
       end
 
-      it "should be ndim #{ndim}" do
+      it ".ndim is #{ndim}" do
         @narray_dfloat.ndim.should == ndim
       end
 
-      it "should be shape #{shape}" do
+      it ".shape is #{shape}" do
         @narray_dfloat.shape.should == shape
       end
 
-      it "should be size #{total}" do
+      it ".size is #{total}" do
         @narray_dfloat.size.should == total
       end
 
@@ -107,7 +132,7 @@ for klass in [NArray::DFloat, NArray::Int32]
         @narray_dfloat = klass.new(shape)
       end
 
-      it "seq should be kind_of #{klass}" do
+      it ".seq is kind_of #{klass}" do
         @narray_dfloat.seq.should be_kind_of klass
       end
 
