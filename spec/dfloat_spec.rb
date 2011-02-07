@@ -7,7 +7,7 @@ def px(s)
   a
 end
 
-require "./narray.so"
+require "narray"
 
 describe NArray::DFloat, "when new([10,20])" do
   before do

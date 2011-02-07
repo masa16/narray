@@ -1,6 +1,6 @@
 /*
   template_int.c
-  Numerical Array Extention for Ruby
+  Numerical Array Extension for Ruby
     (C) Copyright 1999-2011 by Masahiro TANAKA
 
   This program is free software.
@@ -351,7 +351,7 @@ static void                                                     \
     ndfunc_t *func;                                             \
     func = ndfunc_alloc(tpname##_fill_loop, FULL_LOOP,          \
                         1, 0, Qnil);                            \
-    ndloop_do3(func, &val, 2, self);                            \
+    ndloop_do3(func, &val, 1, self);                            \
     ndfunc_free(func);                                          \
     return self;                                                \
 }

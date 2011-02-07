@@ -1,3 +1,6 @@
 .config
 ext/Makefile
 ext/narray_config.h
+ext/*.o
+ext/narray.so
+pkg

@@ -1,6 +1,6 @@
 /*
   template_cast.h
-  Numerical Array Extention for Ruby
+  Numerical Array Extension for Ruby
     (C) Copyright 1999-2011 by Masahiro TANAKA
 
   This program is free software.
@@ -10,26 +10,26 @@
 */
 
 #define CAST_NUM_TO_DATA( tpname, type, tpclass, operation ) \
-static VALUE						     \
- nary_##tpname##_new_dim0( type x )				     \
-{								     \
-    narray_t *na;						     \
-    VALUE v;							     \
-    type *ptr;							     \
-    								     \
-    v = rb_narray_new( tpclass, 0, NULL );				\
-    GetNArray(v,na);							\
-    ptr = (type*)(char*)na_get_pointer_for_write(v);			\
-    *ptr = x;								\
+static VALUE                                                 \
+ nary_##tpname##_new_dim0( type x )                                  \
+{                                                                    \
+    narray_t *na;                                                    \
+    VALUE v;                                                         \
+    type *ptr;                                                       \
+                                                                     \
+    v = rb_narray_new( tpclass, 0, NULL );                              \
+    GetNArray(v,na);                                                    \
+    ptr = (type*)(char*)na_get_pointer_for_write(v);                    \
+    *ptr = x;                                                           \
     na_release_lock(v);                                                 \
-    return v;								\
-}									\
-static VALUE								\
- nary_cast_numeric_to_##tpname( VALUE x )				\
-{									\
-    type y;								\
-    {operation;}							\
-    return nary_##tpname##_new_dim0( y );				\
+    return v;                                                           \
+}                                                                       \
+static VALUE                                                            \
+ nary_cast_numeric_to_##tpname( VALUE x )                               \
+{                                                                       \
+    type y;                                                             \
+    {operation;}                                                        \
+    return nary_##tpname##_new_dim0( y );                               \
 }
 
 //#define CAST_NUMERIC_TO_DATA(tpname, type, tpclass, operation)          \

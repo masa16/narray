@@ -1,6 +1,6 @@
 /*
   template_sort.c
-  Numerical Array Extention for Ruby
+  Numerical Array Extension for Ruby
     (C) Copyright 2007-2011 by Masahiro TANAKA
 
   This program is free software.

@@ -1,6 +1,6 @@
 /*
   template_data.h
-  Numerical Array Extention for Ruby
+  Numerical Array Extension for Ruby
     (C) Copyright 1999-2011 by Masahiro TANAKA
 
   This program is free software.

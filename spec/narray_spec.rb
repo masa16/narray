@@ -1,4 +1,4 @@
-require "./narray.so"
+require "narray"
 
 for klass in [NArray::DFloat, NArray::Int32, NArray::Int16, NArray::Int8]
   array = [1,2,3]

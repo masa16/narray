@@ -1,6 +1,6 @@
 /*
   dfloat.c
-  Numerical Array Extention for Ruby
+  Numerical Array Extension for Ruby
     (C) Copyright 1999-2011 by Masahiro TANAKA
 
   This program is free software.
@@ -447,6 +447,45 @@ nary_dfloat_poly(VALUE self, VALUE args)
     return nary_dfloat_extract(v);
 }
 */
+
+
+/*
+ *  call-seq:
+ *     narray.histogram([:min=>min, :max=>max, :binsize=>binsize, :nbins=>nbins]) => narray
+ *     narray.histogram(range, [:binsize=>binsize, :nbins=>nbins]) => narray
+ *     narray.histogram(bin_array) => narray
+ *
+ *  Return histogram.
+ *
+
+bin[i] corresponds to range[i] <= x < range[i+1]
+
+Correspondence between ranges and bins:
+
+          [ bin[0] )[ bin[1] )[ bin[2] )[ bin[3] )[ bin[4] )
+       ---|---------|---------|---------|---------|---------|---  x
+        r[0]      r[1]      r[2]      r[3]      r[4]      r[5]
+
+Ranges are derived from the following equation:
+   range[i] = min + binsize * i
+
+If only nbins is unknown:
+   nbins = floor((max-min)/binsize)+1
+
+If only binsize is unknown:
+   binsize = (max-min)/(nbin-1)
+
+ *     NArray::DFloat[1,2,2,2,3,3,4].histogram(1..4,:nbins=>3) => NArray::Int32[4,2,1]
+ *     NArray::DFloat[1,2,2,2,3,3,4].histogram(1..4,:binsize=>2) => NArray::Int32[4,3]
+ *     NArray::DFloat[1,2,2,2,3,3,4].histogram([1,2,3,4]) => NArray::Int32[1,3,2,1]
+
+ */
+
+VALUE
+nary_dfloat_historgram(int argc, VALUE *argv, VALUE self)
+{
+}
+
 
 
 void
