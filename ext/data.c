@@ -1105,6 +1105,10 @@ Init_nary_data()
     id_ge = rb_intern("ge");
     id_lt = rb_intern("lt");
     id_le = rb_intern("le");
+    id_nearly_eq = rb_intern("nearly_eq");
+
+    id_real = rb_intern("real");
+    id_imag = rb_intern("imag");
 
     id_mark = rb_intern("mark");
     id_info = rb_intern("info");

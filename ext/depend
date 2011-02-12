@@ -1,0 +1,38 @@
+int8.c: int8.def.rb int8.h erb/*.c preproc.rb cogen.rb
+	$(RUBY) cogen.rb $(srcdir)/int8.def.rb > $@
+
+int16.c: int16.def.rb int16.h erb/*.c preproc.rb cogen.rb
+	$(RUBY) cogen.rb $(srcdir)/int16.def.rb > $@
+
+int32.c: int32.def.rb int32.h erb/*.c preproc.rb cogen.rb
+	$(RUBY) cogen.rb $(srcdir)/int32.def.rb > $@
+
+int64.c: int64.def.rb int64.h erb/*.c preproc.rb cogen.rb
+	$(RUBY) cogen.rb $(srcdir)/int64.def.rb > $@
+
+uint8.c: uint8.def.rb uint8.h erb/*.c preproc.rb cogen.rb
+	$(RUBY) cogen.rb $(srcdir)/uint8.def.rb > $@
+
+uint16.c: uint16.def.rb uint16.h erb/*.c preproc.rb cogen.rb
+	$(RUBY) cogen.rb $(srcdir)/uint16.def.rb > $@
+
+uint32.c: uint32.def.rb uint32.h erb/*.c preproc.rb cogen.rb
+	$(RUBY) cogen.rb $(srcdir)/uint32.def.rb > $@
+
+uint64.c: uint64.def.rb uint64.h erb/*.c preproc.rb cogen.rb
+	$(RUBY) cogen.rb $(srcdir)/uint64.def.rb > $@
+
+
+sfloat.c: sfloat.def.rb sfloat.h erb/*.c preproc.rb cogen.rb
+	$(RUBY) cogen.rb $(srcdir)/sfloat.def.rb > $@
+
+dfloat.c: dfloat.def.rb dfloat.h erb/*.c preproc.rb cogen.rb
+	$(RUBY) cogen.rb $(srcdir)/dfloat.def.rb > $@
+
+
+scomplex.c: scomplex.def.rb scomplex.h complex.h erb/*.c preproc.rb cogen.rb
+	$(RUBY) cogen.rb $(srcdir)/scomplex.def.rb > $@
+
+dcomplex.c: dcomplex.def.rb dcomplex.h complex.h erb/*.c preproc.rb cogen.rb
+	$(RUBY) cogen.rb $(srcdir)/dcomplex.def.rb > $@
+

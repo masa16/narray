@@ -10,9 +10,9 @@ class TestBinData < Test::Unit::TestCase
   def px(s)
     puts s
     p a = eval(s)
-    if a.kind_of? Num::NArray # a.class < Num::NArray
+    if a.kind_of? NArray
       a.debug_info
-      a.debug_print
+      p a
     end
     puts
     a
@@ -20,12 +20,12 @@ class TestBinData < Test::Unit::TestCase
 
   def test_int64
     #GC.disable
-    #px "Num::Int64.step_unit"
-    px "$b = Num::Int64.new(5).seq"
-    px "$a = Num::Int64.cast([1,3,-7,13,-19])"
+    #px "NArray::Int64.step_unit"
+    px "$b = NArray::Int64.new([5]).seq"
+    px "$a = NArray::Int64.cast([1,3,-7,13,-19])"
     px "$a.abs"
     px "-$a"
-    px "~$a"
+    #px "~$a"
     px "$a & $b"
     px "$a ^ $b"
 
@@ -36,16 +36,16 @@ class TestBinData < Test::Unit::TestCase
     px "$x = 2**63-1"
     px "$a[2] = $x; $a"
 
-    px "$c = Num::Int64.new(5).seq"
+    px "$c = NArray::Int64.new([5]).seq"
     px "$a * $c"
 
 
-    px "Num::DFloat.cast($a)"
+    px "NArray::DFloat.cast($a)"
 
-    px "$i = Num::Int32.new(5).seq"
-    px "Num::Int64.cast($i)"
+    px "$i = NArray::Int32.new([5]).seq"
+    px "NArray::Int64.cast($i)"
 
-    px "Num::Int32.cast($a)"
+    px "NArray::Int32.cast($a)"
   end
 
 end

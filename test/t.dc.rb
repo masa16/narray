@@ -1,6 +1,6 @@
 require 'test/unit'
 require "complex"
-require "./narray.so"
+require "narray"
 #require 'irb/xmp'
 
 $p = true
@@ -9,20 +9,22 @@ class TestBinData < Test::Unit::TestCase
 
   def px(s)
     puts s
-    p a = eval(s)
-    if a.kind_of? Num::NArray # a.class < Num::NArray
+    a = eval(s)
+    if a.kind_of? NArray
       a.debug_info
-      a.debug_print
     end
+    p a
     puts
     a
   end
 
   def test_dcomplex
     #GC.disable
-    px "$a = Num::DComplex.cast([5,4.im,3,2.im,1])"
-    px "$a = Num::DComplex.new([5]).seq"
+    px "$a = NArray::DComplex.cast([5,4.im,3,2.im,1])"
+    px "$a = NArray::DComplex.new([5]).seq"
     px "$a.imag = 2; $a"
+    px "$a += 1"
+    p "1.im = ", 1.im
     px "$a += 1.im"
     px "$a * 2"
     px "$a - 4.5"

@@ -16,7 +16,6 @@
 
 /* global variables within this module */
 VALUE cNArray;
-VALUE cDFloat;
 VALUE nary_eCastError;
 VALUE nary_eShapeError;
 
@@ -24,10 +23,8 @@ ID id_contiguous_stride;
 ID id_element_bit_size;
 ID id_element_byte_size;
 
-VALUE cDFloat, cDComplex;
-VALUE cInt64;
-VALUE cUInt64;
-VALUE cBit, cRObject;
+VALUE cBit;
+VALUE cRObject;
 VALUE cPointer;
 VALUE cComplex;
 
@@ -46,6 +43,10 @@ ID id_gt;
 ID id_ge;
 ID id_lt;
 ID id_le;
+ID id_nearly_eq;
+
+ID id_real;
+ID id_imag;
 
 ID id_mark;
 ID id_info;
@@ -1081,14 +1082,21 @@ Init_narray()
     sym_mark = ID2SYM(id_mark);
     sym_info = ID2SYM(id_info);
 
+    cComplex = rb_const_get(rb_cObject, rb_intern("Complex"));
+
     Init_nary_step();
     Init_nary_index();
 
     Init_nary_data();
 
     Init_nary_dfloat();
+    Init_nary_dcomplex();
     Init_nary_int32();
+    Init_nary_int16();
+    Init_nary_int8();
     Init_nary_bit();
+
+    Init_nary_int64();
 
     Init_nary_rand();
 }

@@ -155,15 +155,13 @@ extern VALUE nary_eShapeError;
 
 
 /* global variables within this module */
-extern VALUE mNum, cNArray;
+extern VALUE cNArray;
 extern VALUE cBit;
 extern VALUE cDFloat, cDComplex;
-extern VALUE cInt32, cInt16, cInt8;
-extern VALUE cUInt32, cUInt16, cUInt8;
-extern VALUE cInt64;
-extern VALUE cUInt64;
+extern VALUE cSFloat, cSComplex;
+extern VALUE cInt64, cInt32, cInt16, cInt8;
+extern VALUE cUInt64, cUInt32, cUInt16, cUInt8;
 extern VALUE cRObject;
-extern VALUE cPointer;
 extern VALUE na_cStep;
 extern VALUE cComplex;
 extern ID id_contiguous_stride;
@@ -181,11 +179,15 @@ extern ID id_bit_and;
 extern ID id_bit_or;
 extern ID id_bit_xor;
 extern ID id_eq;
+extern ID id_nearly_eq;
 extern ID id_ne;
 extern ID id_gt;
 extern ID id_ge;
 extern ID id_lt;
 extern ID id_le;
+
+extern ID id_real;
+extern ID id_imag;
 
 extern ID id_mark;
 extern ID id_info;

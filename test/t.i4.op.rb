@@ -1,7 +1,5 @@
 require 'test/unit'
-#require "complex"
-require "./narray.so"
-#require 'irb/xmp'
+require "narray"
 
 $p = true
 
@@ -10,9 +8,10 @@ class TestBinData < Test::Unit::TestCase
   def px(s)
     puts s
     p a = eval(s)
-    if a.kind_of? Num::NArray # a.class < Num::NArray
+    if a.kind_of? NArray
       a.debug_info
-      a.debug_print
+      #a.debug_print
+      p a
     end
     puts
     a
@@ -20,10 +19,10 @@ class TestBinData < Test::Unit::TestCase
 
   def test_dfloat_sum
     #GC.disable
-    px "$a = Num::Int32.new([5])"
-    px "$b = Num::Int32.new([5])"
+    px "$a = NArray::Int32.new([5])"
+    px "$b = NArray::Int32.new([5])"
     px "$b.store( 1 ); $b"
-    px "$a = Num::Int32.new([5]).seq"
+    px "$a = NArray::Int32.new([5]).seq"
     px "$a + 1"
     px "$a * 2"
     px "$a - 4"

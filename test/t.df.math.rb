@@ -1,18 +1,19 @@
 require 'test/unit'
-require "complex"
-require "./narray.so"
+#require "complex"
+require "narray"
 #require 'irb/xmp'
 
 $p = true
+
+NMath = NArray::DFloat::Math
 
 class TestBinData < Test::Unit::TestCase
 
   def px(s)
     puts s
     p a = eval(s)
-    if a.kind_of? Num::NArray # a.class < Num::NArray
+    if a.kind_of? NArray
       a.debug_info
-      a.debug_print
     end
     puts
     a
@@ -20,28 +21,28 @@ class TestBinData < Test::Unit::TestCase
 
   def test_dfloat_math
     #GC.disable
-    px "$a = Num::DFloat.new(5).seq"
-    px "Num::DFloat.sqrt($a)"
-    px "Num::DFloat.cbrt($a)"
-    px "Num::DFloat.log($a)"
-    px "Num::DFloat.log2($a)"
-    px "Num::DFloat.log10($a)"
-    px "Num::DFloat.exp($a)"
-    px "Num::DFloat.exp2($a)"
-    px "Num::DFloat.exp10($a)"
-    px "Num::DFloat.sin($a)"
-    px "Num::DFloat.cos($a)"
-    px "Num::DFloat.tan($a)"
-    px "Num::DFloat.asin($a)"
-    px "Num::DFloat.acos($a)"
-    px "Num::DFloat.atan($a)"
-    px "Num::DFloat.sinh($a)"
-    px "Num::DFloat.cosh($a)"
-    px "Num::DFloat.tanh($a)"
-    px "Num::DFloat.asinh($a)"
-    px "Num::DFloat.acosh($a)"
-    px "Num::DFloat.atanh($a)"
-    px "Num::DFloat.atan2($a,$a['::-1'])"
-    px "Num::DFloat.hypot($a,$a['::-1'])"
+    px "$a = NArray::DFloat.new([5]).seq"
+    px "NMath.sqrt($a)"
+    px "NMath.cbrt($a)"
+    px "NMath.log($a)"
+    px "NMath.log2($a)"
+    px "NMath.log10($a)"
+    px "NMath.exp($a)"
+    px "NMath.exp2($a)"
+    px "NMath.exp10($a)"
+    px "NMath.sin($a)"
+    px "NMath.cos($a)"
+    px "NMath.tan($a)"
+    px "NMath.asin($a)"
+    px "NMath.acos($a)"
+    px "NMath.atan($a)"
+    px "NMath.sinh($a)"
+    px "NMath.cosh($a)"
+    px "NMath.tanh($a)"
+    px "NMath.asinh($a)"
+    px "NMath.acosh($a)"
+    px "NMath.atanh($a)"
+    px "NMath.atan2($a,$a['::-1'])"
+    px "NMath.hypot($a,$a['::-1'])"
   end
 end
