@@ -1,54 +1,10 @@
-typedef int8_t dtype;
-typedef int8_t rtype;
+typedef u_int8_t dtype;
+typedef u_int8_t rtype;
 
-#define m_zero 0
-#define m_one  1
+#define m_num_to_data(x) ((dtype)NUM2UINT(x))
+#define m_data_to_num(x) UINT2NUM((unsigned int)(x))
+#define m_extract(x)     UINT2NUM((unsigned int)*(dtype*)(x))
+#define m_sprintf(s,x)   sprintf(s,"%"INT32FMT"u",(u_int32_t)(x))
+#define m_rand           ((dtype)gen_rand32())
 
-#define m_num_to_data(x) NUM2INT(x)
-#define m_data_to_num(x) INT2NUM(x)
-
-#define m_from_double(x) (x)
-#define m_from_real(x) (x)
-
-#define m_extract(x) INT2NUM(*(dtype*)x)
-
-#define m_add(x,y) ((x)+(y))
-#define m_sub(x,y) ((x)-(y))
-#define m_mul(x,y) ((x)*(y))
-#define m_div(x,y) ((x)/(y))
-#define m_mod(x,y) ((x)%(y))
-#define m_pow(x,y) pow_int8(x,y)
-
-#define m_bit_and(x,y) ((x)&(y))
-#define m_bit_or(x,y)  ((x)|(y))
-#define m_bit_xor(x,y) ((x)^(y))
-#define m_bit_not(x)   (~(x))
-
-#define m_abs(x)     ((x<0)?-x:x)
-#define m_minus(x)   (-(x))
-#define m_inverse(x) (1/(x))
-#define m_square(x)  ((x)*(x))
-
-#define m_eq(x,y) ((x)==(y))
-#define m_ne(x,y) ((x)!=(y))
-#define m_gt(x,y) ((x)>(y))
-#define m_ge(x,y) ((x)>=(y))
-#define m_lt(x,y) ((x)<(y))
-#define m_le(x,y) ((x)<=(y))
-
-#define m_sum(x,y) {{y+=x;}}
-#define m_sum_init INT2FIX(0)
-#define m_min(x,y) {if (!isnan(x) && (isnan(y) || y>x)) {y=x;}}
-#define m_min_init nary_init_accum_aref0(self, accum)
-#define m_max(x,y) {if (!isnan(x) && (isnan(y) || y<x)) {y=x;}}
-#define m_max_init nary_init_accum_aref0(self, accum)
-
-#define m_rand gen_rand32()
-
-#define m_sprintf(s,x) sprintf(s,"%"INT32FMT"d",x)
-
-#define cmp(a,b)                                        \
-    ((qsort_cast(a)==qsort_cast(b)) ? 0 :               \
-     (qsort_cast(a) > qsort_cast(b)) ? 1 : -1)
-#define cmpgt(a,b)                              \
-    (qsort_cast(a) > qsort_cast(b))
+#include "uint_macro.h"

@@ -33,8 +33,12 @@ def type_name; $type_name; end
 class PutERB
   def erb
     file = "#{$dir}/#{@tmpl}.c"
-    puts "\n//ERB from #{file}"
-    ERB.new(File.read(file)).run(binding)
+    if $embed
+      ERB.new(File.read(file)).result(binding)
+    else
+      puts "\n//ERB from #{file}"
+      ERB.new(File.read(file)).run(binding)
+    end
   end
 end
 
@@ -120,10 +124,10 @@ class Preproc < PutERB
   OPMAP = {
     "add"=>"+", "sub"=>"-", "mul"=>"*", "div"=>"/",
     "mod"=>"%", "pow"=>"**", "minus"=>"-@", "plus"=>"+@",
-    "bit_and"=>"&",
-    "bit_or"=>"|",
-    "bit_xor"=>"^",
-    "bit_not"=>"~@"
+    "and"=>"&",
+    "or"=>"|",
+    "xor"=>"^",
+    "not"=>"~@"
   }
 
   def self.alias(dst,src)
@@ -245,6 +249,18 @@ end
 
 def cond_unary(ope)
   Preproc.new(ope,"cond_unary").def_method
+end
+
+def bit_binary(ope)
+  Preproc.new(ope,"bit_binary").def_method(1)
+end
+
+def bit_unary(ope)
+  Preproc.new(ope,"bit_unary").def_method
+end
+
+def bit_count(ope)
+  Preproc.new(ope,"bit_count").def_method(-1)
 end
 
 def accum(ope)

@@ -43,9 +43,9 @@ binary "sub"
 binary "mul"
 binary "div"
 
-if $is_int
-  def_func "pow","powint"
-end
+#if $is_int
+#  def_func "pow","powint"
+#end
 pow
 
 unary "minus"

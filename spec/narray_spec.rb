@@ -1,7 +1,21 @@
 require "narray"
 
+klasses = [
+NArray::Int8,
+NArray::Int16,
+NArray::Int32,
+NArray::Int64,
+NArray::UInt8,
+NArray::UInt16,
+NArray::UInt32,
+NArray::UInt64,
+NArray::SFloat,
+NArray::SComplex,
+NArray::DFloat,
+NArray::DComplex
+]
 
-klasses = [NArray::DFloat, NArray::Int32, NArray::Int16, NArray::Int8]
+#klasses = [NArray::DFloat, NArray::Int32, NArray::Int16, NArray::Int8]
 
 klasses.each do |klass|
   describe klass do

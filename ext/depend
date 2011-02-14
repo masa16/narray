@@ -1,3 +1,6 @@
+bit.c: bit.erb.c erb/*.c preproc.rb
+	erb $(srcdir)/bit.erb.c > $@
+
 int8.c: int8.def.rb int8.h erb/*.c preproc.rb cogen.rb
 	$(RUBY) cogen.rb $(srcdir)/int8.def.rb > $@
 

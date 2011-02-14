@@ -75,7 +75,7 @@
 #define qsort_cast <%=dcast%>
 
 void
-<%=tp%>_qsort(void *a, size_t n, size_t es)
+<%=tp%>_qsort(void *a, size_t n, ssize_t es)
 {
     char *pa, *pb, *pc, *pd, *pl, *pm, *pn;
     int  d, r, presorted;

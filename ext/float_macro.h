@@ -1,8 +1,7 @@
-typedef float dtype;
-typedef float rtype;
+#ifndef DBL_EPSILON
+#define DBL_EPSILON 2.2204460492503131e-16
+#endif
 
-#include "float_macro.h"
-/*
 EXTERN double round(double);
 EXTERN double log2(double);
 EXTERN double exp2(double);
@@ -97,4 +96,3 @@ EXTERN double exp10(double);
 #define m_erfc(x)    erfc(x)
 #define m_ldexp(x,y) ldexp(x,y)
 #define m_frexp(x,exp) frexp(x,exp)
-*/
