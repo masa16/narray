@@ -6,6 +6,7 @@ require "narray"
 $p = true
 
 NMath = NArray::DFloat::Math
+NMath = NArray::Math
 
 class TestBinData < Test::Unit::TestCase
 

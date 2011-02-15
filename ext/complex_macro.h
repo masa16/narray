@@ -77,6 +77,7 @@ static inline dtype c_from_dcomplex(dcomplex x) {
 #define m_div(x,y) c_div(x,y)
 #define m_mod(x,y) c_mod(x,y)
 #define m_pow(x,y) c_pow(x,y)
+#define m_pow_int(x,y) c_pow_int(x,y)
 
 #define m_minus(x)   c_minus(x)
 #define m_inverse(x) c_inverse(x)

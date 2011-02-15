@@ -34,7 +34,7 @@ class PutERB
   def erb
     file = "#{$dir}/#{@tmpl}.c"
     if $embed
-      ERB.new(File.read(file)).result(binding)
+      "\n"+ERB.new(File.read(file)).result(binding)
     else
       puts "\n//ERB from #{file}"
       ERB.new(File.read(file)).run(binding)

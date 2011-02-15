@@ -18,7 +18,7 @@ static void
 }
 
 static VALUE
-<%=c_instance_method%>(VALUE self, volatile VALUE val)
+<%=c_instance_method%>(VALUE self, VALUE val)
 {
     ndfunc_t *func;
     func = ndfunc_alloc(<%=c_iterator%>, FULL_LOOP,

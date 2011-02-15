@@ -49,6 +49,8 @@ sfloat
 dfloat
 scomplex
 dcomplex
+robject
+math
 SFMT
 rand
 )

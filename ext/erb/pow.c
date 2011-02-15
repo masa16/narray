@@ -30,27 +30,6 @@ static void
     }
 }
 
-static dtype pow_<%=$tp%>_int(dtype x, int p)
-{
-    dtype r = m_one;
-    switch(p) {
-    case 2: return m_square(x);
-    case 3: return m_mul(m_square(x),x);
-    case 4: return x = m_square(x); return m_square(x);
-    case 1: return x;
-    case 0: return m_one;
-    }
-    if (p<0)  return m_inverse(pow_<%=tp%>_int(x,-p));
-    if (p>64) return m_pow(x,m_from_real(p));
-    while (p) {
-        if ((p%2) == 1) r = m_mul(r,x);
-        x = m_square(x);
-        p /= 2;
-    }
-    return r;
-}
-
-
 static void
 <%=c_iterator%>_int32(na_loop_t *const lp)
 {
@@ -69,7 +48,7 @@ static void
         for (; i--;) {
             LOAD_DATA_STEP(p1, s1, idx1, dtype, x);
             LOAD_INT_STEP(p2, s2, idx2, e2, int32_t, y);
-            x = pow_<%=tp%>_int(x,y);
+            x = m_pow_int(x,y);
             STORE_DATA_STEP(p3, s3, idx3, dtype, x);
         }
     } else {
@@ -78,7 +57,7 @@ static void
             p1+=s1;
             LOAD_INT(p2,e2,y);
             p2+=s2;
-            x = pow_<%=tp%>_int(x,y);
+            x = m_pow_int(x,y);
             *(dtype*)p3 = x;
             p3+=s3;
         }

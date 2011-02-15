@@ -377,11 +377,11 @@ static dtype c_pow_int(dtype x, int p)
     }
     if (p==2) {return c_square(x);}
     if (p&1) {z = x;}
-    p>>=1;
+    p >>= 1;
     while (p) {
 	x = c_square(x);
 	if (p&1) z = c_mul(z,x);
-	p>>=1;
+	p >>= 1;
     }
     return z;
 }

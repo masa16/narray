@@ -171,11 +171,12 @@ iter_bit_format(na_loop_t *const lp)
         STORE_DATA_STEP(p2, s2, idx2, VALUE, y);
     }
 }
+
 static VALUE
  nary_bit_format(int argc, VALUE *argv, VALUE self)
 {
      ndfunc_t *func;
-     volatile VALUE v, fmt=Qnil;
+     VALUE v, fmt=Qnil;
 
      rb_scan_args(argc, argv, "01", &fmt);
      func = ndfunc_alloc(iter_bit_format, FULL_LOOP,
@@ -274,14 +275,11 @@ iter_bit_fill(na_loop_t *const lp)
 
 
 static VALUE
-nary_bit_fill(VALUE self, volatile VALUE val)
+nary_bit_fill(VALUE self, VALUE val)
 {
      ndfunc_t *func;
-     volatile VALUE v;
      func = ndfunc_alloc(iter_bit_fill, FULL_LOOP, 1, 0, cBit);
-     //puts("pass x1");
      ndloop_do3(func, &val, 1, self);
-     //puts("pass x2");
      ndfunc_free(func);
      return self;
 }

@@ -24,10 +24,11 @@ EXTERN double exp10(double);
 #define m_div(x,y) ((x)/(y))
 #define m_mod(x,y) fmod(x,y)
 #define m_pow(x,y) pow(x,y)
+#define m_pow_int(x,y) pow_int(x,y)
 
 #define m_abs(x)     fabs(x)
 #define m_minus(x)   (-(x))
-#define m_inverse(x) (1.0/(x))
+#define m_inverse(x) (1/(x))
 #define m_square(x)  ((x)*(x))
 #define m_floor(x)   floor(x)
 #define m_round(x)   round(x)
@@ -96,3 +97,24 @@ EXTERN double exp10(double);
 #define m_erfc(x)    erfc(x)
 #define m_ldexp(x,y) ldexp(x,y)
 #define m_frexp(x,exp) frexp(x,exp)
+
+
+static dtype pow_int(dtype x, int p)
+{
+    dtype r=1;
+    switch(p) {
+    case 0: return 1;
+    case 1: return x;
+    case 2: return x*x;
+    case 3: return x*x*x;
+    case 4: x=x*x; return x*x;
+    }
+    if (p<0)  return 1/pow_int(x,-p);
+    if (p>64) return pow(x,p);
+    while (p) {
+        if (p&1) r *= x;
+        x *= x;
+        p >>= 1;
+    }
+    return r;
+}

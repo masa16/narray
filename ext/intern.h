@@ -69,8 +69,8 @@ VALUE ndloop_cast_narray_to_rarray(ndfunc_t *nf, VALUE nary, VALUE fmt);;
 
 VALUE ndloop_do(ndfunc_t *nf, int argc, ...);
 VALUE ndloop_do2(ndfunc_t *nf, VALUE args);
-VALUE ndloop_do3(ndfunc_t *nf, volatile void *ptr, int argc, ...);
-VALUE ndloop_do4(ndfunc_t *nf, volatile void *ptr, VALUE args);
+VALUE ndloop_do3(ndfunc_t *nf, void *ptr, int argc, ...);
+VALUE ndloop_do4(ndfunc_t *nf, void *ptr, VALUE args);
 
 /*
 VALUE ndfunc_execute_reduce(ndfunc_t *nf, VALUE mark, int argc, ...);

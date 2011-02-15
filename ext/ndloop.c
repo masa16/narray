@@ -263,7 +263,7 @@ ndloop_cast_args(ndfunc_t *nf, VALUE args)
 */
 
 static na_md_loop_t *
-ndloop_alloc(ndfunc_t *nf, VALUE args, volatile void *opt_ptr)
+ndloop_alloc(ndfunc_t *nf, VALUE args, void *opt_ptr)
 {
     int i,j;
     int narg;
@@ -751,7 +751,7 @@ loop_narray(ndfunc_t *nf, na_md_loop_t *lp)
 
 
 VALUE
-ndloop_do_main(ndfunc_t *nf, VALUE args, volatile void *ptr)
+ndloop_do_main(ndfunc_t *nf, VALUE args, void *opt_ptr)
 {
     int j, nd;
     volatile VALUE v, results;
@@ -767,8 +767,7 @@ ndloop_do_main(ndfunc_t *nf, VALUE args, volatile void *ptr)
     ndloop_cast_args(nf, args);
 
     // allocate ndloop struct
-    lp = ndloop_alloc(nf, args, ptr);
-    //lp->user.opt_ptr = ptr;
+    lp = ndloop_alloc(nf, args, opt_ptr);
 
     // setup ndloop iterator with arguments
     results = ndloop_init_args(nf, lp, args);
@@ -831,11 +830,11 @@ ndloop_do(nf, argc, va_alist)
 
 VALUE
 #ifdef HAVE_STDARG_PROTOTYPES
-ndloop_do3(ndfunc_t *nf, volatile void *ptr, int argc, ...)
+ndloop_do3(ndfunc_t *nf, void *ptr, int argc, ...)
 #else
 ndloop_do3(nf, ptr, argc, va_alist)
   ndfunc_t *nf;
-  volatile void *ptr;
+  void *ptr;
   int argc;
   va_dcl
 #endif
@@ -866,7 +865,7 @@ ndloop_do2(ndfunc_t *nf, VALUE args)
 }
 
 VALUE
-ndloop_do4(ndfunc_t *nf, volatile void *ptr, VALUE args)
+ndloop_do4(ndfunc_t *nf, void *ptr, VALUE args)
 {
     return ndloop_do_main(nf, args, ptr);
 }
@@ -1187,7 +1186,7 @@ ndloop_cast_narray_to_rarray(ndfunc_t *nf, VALUE nary, volatile VALUE fmt)
     args = rb_ary_new3(1,nary);
 
     // allocate ndloop struct
-    lp = ndloop_alloc(nf, args, &fmt);
+    lp = ndloop_alloc(nf, args, (void*)&fmt);
 
     // setup ndloop iterator with arguments
     results = ndloop_init_args(nf, lp, args);

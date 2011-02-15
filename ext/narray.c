@@ -1103,5 +1103,7 @@ Init_narray()
     Init_nary_dfloat();
     Init_nary_dcomplex();
 
+    Init_nary_math();
+
     Init_nary_rand();
 }

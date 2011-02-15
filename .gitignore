@@ -6,6 +6,7 @@ ext/Makefile
 ext/narray_config.h
 ext/*.o
 ext/narray.so
+ext/mkmf.log
 
 ext/int8.c
 ext/int16.c
@@ -19,5 +20,7 @@ ext/sfloat.c
 ext/dfloat.c
 ext/scomplex.c
 ext/dcomplex.c
+ext/bit.c
+ext/robject.c
 
 pkg

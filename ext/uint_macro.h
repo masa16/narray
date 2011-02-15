@@ -57,15 +57,15 @@ static dtype pow_int(dtype x, int p)
 {
     dtype r = m_one;
     switch(p) {
-    case 2: return m_square(x);
-    case 3: return m_mul(m_square(x),x);
+    case 0: return 1;
     case 1: return x;
-    case 0: return m_one;
+    case 2: return x*x;
+    case 3: return x*x*x;
     }
     while (p) {
-        if ((p%2) == 1) r = m_mul(r,x);
-        x = m_square(x);
-        p /= 2;
+        if (p&1) r *= x;
+        x *= x;
+        p >>= 1;
     }
     return r;
 }

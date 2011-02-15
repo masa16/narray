@@ -125,6 +125,7 @@ if $is_comparable
   accum "max"
 end
 
+# dot
 
 # min_index
 # max_index

@@ -39,3 +39,6 @@ scomplex.c: scomplex.def.rb scomplex.h complex.h erb/*.c preproc.rb cogen.rb
 dcomplex.c: dcomplex.def.rb dcomplex.h complex.h erb/*.c preproc.rb cogen.rb
 	$(RUBY) cogen.rb $(srcdir)/dcomplex.def.rb > $@
 
+
+robject.c: robject.erb.c erb/*.c preproc.rb
+	erb $(srcdir)/robject.erb.c > $@

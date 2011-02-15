@@ -36,7 +36,8 @@ static VALUE
 <%=c_instance_method%>(int argc, VALUE *argv, VALUE self)
 {
      ndfunc_t *func;
-     volatile VALUE v, fmt=Qnil;
+     volatile VALUE v;
+     VALUE fmt=Qnil;
 
      rb_scan_args(argc, argv, "01", &fmt);
      func = ndfunc_alloc(<%=c_iterator%>, FULL_LOOP,
