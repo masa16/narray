@@ -52,6 +52,44 @@ class NArray
     end
   end
 
+  # delete rows/columns
+  def delete(*args)
+    if args.size > self.rank
+      raise ArgumentError, "too many arguments"
+    end
+    shp = self.shape
+    ind = []
+    self.rank.times do |i|
+      n = shp[i]
+      case a=args[i]
+      when Integer
+        a = n+a if a<0
+        raise ArgumentError, "index(%d) out of range"%[a] if a<0
+        x = [0...a,a+1...n]
+      when Range
+        b = a.first
+        b = n+b if b<0
+        raise ArgumentError, "index(%s) out of range"%[a] if b<0
+        e = a.last
+        e = n+e if e<0
+        e -= 1 if a.exclude_end?
+        raise ArgumentError, "index(%s) out of range"%[a] if e<0
+        x = [0...b,e+1...n]
+      when Array
+        x = (0...n).to_a
+        x -= a
+      else
+        if a
+          raise ArgumentError, "invalid argument"
+        else
+          x = true
+        end
+      end
+      ind << x
+    end
+    self[*ind]
+  end
+
 # Statistics
   def mean(*ranks)
     if integer?
@@ -241,7 +279,7 @@ module FFTW
   def convol(a1,a2)
     n1x,n1y = a1.shape
     n2x,n2y = a2.shape
-    raise "arrays must have same shape" if n1x!=n2x || n1y!=n2y 
+    raise "arrays must have same shape" if n1x!=n2x || n1y!=n2y
     (FFTW.fftw( FFTW.fftw(a1,-1) * FFTW.fftw(a2,-1), 1).real) / (n1x*n1y)
   end
   module_function :convol
