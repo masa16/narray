@@ -53,7 +53,7 @@ class NArray
   end
 
   # delete rows/columns
-  def delete(*args)
+  def delete_at(*args)
     if args.size > self.rank
       raise ArgumentError, "too many arguments"
     end
@@ -77,7 +77,10 @@ class NArray
         x = [0...b,e+1...n]
       when Array
         x = (0...n).to_a
-        x -= a
+        x -= a.map do |j|
+          raise IndexError, "contains non-integer" unless Interger===j
+          (j<0) ? n+j : j
+        end
       else
         if a
           raise ArgumentError, "invalid argument"
