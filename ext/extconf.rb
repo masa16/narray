@@ -7,29 +7,6 @@ require 'mkmf'
 # $CFLAGS="-O0"
 
 srcs = %w(
-bytedata
-kwarg
-step
-narray
-array
-index
-loop
-datatype
-bit
-dcomplex
-dfloat
-int32
-uint32
-int64
-nstruct
-robject
-pointer
-math
-rand
-SFMT
-)
-
-srcs = %w(
 narray
 array
 step
@@ -49,6 +26,7 @@ sfloat
 dfloat
 scomplex
 dcomplex
+nstruct
 robject
 math
 SFMT

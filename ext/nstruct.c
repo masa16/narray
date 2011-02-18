@@ -34,14 +34,14 @@ typedef struct {
 
 
 static void
-nst_member_mark( nst_member_t *m )
+nst_member_mark(nst_member_t *m)
 {
-    rb_gc_mark( m->type );
-    rb_gc_mark( m->name );
+    rb_gc_mark(m->type);
+    rb_gc_mark(m->name);
 }
 
 static VALUE
-nst_member_s_allocate( VALUE klass )
+nst_member_s_allocate(VALUE klass)
 {
     nst_member_t *m = ALLOC(nst_member_t);
     m->type = Qnil;
@@ -52,10 +52,10 @@ nst_member_s_allocate( VALUE klass )
 }
 
 static VALUE
-nst_member_initialize( VALUE self, VALUE type, VALUE name, VALUE vofs, VALUE vsize )
+nst_member_initialize(VALUE self, VALUE type, VALUE name, VALUE vofs, VALUE vsize)
 {
     nst_member_t *m;
-    Data_Get_Struct( self, nst_member_t, m );
+    Data_Get_Struct(self, nst_member_t, m);
     m->type = type;
     m->name = name;
     m->ofs  = NUM2SIZE(vofs);
@@ -64,9 +64,9 @@ nst_member_initialize( VALUE self, VALUE type, VALUE name, VALUE vofs, VALUE vsi
 }
 
 static VALUE
-nst_member_new(VALUE klass, VALUE type, VALUE name, VALUE vofs, VALUE vsize ){
+nst_member_new(VALUE klass, VALUE type, VALUE name, VALUE vofs, VALUE vsize){
     VALUE mem = nst_member_s_allocate(klass);
-    nst_member_initialize( mem, type, name, vofs, vsize );
+    nst_member_initialize(mem, type, name, vofs, vsize);
     return mem;
 }
 */
@@ -74,10 +74,10 @@ nst_member_new(VALUE klass, VALUE type, VALUE name, VALUE vofs, VALUE vsize ){
 
 
 VALUE
-nst_get_definition(VALUE nst, VALUE idx)
+nst_definition(VALUE nst, VALUE idx)
 {
     long i;
-    VALUE def = rb_const_get( CLASS_OF(nst), rb_intern("DEFINITIONS") );
+    VALUE def = rb_const_get(CLASS_OF(nst), rb_intern("DEFINITIONS"));
     long  len = RARRAY_LEN(def);
 
     if (TYPE(idx) == T_STRING || TYPE(idx) == T_SYMBOL) {
@@ -101,16 +101,16 @@ nst_get_definition(VALUE nst, VALUE idx)
 }
 
 VALUE
-nst_get_definitions(VALUE nst)
+nst_definitions(VALUE nst)
 {
-    return rb_const_get( CLASS_OF(nst), rb_intern("DEFINITIONS") );
+    return rb_const_get(CLASS_OF(nst), rb_intern("DEFINITIONS"));
 }
 
 
-void na_copy_array_structure( VALUE self, VALUE view );
+void na_copy_array_structure(VALUE self, VALUE view);
 
 VALUE
-nst_get_field(VALUE self, VALUE idx)
+nst_field(VALUE self, VALUE idx)
 {
     int  ndim, i;
     narray_t *na, *nv, *nt;
@@ -118,25 +118,25 @@ nst_get_field(VALUE self, VALUE idx)
     ssize_t *stride1, *stride2, *stride3;
     size_t *shape;
 
-    def  = nst_get_definition(self, idx);
+    def  = nst_definition(self, idx);
     type = RARRAY_PTR(def)[1];
     ofs  = RARRAY_PTR(def)[2];
 
     GetNArray(self,na);
     if (NIL_P(na->data)) {
-	na_data_pointer_for_write(self);
+	na_get_pointer_for_write(self);
 	//rb_raise(rb_eRuntimeError, "na->data not allocated");
     }
 
-    stride1 = na_get_stride( self );
+    stride1 = na_get_stride(self);
 
     if (TYPE(type)==T_CLASS) {
-	if ( RTEST(rb_class_inherited_p(type,cNArray)) ) {
-	    view = rb_narray_new( type, na->ndim, na->shape );
-	    na_copy_array_structure( self, view );
+	if (RTEST(rb_class_inherited_p(type,cNArray))) {
+	    view = rb_narray_new(type, na->ndim, na->shape);
+	    na_copy_array_structure(self, view);
 	    GetNArray(view,na);
 	    na->offset += NUM2SIZE(ofs);
-	    na_copy_flags( self, view );
+	    na_copy_flags(self, view);
 	    return view;
 	}
     } else if (rb_obj_is_kind_of(type,cNArray)) {
@@ -149,20 +149,20 @@ nst_get_field(VALUE self, VALUE idx)
 	for (; i<ndim; i++) {
 	    shape[i] = nt->shape[i-na->ndim];
 	}
-	view = rb_narray_new( CLASS_OF(type), ndim, shape );
-	//na_copy_array_structure( self, view );
+	view = rb_narray_new(CLASS_OF(type), ndim, shape);
+	//na_copy_array_structure(self, view);
 	GetNArray(view,nv);
 	nv->data = na->data;
 	nv->offset = na->offset + NUM2SIZE(ofs);
-	stride2 = na_get_stride( view );
-	//stride3 = na_get_stride( type );
+	stride2 = na_get_stride(view);
+	//stride3 = na_get_stride(type);
 	for (i=0; i<na->ndim; i++) {
 	    stride2[i] = stride1[i];
 	}
 	//for (i=0; i<nt->ndim; i++) {
 	//    stride2[i+na->ndim] = stride3[i];
 	//}
-	na_copy_flags( type, view );
+	na_copy_flags(type, view);
 	return view;
     }
     rb_raise(rb_eTypeError, "invalid type");
@@ -171,7 +171,7 @@ nst_get_field(VALUE self, VALUE idx)
 
 
 static VALUE
-nst_s_new(int argc, VALUE *argv, VALUE klass )
+nst_s_new(int argc, VALUE *argv, VALUE klass)
 {
     VALUE name=Qnil, rest, size;
     long i;
@@ -227,7 +227,7 @@ nst_s_new(int argc, VALUE *argv, VALUE klass )
     }
 
     rb_iv_set(st, "__members__", rb_ary_new());
-    rb_iv_set(st, "__offset__", INT2FIX(0) );
+    rb_iv_set(st, "__offset__", INT2FIX(0));
 
     if (rb_block_given_p()) {
         rb_mod_module_eval(0, 0, st);
@@ -252,7 +252,7 @@ nst_s_new(int argc, VALUE *argv, VALUE klass )
 
 /*
 static VALUE
-nst_s_add_type( VALUE nst, VALUE type, VALUE name )
+nst_s_add_type(VALUE nst, VALUE type, VALUE name)
 {
     VALUE ofs, size;
     ID id;
@@ -264,11 +264,11 @@ nst_s_add_type( VALUE nst, VALUE type, VALUE name )
 	GetNArray(type,na);
 	type = rb_narray_new(CLASS_OF(type),na->ndim,na->shape);
     }
-    size = rb_funcall( type, rb_intern("byte_size"), 0 );
-    ofs  = rb_iv_get( nst, "__offset__" );
-    //mem  = nst_member_new( cNStMember, type, name, ofs, size );
-    rb_iv_set( nst, "__offset__", rb_funcall(ofs,'+',1,size) );
-    rb_ary_push( rb_iv_get(nst,"__members__"), rb_ary_new3(4,name,type,ofs,size) );
+    size = rb_funcall(type, rb_intern("byte_size"), 0);
+    ofs  = rb_iv_get(nst, "__offset__");
+    //mem  = nst_member_new(cNStMember, type, name, ofs, size);
+    rb_iv_set(nst, "__offset__", rb_funcall(ofs,'+',1,size));
+    rb_ary_push(rb_iv_get(nst,"__members__"), rb_ary_new3(4,name,type,ofs,size));
     return Qnil;
 }
 */
@@ -276,7 +276,7 @@ nst_s_add_type( VALUE nst, VALUE type, VALUE name )
 
 
 static VALUE
-nstruct_add_type( VALUE type, int argc, VALUE *argv, VALUE nst )
+nstruct_add_type(VALUE type, int argc, VALUE *argv, VALUE nst)
 {
     VALUE ofs, size;
     ID id;
@@ -299,12 +299,12 @@ nstruct_add_type( VALUE type, int argc, VALUE *argv, VALUE nst )
 		rb_raise(rb_eArgError,"multiple shape in struct definition");
 	    }
 	    ndim = RARRAY_LEN(argv[i]);
-	    if ( ndim > 128 ) {
+	    if (ndim > 128) {
 		rb_raise(rb_eArgError,"too large number of dimensions");
 	    }
-	    if ( ndim > 0 ) {
-		shape = ALLOCA_N( size_t, ndim );
-		na_to_internal_shape( Qnil, argv[i], shape );
+	    if (ndim > 0) {
+		shape = ALLOCA_N(size_t, ndim);
+		na_to_internal_shape(Qnil, argv[i], shape);
 	    }
 	    break;
 	}
@@ -319,11 +319,11 @@ nstruct_add_type( VALUE type, int argc, VALUE *argv, VALUE nst )
 	GetNArray(type,na);
 	type = rb_narray_new(CLASS_OF(type),na->ndim,na->shape);
     }
-    size = rb_funcall( type, rb_intern("byte_size"), 0 );
-    ofs  = rb_iv_get( nst, "__offset__" );
-    //mem  = nst_member_new( cNStMember, type, name, ofs, size );
-    rb_iv_set( nst, "__offset__", rb_funcall(ofs,'+',1,size) );
-    rb_ary_push( rb_iv_get(nst,"__members__"), rb_ary_new3(4,name,type,ofs,size) );
+    size = rb_funcall(type, rb_intern("byte_size"), 0);
+    ofs  = rb_iv_get(nst, "__offset__");
+    //mem  = nst_member_new(cNStMember, type, name, ofs, size);
+    rb_iv_set(nst, "__offset__", rb_funcall(ofs,'+',1,size));
+    rb_ary_push(rb_iv_get(nst,"__members__"), rb_ary_new3(4,name,type,ofs,size));
     return Qnil;
 }
 
@@ -331,7 +331,7 @@ nstruct_add_type( VALUE type, int argc, VALUE *argv, VALUE nst )
 
 
 static VALUE
-nst_extract( VALUE self )
+nst_extract(VALUE self)
 {
     return self;
 }
@@ -348,11 +348,11 @@ nst_nstruct_to_object(VALUE vns)
     narray_t *ns, *ne, *nt;
 
     GetNArray(vns,ns);
-    if (ns->data==Qnil) 
+    if (ns->data==Qnil)
 	rb_raise(rb_eRuntimeError,"data not allocated");
-    if (ns->ndim!=0) 
+    if (ns->ndim!=0)
 	rb_raise(rb_eRuntimeError,"NStruct dimention must be 0");
-    if (ns->size!=1) 
+    if (ns->size!=1)
 	rb_raise(rb_eRuntimeError,"NStruct size must be 1");
 
     vary = rb_ary_new2(len);
@@ -372,7 +372,7 @@ nst_nstruct_to_object(VALUE vns)
 	    //ne->data = ns->data;
 	    //ne->offset = ns->offset + ofs;
 	    //velm = rb_funcall(vne,rb_intern("to_a"),0);
-	    //rb_ary_push( vary, velm );
+	    //rb_ary_push(vary, velm);
 	} else {
 	    vne = rb_narray_new(type,0,NULL);
 	}
@@ -382,7 +382,7 @@ nst_nstruct_to_object(VALUE vns)
 	velm = rb_funcall(vne,rb_intern("to_a"),0);
 	ne->data = Qnil;
 	ne->offset = 0;
-	rb_ary_push( vary, velm );
+	rb_ary_push(vary, velm);
     }
     return vary;
 }
@@ -403,7 +403,7 @@ nst_object_to_nstruct(VALUE val, VALUE nst_class)
     if (TYPE(val)==T_ARRAY) {
 	if (len != RARRAY_LEN(val)) {
 	    rb_raise(rb_eArgError,"wrong Array size (%ld), expected %ld",
-		     RARRAY_LEN(val), len );
+		     RARRAY_LEN(val), len);
 	}
 	vns = rb_narray_new(nst_class,0,NULL);
 	na_alloc_data(vns);
@@ -438,41 +438,42 @@ nst_object_to_nstruct(VALUE val, VALUE nst_class)
 
 
 static void
- nstruct_fill_loop( na_iterator_t *const itr, VALUE opt )
+iter_nstruct_fill(na_loop_t *const lp)
 {
     size_t   i;
     char    *p1, *src;
     ssize_t  s1;
     ssize_t *idx1;
     size_t   e1;
+    VALUE opt = *(VALUE*)(lp->opt_ptr);
 
-    INIT_COUNTER( itr, i );
-    INIT_PTR_ELM( itr, 0, p1, s1, idx1, e1 );
-    src = na_data_pointer_for_read(opt);
+    INIT_COUNTER(lp, i);
+    INIT_PTR_ELM(lp, 0, p1, s1, idx1, e1);
+    src = na_get_pointer_for_read(opt);
     if (idx1) {
-	for (; i--; ) { memcpy( p1+*(idx1++), src, e1 );}
+	for (; i--;) { memcpy(p1+*(idx1++), src, e1);}
     } else {
-	for (; i--; ) { memcpy( p1, src, e1 ); p1+=s1; }
+	for (; i--;) { memcpy(p1, src, e1); p1+=s1; }
     }
 }
 
 
 static VALUE
-num_nstruct_fill( VALUE self, VALUE val )
+nary_nstruct_fill(VALUE self, VALUE val)
 {
     ndfunc_t *func;
     volatile VALUE vst;
 
-    func = ndfunc_alloc( nstruct_fill_loop, HAS_LOOP, 1, 0, Qnil );
-    vst = nst_object_to_nstruct( val, CLASS_OF(self) );
-    ndfunc_execute( func, 2, self, vst );
+    func = ndfunc_alloc(iter_nstruct_fill, FULL_LOOP, 1, 0, Qnil);
+    vst = nst_object_to_nstruct(val, CLASS_OF(self));
+    ndfunc_execute(func, 2, self, vst);
     ndfunc_free(func);
     return self;
 }
 
 
 void
-cast_nstruct_to_array( na_iterator_t *const itr, VALUE self )
+cast_nstruct_to_array(na_loop_t *const lp, VALUE self)
 {
     size_t i, s1, s2;
     size_t p1;
@@ -486,12 +487,12 @@ cast_nstruct_to_array( na_iterator_t *const itr, VALUE self )
     GetNArray(x,na);
     na->data = ns->data;
 
-    INIT_COUNTER( itr, i );
-    p1 = itr[0].pos;
-    s1 = itr[0].step;
-    idx1 = itr[0].idx;
-    INIT_PTR( itr, 1, p2, s2, idx2 );
-    for (; i--; ) {
+    INIT_COUNTER(lp, i);
+    p1 = lp[0].pos;
+    s1 = lp[0].step;
+    idx1 = lp[0].idx;
+    INIT_PTR(lp, 1, p2, s2, idx2);
+    for (; i--;) {
 	if (idx1) {
 	    na->offset = p1 + *idx1;
 	    idx1++;
@@ -500,25 +501,26 @@ cast_nstruct_to_array( na_iterator_t *const itr, VALUE self )
 	    p1 += s1;
 	}
 	y = nst_nstruct_to_object(x);
-	STORE_DATA_STEP( p2, s2, idx2, VALUE, y );
+	STORE_DATA_STEP(p2, s2, idx2, VALUE, y);
     }
 }
+
 static VALUE
-num_cast_nstruct_to_array( VALUE self )
+nary_cast_nstruct_to_array(VALUE self)
 {
     VALUE v;
     ndfunc_t *func;
 
-    func = ndfunc_alloc( cast_nstruct_to_array, HAS_LOOP,
-			 1, 1, Qnil, rb_cArray );
-    v = ndfunc_execute_to_rarray( func, self, self );
+    func = ndfunc_alloc(cast_nstruct_to_array, FULL_LOOP,
+			 1, 1, Qnil, rb_cArray);
+    v = ndfunc_execute_to_rarray(func, self, self);
     ndfunc_free(func);
     return v;
 }
 
 
 static void
-nstruct_print_loop( char *ptr, size_t pos, VALUE vne )
+nstruct_print_loop(char *ptr, size_t pos, VALUE vne)
 {
     narray_t *ne;
     VALUE val;
@@ -538,7 +540,7 @@ nstruct_print_loop( char *ptr, size_t pos, VALUE vne )
 }
 
 VALUE
-num_nstruct_debug_print( VALUE self )
+nary_nstruct_debug_print(VALUE self)
 {
     narray_t *ns, *ne;
     VALUE vne = rb_narray_new(CLASS_OF(self),0,NULL);
@@ -553,7 +555,7 @@ num_nstruct_debug_print( VALUE self )
 	return Qnil;
     }
 
-    ndfunc_debug_print( self, nstruct_print_loop, vne );
+    ndfunc_debug_print(self, nstruct_print_loop, vne);
     return Qnil;
 }
 
@@ -570,11 +572,12 @@ nst_s_add_type(int argc, VALUE *argv, VALUE mod)
 
 
 
-#define NST_TYPEDEF(tpname,tpclass) \
-static VALUE \
-nst_s_##tpname(VALUE argc, VALUE *argv, VALUE mod) \
-{   nstruct_add_type(tpclass,argc,argv,mod); \
-    return Qnil; }
+#define NST_TYPEDEF(tpname,tpclass)                 \
+static VALUE                                        \
+nst_s_##tpname(VALUE argc, VALUE *argv, VALUE mod)  \
+{   nstruct_add_type(tpclass,argc,argv,mod);        \
+    return Qnil;                                    \
+}
 
 NST_TYPEDEF(int8,cInt8)
 NST_TYPEDEF(int16,cInt16)
@@ -590,8 +593,8 @@ NST_TYPEDEF(uint48,cUInt48)
 NST_TYPEDEF(uint64,cUInt64)
 NST_TYPEDEF(dfloat,cDFloat)
 NST_TYPEDEF(dcomplex,cDComplex)
-//NST_TYPEDEF(sfloat,cSFloat)
-//NST_TYPEDEF(scomplex,cSComplex)
+NST_TYPEDEF(sfloat,cSFloat)
+NST_TYPEDEF(scomplex,cSComplex)
 
 
 #define rb_define_singleton_alias(klass,name1,name2) \
@@ -611,35 +614,30 @@ Init_nstruct()
     rb_define_singleton_method(cNStruct, "add_type", nst_s_add_type, -1);
     rb_define_singleton_method(cNStruct, "int8",   nst_s_int8,   -1);
     rb_define_singleton_method(cNStruct, "int16",  nst_s_int16,  -1);
-    rb_define_singleton_method(cNStruct, "int24",  nst_s_int24,  -1);
     rb_define_singleton_method(cNStruct, "int32",  nst_s_int32,  -1);
-    rb_define_singleton_method(cNStruct, "int48",  nst_s_int48,  -1);
     rb_define_singleton_method(cNStruct, "int64",  nst_s_int64,  -1);
     rb_define_singleton_method(cNStruct, "uint8",  nst_s_uint8,  -1);
     rb_define_singleton_method(cNStruct, "uint16", nst_s_uint16, -1);
     rb_define_singleton_method(cNStruct, "uint32", nst_s_uint32, -1);
-    rb_define_singleton_method(cNStruct, "uint48", nst_s_uint48, -1);
     rb_define_singleton_method(cNStruct, "uint64", nst_s_uint64, -1);
-    rb_define_singleton_method(cNStruct, "dfloat",   nst_s_dfloat, -1);
-    rb_define_singleton_alias (cNStruct, "float64", "dfloat");
-    rb_define_singleton_method(cNStruct, "dcomplex", nst_s_dcomplex, -1);
-    rb_define_singleton_alias (cNStruct, "complex128", "dcomplex");
-    /*
     rb_define_singleton_method(cNStruct, "sfloat",   nst_s_sfloat, -1);
     rb_define_singleton_alias (cNStruct, "float32", "sfloat");
     rb_define_singleton_method(cNStruct, "scomplex", nst_s_scomplex, -1);
     rb_define_singleton_alias (cNStruct, "complex64", "scomplex");
-    */
+    rb_define_singleton_method(cNStruct, "dfloat",   nst_s_dfloat, -1);
+    rb_define_singleton_alias (cNStruct, "float64", "dfloat");
+    rb_define_singleton_method(cNStruct, "dcomplex", nst_s_dcomplex, -1);
+    rb_define_singleton_alias (cNStruct, "complex128", "dcomplex");
 
-    rb_define_method(cNStruct, "definition", nst_get_definition, 1);
-    rb_define_method(cNStruct, "definitions", nst_get_definitions, 0);
-    rb_define_method(cNStruct, "field", nst_get_field, 1);
+    rb_define_method(cNStruct, "definition", nst_definition, 1);
+    rb_define_method(cNStruct, "definitions", nst_definitions, 0);
+    rb_define_method(cNStruct, "field", nst_field, 1);
     rb_define_method(cNStruct, "extract", nst_extract, 0);
-    rb_define_method(cNStruct, "fill", num_nstruct_fill, 1);
+    rb_define_method(cNStruct, "fill", nary_nstruct_fill, 1);
 
-    rb_define_method(cNStruct, "debug_print", num_nstruct_debug_print, 0);
+    rb_define_method(cNStruct, "debug_print", nary_nstruct_debug_print, 0);
 
-    rb_define_method(cNStruct, "to_a", num_cast_nstruct_to_array, 0);
+    rb_define_method(cNStruct, "to_a", nary_cast_nstruct_to_array, 0);
 
     //rb_define_method(cNStruct, "initialize", rb_struct_initialize, -2);
     //rb_define_method(cNStruct, "initialize_copy", rb_struct_init_copy, 1);
