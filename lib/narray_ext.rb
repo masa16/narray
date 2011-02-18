@@ -64,16 +64,16 @@ class NArray
       case a=args[i]
       when Integer
         a = n+a if a<0
-        raise ArgumentError, "index(%d) out of range"%[a] if a<0
+        raise IndexError, "index(%d) out of range"%[a] if a<0
         x = [0...a,a+1...n]
       when Range
         b = a.first
         b = n+b if b<0
-        raise ArgumentError, "index(%s) out of range"%[a] if b<0
+        raise IndexError, "index(%s) out of range"%[a] if b<0
         e = a.last
         e = n+e if e<0
         e -= 1 if a.exclude_end?
-        raise ArgumentError, "index(%s) out of range"%[a] if e<0
+        raise IndexError, "index(%s) out of range"%[a] if e<0
         x = [0...b,e+1...n]
       when Array
         x = (0...n).to_a
