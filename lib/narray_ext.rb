@@ -243,7 +243,7 @@ class NArray
   #
   # @param [Number] dim non-negative
   #
-  # @return [NArray] self
+  # @return [NArray]
   #
   def cumsum_general dim=0
     self.dup.cumsum_general!(dim)
@@ -254,6 +254,73 @@ class NArray
   alias cumsum cumsum_general
   alias cumsum_1! cumsum!
   alias cumsum! cumsum_general!
+
+
+  #
+  # Replicate this array to make a tiled array; this is the matlab function
+  # repmat.
+  #
+  # @param [Array<Number>] reps number of times to repeat in each dimension;
+  # note that reps.size is allowed to be different from self.dim, and dimensions
+  # of size 1 will be added to compensate
+  #
+  # @return [NArray] with same typecode as self 
+  #
+  def tile *reps
+    if self.dim == 0 || reps.member?(0)
+      # Degenerate case: 0 dimensions or dimension 0
+      res = NArray.new(self.typecode, 0)
+    else
+      if reps.size <= self.dim 
+        # Repeat any extra dims once.
+        reps = reps + [1]*(self.dim - reps.size) 
+        tile = self
+      else
+        # Have to add some more dimensions (with implicit shape[dim] = 1).
+        tile_shape = self.shape + [1]*(reps.size - self.dim) 
+        tile = self.reshape(*tile_shape)
+      end
+
+      # Allocate tiled matrix.
+      res_shape = (0...tile.dim).map{|i| tile.shape[i] * reps[i]}
+      res = NArray.new(self.typecode, *res_shape)
+
+      # Copy tiles.
+      # This probably isn't the most efficient way of doing this; just doing
+      # res[] = tile doesn't seem to work in general
+      nested_for_zero_to(reps) do |tile_pos|
+        tile_slice = (0...tile.dim).map{|i|
+          (tile.shape[i] * tile_pos[i])...(tile.shape[i] * (tile_pos[i]+1))}
+        res[*tile_slice] = tile
+      end
+    end
+    res
+  end
+
+  private
+
+  #
+  # This is effectively <tt>suprema.size</tt> nested 'for' loops, in which the
+  # outermost loop runs over <tt>0...suprema.first</tt>, and the innermost loop
+  # runs over <tt>0...suprema.last</tt>.
+  #
+  # For example, when +suprema+ is [3], it yields [0], [1] and [2], and when
+  # +suprema+ is [3,2] it yields [0,0], [0,1], [1,0], [1,1], [2,0] and [2,1].
+  #
+  # @param [Array<Integer>] suprema non-negative entries; does not yield if
+  #        empty 
+  #
+  # @return [nil]
+  # 
+  def nested_for_zero_to suprema
+    unless suprema.empty?
+      nums = suprema.map{|n| (0...n).to_a}
+      nums.first.product(*nums.drop(1)).each do |num|
+        yield num
+      end
+    end
+    nil
+  end
 end
 
 module NMath

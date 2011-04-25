@@ -9,3 +9,5 @@ def assert_narray_close exp, obs
 end
 
 load 'test/testcumsum.rb'
+load 'test/testtile.rb'
+
