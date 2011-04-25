@@ -88,3 +88,7 @@ end
 file "src" do
   ln_s ".","src"
 end
+
+task :unit_tests do
+  ruby "-I.:lib test/unit_tests.rb"
+end
