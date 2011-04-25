@@ -209,8 +209,52 @@ class NArray
   end
 
   #SFloatOne = NArray.sfloat(1).fill!(1)
-end
 
+  #
+  # Cumulative sum along dimension +dim+; modifies this array in place.
+  #
+  # @param [Number] dim non-negative
+  #
+  # @return [NArray] self
+  #
+  def cumsum_general! dim=0
+    if self.dim > dim
+      if self.dim == 1
+        # use the built-in version for dimension 1
+        self.cumsum_1!
+      else
+        # for example, if this is a matrix and dim = 0, mask_0 selects the first
+        # column of the matrix and mask_1 selects the second column; then we
+        # just shuffle them along and accumulate.
+        mask_0 = (0...self.dim).map{|d| d == dim ? 0 : true}
+        mask_1 = (0...self.dim).map{|d| d == dim ? 1 : true}
+        while mask_1[dim] < self.shape[dim]
+          self[*mask_1] += self[*mask_0]
+          mask_0[dim] += 1
+          mask_1[dim] += 1
+        end
+      end
+    end
+    self
+  end
+
+  #
+  # Cumulative sum along dimension +dim+.
+  #
+  # @param [Number] dim non-negative
+  #
+  # @return [NArray] self
+  #
+  def cumsum_general dim=0
+    self.dup.cumsum_general!(dim)
+  end
+
+  # The built-in cumsum only does vectors (dim 1).
+  alias cumsum_1 cumsum
+  alias cumsum cumsum_general
+  alias cumsum_1! cumsum!
+  alias cumsum! cumsum_general!
+end
 
 module NMath
   PI = Math::PI
