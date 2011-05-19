@@ -204,7 +204,7 @@ class NArray
   #alias randomn! randomn
 
   def randomn!
-    self[]= random
+    self[]= randomn
     self
   end
 
