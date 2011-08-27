@@ -1,6 +1,8 @@
 2011-08-27  Masahiro TANAKA  <masa16.tanaka@gmail.com>
 
 	* narray.c (na_alloc_struct): check array size.
+	* extconf.rb (#install_rb): --export-all option for mingw.
+	* ver 0.6.0.0
 
 2011-02-04  Masahiro TANAKA  <masa16.tanaka@gmail.com>
 

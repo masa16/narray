@@ -6,7 +6,7 @@ spec = YAML.load <<EOF
 --- !ruby/object:Gem::Specification
 name: narray
 version: !ruby/object:Gem::Version
-  version: 0.5.9.9
+  version: 0.6.0.0
 platform: ruby
 authors:
 - Masahiro Tanaka
@@ -14,7 +14,7 @@ autorequire:
 bindir: bin
 cert_chain: []
 
-date: 2010-12-14
+date: 2011-08-27
 default_executable:
 dependencies: []
 

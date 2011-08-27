@@ -68,12 +68,6 @@ end
 #$DEBUG = true
 #$CFLAGS = ["-Wall",$CFLAGS].join(" ")
 
-# configure options:
-#  --with-fftw-dir=path
-#  --with-fftw-include=path
-#  --with-fftw-lib=path
-#dir_config("fftw")
-
 srcs = %w(
 narray
 na_array
@@ -99,17 +93,6 @@ have_type("int16_t", header)
 have_type("int32_t", header)
 have_type("u_int32_t", header)
 have_type("uint32_t", header)
-#have_library("m")
-#have_func("sincos")
-#have_func("asinh")
-
-#if have_header("fftw.h")
-#  if have_library("fftw", "fftwnd_create_plan")
-#    srcs.push "na_fftw"
-#  else
-#    $defs.delete "-DHAVE_FFTW_H"
-#  end
-#end
 
 $objs = srcs.collect{|i| i+".o"}
 
