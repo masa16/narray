@@ -46,7 +46,7 @@ if RUBY_VERSION < '1.8'
     end
   end
 else
-  $INSTALLFILES = [['narray.h', '$(archdir)'], ['narray_config.h', '$(archdir)']] 
+  $INSTALLFILES = [['narray.h', '$(archdir)'], ['narray_config.h', '$(archdir)']]
   if /cygwin|mingw/ =~ RUBY_PLATFORM
 	 $INSTALLFILES << ['libnarray.a', '$(archdir)']
   end
@@ -54,7 +54,7 @@ end
 
 if /cygwin|mingw/ =~ RUBY_PLATFORM
   if RUBY_VERSION >= '1.9.0'
-    $DLDFLAGS << " -Wl,--out-implib=libnarray.a"
+    $DLDFLAGS << " -Wl,--export-all,--out-implib=libnarray.a"
   elsif RUBY_VERSION > '1.8.0'
     $DLDFLAGS << ",--out-implib=libnarray.a"
   elsif RUBY_VERSION > '1.8'
