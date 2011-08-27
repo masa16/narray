@@ -101,7 +101,7 @@ static void
 {
   if ( ary->total > 0 ) {
     if (ary->ref == Qnil || ary->ref == Qtrue) {  /* non reference */
-      xfree(ary->ptr); 
+      xfree(ary->ptr);
     }
     xfree(ary->shape);
 #ifdef DEBUG
@@ -117,17 +117,22 @@ static void
 struct NARRAY*
  na_alloc_struct(int type, int rank, int *shape)
 {
-  int total=1;
+  int total=1, total_bak;
   int i, memsz;
   struct NARRAY *ary;
 
-  for (i=0; i<rank; ++i)
-    total *= shape[i];
+  for (i=0; i<rank; ++i) {
+    total_bak = total;
+    total = total_bak * shape[i];
+    if (total>2147483647 || total/shape[i] != total_bak) {
+      rb_raise(rb_eArgError, "array size is too large");
+    }
+  }
 
   if (rank<=0 || total<=0) {
     /* empty array */
     ary = ALLOC(struct NARRAY);
-    ary->rank  = 
+    ary->rank  =
     ary->total = 0;
     ary->shape = NULL;
     ary->ptr   = NULL;
@@ -135,6 +140,10 @@ struct NARRAY*
   }
   else {
     memsz = na_sizeof[type] * total;
+
+    if (memsz>2147483647 || memsz/na_sizeof[type] != total) {
+      rb_raise(rb_eArgError, "allocation size is too large");
+    }
 
     /* Garbage Collection */
 #ifdef NARRAY_GC
@@ -231,7 +240,7 @@ VALUE
   if (type==NA_ROBJ) {
     rb_mem_clear((VALUE*)(na->ptr), na->total);
   }
-  return na_wrap_struct_class(na, klass);  
+  return na_wrap_struct_class(na, klass);
 }
 
 
@@ -257,7 +266,7 @@ VALUE
   struct NARRAY *na;
 
   na = na_alloc_struct(type, 0, NULL);
-  return na_wrap_struct_class(na, klass);  
+  return na_wrap_struct_class(na, klass);
 }
 
 
@@ -610,7 +619,7 @@ static VALUE
     if ( len != str_len )
       rb_raise(rb_eArgError, "size mismatch");
   }
-  
+
   v = na_make_object( type, rank, shape, cNArray );
   GetNArray(v,ary);
   memcpy( ary->ptr, RSTRING_PTR(str), ary->total*na_sizeof[type] );
@@ -720,7 +729,7 @@ static VALUE
 }
 
 
-/* singleton method: 
+/* singleton method:
    NArray.to_na( string, type, size1,size2,...,sizeN )
    NArray.to_na( array )
 */
@@ -751,7 +760,7 @@ static VALUE
 }
 
 
-/* singleton method: 
+/* singleton method:
    NArray[object]
 */
 static VALUE
@@ -986,7 +995,7 @@ VALUE na_fill(VALUE self, volatile VALUE val)
   if (a2->total != 1)
     rb_raise(rb_eArgError, "single-element argument required");
 
-  SetFuncs[a1->type][a2->type]( a1->total, 
+  SetFuncs[a1->type][a2->type]( a1->total,
 				a1->ptr, na_sizeof[a1->type],
 				a2->ptr, 0 );
   return self;
@@ -1010,7 +1019,7 @@ VALUE
   }
 
   GetNArray(self,ary);
-  IndGenFuncs[ary->type]( ary->total, 
+  IndGenFuncs[ary->type]( ary->total,
 			  ary->ptr, na_sizeof[ary->type],
 			  start, step );
   return self;

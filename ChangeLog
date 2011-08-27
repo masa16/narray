@@ -1,3 +1,7 @@
+2011-08-27  Masahiro TANAKA  <masa16.tanaka@gmail.com>
+
+	* narray.c (na_alloc_struct): check array size.
+
 2011-02-04  Masahiro TANAKA  <masa16.tanaka@gmail.com>
 
 	* na_func.c (na_prod, na_prod_body, na_cumprod, na_cumprod_bang):
