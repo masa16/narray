@@ -6,7 +6,7 @@ spec = YAML.load <<EOF
 --- !ruby/object:Gem::Specification
 name: narray
 version: !ruby/object:Gem::Version
-  version: 0.6.0.0
+  version: 0.6.0.1
 platform: ruby
 authors:
 - Masahiro Tanaka
