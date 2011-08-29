@@ -122,9 +122,15 @@ struct NARRAY*
   struct NARRAY *ary;
 
   for (i=0; i<rank; ++i) {
+    if (shape[i] < 0) {
+      rb_raise(rb_eArgError, "negative array size");
+    } else if (shape[i] == 0) {
+      total = 0;
+      break;
+    }
     total_bak = total;
-    total = total_bak * shape[i];
-    if (total>2147483647 || total/shape[i] != total_bak) {
+    total *= shape[i];
+    if (total < 1 || total > 2147483647 || total/shape[i] != total_bak) {
       rb_raise(rb_eArgError, "array size is too large");
     }
   }
@@ -141,7 +147,7 @@ struct NARRAY*
   else {
     memsz = na_sizeof[type] * total;
 
-    if (memsz>2147483647 || memsz/na_sizeof[type] != total) {
+    if (memsz < 1 || memsz > 2147483647 || memsz/na_sizeof[type] != total) {
       rb_raise(rb_eArgError, "allocation size is too large");
     }
 

@@ -1,6 +1,11 @@
+2011-08-29  Masahiro TANAKA  <masa16.tanaka@gmail.com>
+
+	* narray.c (na_alloc_struct): check array size (zero/negative).
+	* ver 0.6.0.1
+
 2011-08-27  Masahiro TANAKA  <masa16.tanaka@gmail.com>
 
-	* narray.c (na_alloc_struct): check array size.
+	* narray.c (na_alloc_struct): check array size (overflow).
 	* extconf.rb (#install_rb): --export-all option for mingw.
 	* ver 0.6.0.0
 
