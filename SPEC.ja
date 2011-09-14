@@ -75,6 +75,11 @@
     a[0..2,0..3]  = b[0..2,1]	繰り返し代入。
 				( a[0,0]=b[0,1],..,a[0,3]=b[0,1] )
 
+行・列の削除 -- インデックス取り出しの逆
+
+    self.delete_at(...)	  引数はインデクス参照と同じ。
+			  参照: https://github.com/masa16/narray/issues/5
+
 値のセット。
     self.indgen!([start[,step]]) startからstepづつ増加した値をセット。
     self.fill!(value)		 すべての要素にvalueをセット。

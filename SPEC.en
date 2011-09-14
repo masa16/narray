@@ -86,6 +86,11 @@ Replacing Elements -- Same rule as slicing
     a[0..2,0..3]  = b[0..2,1]	Storing repetitively
 				( a[0,0]=b[0,1],..,a[0,3]=b[0,1] )
 
+Delete row/columns -- Complement of slice
+
+    self.delete_at(...)	  Arguments are the same as the [] and slice methods
+			  see https://github.com/masa16/narray/issues/5
+
 Filling values
     self.indgen!([start[,step]]) Generate index;
 				 Set values from 'start' with 'step' increment
