@@ -10,6 +10,8 @@ version: !ruby/object:Gem::Version
 platform: ruby
 authors:
 - Masahiro Tanaka
+licenses:
+- Ruby
 autorequire:
 bindir: bin
 cert_chain: []
