@@ -9,8 +9,8 @@ Gem::Specification.new do |s|
   s.date = "2011-08-27"
   s.description = "Numerical N-dimensional Array class"
   s.email = "masa16.tanaka@gmail.com"
-  s.extensions = ["src/extconf.rb"]
-  s.files = ["src/extconf.rb"]
+  s.extensions = ["extconf.rb"]
+  s.files = ["extconf.rb"]
   s.homepage = "http://narray.rubyforge.org/"
   s.require_paths = ["."]
   s.rubyforge_project = "narray"
