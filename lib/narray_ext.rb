@@ -272,6 +272,7 @@ module NMath
     ((x-xm)*(y-ym)).sum(*ranks) / (n-1)
   end
 
+  module_function :recip
   module_function :csc,:sec,:cot,:csch,:sech,:coth
   module_function :acsc,:asec,:acot,:acsch,:asech,:acoth
   module_function :covariance
