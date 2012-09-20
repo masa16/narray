@@ -208,6 +208,42 @@ class NArray
     self
   end
 
+  def reverse(*ranks)
+    if self.rank==0
+      return self.dup
+    elsif ranks.size==0
+      idx = (0...self.rank).map{-1..0}
+    else
+      idx = [true]*self.rank
+      ranks.each do |i|
+        if !i.kind_of?(Integer)
+          raise ArgumentError, "Argument must be Integer"
+        end
+        if i >= self.rank
+          raise ArgumentError, "dimension(%s) out of range"%[i]
+        end
+        idx[i] = -1..0
+      end
+    end
+    self[*idx]
+  end
+
+  def rot90(n_times=1)
+    if self.rank < 2
+      raise "must be >2 dimensional array"
+    end
+    case n_times%4
+    when 0
+      self.dup
+    when 1
+      self.transpose(1,0).reverse(0)
+    when 2
+      self.reverse(0,1)
+    when 3
+      self.transpose(1,0).reverse(1)
+    end
+  end
+
   #SFloatOne = NArray.sfloat(1).fill!(1)
 end
 
