@@ -201,6 +201,10 @@ Reference to another NArray
     self.reshape(size,...)	same as self.refer.reshape!
     self.newdim(dim,...)	same as self.refer.newdim!
 
+Reverse and Rotate
+    self.reverse([dim,...])	Reverse array at axes
+    self.rot90([k])		Rotate array by 90 degrees k times
+
 Type conversion
     self.floor      Return integer NArray whose elements processed 'floor'
     self.ceil

@@ -186,6 +186,10 @@
     self.reshape(size,...)	self.refer.reshape! と同様。
     self.newdim(dim,...)	self.refer.newdim! と同様。
 
+反転・回転
+    self.reverse([dim,...])	指定した次元を逆順にする
+    self.rot90([k])		2次元配列の90度の回転をk回行う
+
 型変換
     self.floor selfより小さい最大の整数を返す。
     self.ceil  selfより大きい最小の整数を返す。

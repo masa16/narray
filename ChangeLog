@@ -1,3 +1,7 @@
+2012-09-20  Masahiro TANAKA  <masa16.tanaka@gmail.com>
+
+	* lib/narray_ext.rb (reverse,rot90): new method
+
 2012-09-01  ohai
 
 	* lib/narray_ext.rb: Change NMath#recip into a module function.
