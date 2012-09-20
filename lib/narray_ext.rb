@@ -230,7 +230,7 @@ class NArray
 
   def rot90(n_times=1)
     if self.rank < 2
-      raise "must be >2 dimensional array"
+      raise "must be >= 2 dimensional array"
     end
     case n_times%4
     when 0
