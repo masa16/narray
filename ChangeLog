@@ -1,3 +1,7 @@
+2012-09-01  ohai
+
+	* lib/narray_ext.rb: Change NMath#recip into a module function.
+
 2011-08-29  Masahiro TANAKA  <masa16.tanaka@gmail.com>
 
 	* narray.c (na_alloc_struct): check array size (zero/negative).
