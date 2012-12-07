@@ -181,11 +181,10 @@ static void
   if (TYPE(v) != T_CLASS) {
     rb_raise(rb_eRuntimeError, "class required");
   }
-  while (v) {
-    if (v == cNArray || RCLASS(v)->m_tbl == RCLASS(cNArray)->m_tbl)
-      return;
-    v = RCLASS_SUPER(v);
-  }
+
+  if(RTEST(rb_ary_includes(rb_mod_ancestors(v), cNArray)))
+    return;
+
   rb_raise(rb_eRuntimeError, "need NArray or its subclass");
 }
 
