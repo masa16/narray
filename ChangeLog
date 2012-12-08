@@ -1,3 +1,10 @@
+2012-12-07 geoffyoungs
+
+	* narray.c (na_check_class_narray):
+	  Use ruby methods to check class ancestors,
+	  instead of m_tbl directly
+	* ver 0.6.0.2
+
 2012-09-20  Masahiro TANAKA  <masa16.tanaka@gmail.com>
 
 	* lib/narray_ext.rb (reverse,rot90): new method

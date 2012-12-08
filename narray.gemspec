@@ -1,12 +1,10 @@
-# -*- encoding: utf-8 -*-
-
 Gem::Specification.new do |s|
   s.name = "narray"
-  s.version = "0.6.0.1"
+  s.version = "0.6.0.2"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Masahiro Tanaka"]
-  s.date = "2011-08-27"
+  s.date = "2011-12-07"
   s.description = "Numerical N-dimensional Array class"
   s.email = "masa16.tanaka@gmail.com"
   s.extensions = ["extconf.rb"]
