@@ -287,7 +287,7 @@ module NMath
     1/tan(x)
   end
   def coth x
-    1/atanh(x)
+    1/tanh(x)
   end
   def acot x
     atan(1/x.to_f)
