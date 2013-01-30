@@ -217,19 +217,22 @@ static int n_bits(int32_t a)
   return xl;
 }
 
-static int32_t size_check(double rmax, double limit)
+// max&limit must be integer
+static u_int32_t size_check(double rmax, double limit)
 {
+  u_int32_t max;
+
   if ( rmax == 0 ) {
-    return (int32_t)(limit-1);
+    return (u_int32_t)(limit-1);
   }
   if ( rmax < 0 ) {
     rmax = -rmax;
   }
-  rmax -= 1;
-  if ( rmax >= limit ) {
-    rb_raise(rb_eArgError, "rand-max(%.0f) must be <= %.0f", rmax+1, limit);
+  max = (u_int32_t)(rmax - 1);
+  if ( max >= limit ) {
+    rb_raise(rb_eArgError, "rand-max(%.0f) must be <= %.0f", rmax, limit);
   }
-  return (int32_t)rmax;
+  return max;
 }
 
 static void TpErr(void) {
@@ -268,7 +271,7 @@ static void RndB(int n, char *p1, int i1, double rmax)
 static void RndI(int n, char *p1, int i1, double rmax)
 {
   u_int32_t y;
-  int16_t max;
+  u_int16_t max;
   int shift, sign=1;
 
   if ( rmax < 0 ) { rmax = -rmax; sign = -1; }
@@ -295,7 +298,7 @@ static void RndI(int n, char *p1, int i1, double rmax)
 static void RndL(int n, char *p1, int i1, double rmax)
 {
   u_int32_t y;
-  int32_t max;
+  u_int32_t max;
   int shift, sign=1;
 
   if ( rmax < 0 ) { rmax = -rmax; sign = -1; }

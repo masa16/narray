@@ -575,7 +575,7 @@ void Init_na_linalg()
 
   for (i=1;i<NA_NTYPES;++i) {
     sz = na_funcset[i].elmsz = na_sizeof[i];
-    sz = (sz>sizeof(int)) ? sz : sizeof(int);
+    sz = (sz>((int)sizeof(int))) ? sz : (int)sizeof(int);
     SetFuncs[i][NA_LINT](1, a,0, &one, 0);
     na_funcset[i].one = a;
     a += sz;
