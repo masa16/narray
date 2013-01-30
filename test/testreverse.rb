@@ -1,5 +1,4 @@
-$LOAD_PATH.push "lib"
-require './narray.so'
+require 'narray'
 
 def px(a)
   puts a
@@ -23,5 +22,6 @@ px "$a.rot90(-1)                   "
 px "$a = NArray.int(3).indgen!     "
 px "$a.reverse                     "
 px "$a.reverse(0)                  "
+puts "..... the next will fail ....."
 px "$a.rot90                       "
 px "$a.rot90(-1)                   "
