@@ -182,7 +182,9 @@ static void
     rb_raise(rb_eRuntimeError, "class required");
   }
 
-  if(RTEST(rb_ary_includes(rb_mod_ancestors(v), cNArray)))
+  if (v == cNArray)
+    return;
+  if (RTEST(rb_funcall(v, rb_intern("<="), 1, cNArray)))
     return;
 
   rb_raise(rb_eRuntimeError, "need NArray or its subclass");
@@ -741,10 +743,6 @@ static VALUE
 static VALUE
  na_s_to_na(int argc, VALUE *argv, VALUE klass)
 {
-  static int shape=1;
-  VALUE v;
-  struct NARRAY *ary;
-
   if (argc < 1) {
     rb_raise(rb_eArgError, "Argument is required");
   }
@@ -795,8 +793,8 @@ static VALUE
   int i;
   char buf[256];
   const char *classname;
-  char *ref = "%s(ref).%s(%i";
-  char *org = "%s.%s(%i";
+  const char *ref = "%s(ref).%s(%i";
+  const char *org = "%s.%s(%i";
 
   GetNArray(self,ary);
   classname = rb_class2name(CLASS_OF(self));
