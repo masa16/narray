@@ -1,3 +1,11 @@
+2013-01-31  Masahiro TANAKA <masa16.tanaka@gmail.com>
+
+	* na_raondom.c: unuse u_int16_t
+	* mknafunc.rb, mkmath.rb, mkop.rb, na_linalg.c:
+	  bug: duplicated definition of asinh/acosh/atanh,
+	  typecast warning (mingw/mswin)
+	* ver 0.6.0.6
+
 2013-01-30  Masahiro TANAKA  <masa16.tanaka@gmail.com>
 
 	* narray.c (na_check_class_narray):
