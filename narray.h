@@ -49,6 +49,14 @@ typedef short                  int16_t;  /* NA_SINT */
 # endif
 #endif /* HAVE_INT16_T */
 
+#ifndef HAVE_U_INT16_T
+# ifdef HAVE_UINT16_T
+typedef uint16_t            u_int16_t;
+# else
+typedef unsigned short      u_int16_t;
+# endif
+#endif /* HAVE_UINT16_T */
+
 #ifndef HAVE_INT32_T
 # if SIZEOF_LONG == 4
 typedef long                   int32_t;  /* NA_LINT */
