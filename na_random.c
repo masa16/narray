@@ -271,7 +271,7 @@ static void RndB(int n, char *p1, int i1, double rmax)
 static void RndI(int n, char *p1, int i1, double rmax)
 {
   u_int32_t y;
-  u_int16_t max;
+  u_int32_t max;
   int shift, sign=1;
 
   if ( rmax < 0 ) { rmax = -rmax; sign = -1; }
