@@ -565,8 +565,8 @@ na_lu_init(VALUE self, VALUE lu, VALUE piv)
 
 void Init_na_linalg()
 {
-  static double tiny_d=1e-15;
-  static float  tiny_f=1e-7;
+  static double tiny_d = 1e-15;
+  static float  tiny_f = (float)1e-7;
   int i, sz;
   int32_t one=1, zero=0;
   static VALUE zerov = INT2FIX(0);

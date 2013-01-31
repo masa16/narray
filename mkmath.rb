@@ -38,7 +38,6 @@ void sincos(double x, double *s, double *c)
 {
   *s=sin(x); *c=cos(x);
 }
-#endif
 
 #ifndef HAVE_ACOSH
 static double rb_log1p (const double x)
@@ -107,6 +106,7 @@ static double atanh(double x)
    if (neg) {a=-a;}
    return a;
 }
+#endif
 #endif
 
 static void squareX(scomplex *x) {
@@ -398,8 +398,8 @@ data = [
 ["{ *p1 = log10(*p2); }"]*2 +
 ["{
   log#code(p1,p2);
-  p1->r *= M_LOG10E;
-  p1->i *= M_LOG10E;
+  p1->r *= (typer)M_LOG10E;
+  p1->i *= (typer)M_LOG10E;
 }"]*2 +
 [nil] ],
 
@@ -409,8 +409,8 @@ data = [
 ["{ *p1 = log(*p2)*M_LOG2E; }"]*2 +
 ["{
   log#code(p1,p2);
-  p1->r *= M_LOG2E;
-  p1->i *= M_LOG2E;
+  p1->r *= (typer)M_LOG2E;
+  p1->i *= (typer)M_LOG2E;
 }"]*2 +
 [nil] ],
 

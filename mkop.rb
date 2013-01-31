@@ -206,28 +206,28 @@ mkfuncs('ImgSet',$data_types,$real_types,
 
 mkfuncs('Floor',$int_types,$data_types,[nil] +
  ['copy']*3 + 
- ["*p1 = floor(*p2);"]*2 + 
+ ["*p1 = (typec)floor(*p2);"]*2 + 
  [nil]*3
 )
 
 mkfuncs('Ceil',$int_types,$data_types,[nil] +
  ['copy']*3 + 
- ["*p1 = ceil(*p2);"]*2 + 
+ ["*p1 = (typec)ceil(*p2);"]*2 + 
  [nil]*3
 )
 
 mkfuncs('Round',$int_types,$data_types,[nil] +
  ['copy']*3 + 
 # ["*p1 = floor(*p2+0.5);"]*2 + 
- ["if (*p2 >= 0) *p1 = floor(*p2+0.5);
-     else *p1 = ceil(*p2-0.5);"]*2 + 
+ ["if (*p2 >= 0) *p1 = (typec)floor(*p2+0.5);
+     else *p1 = (typec)ceil(*p2-0.5);"]*2 + 
  [nil]*3
 )
 
 mkfuncs('Abs',$real_types,$data_types,[nil] +
  ["*p1 = *p2;"] + 
  ["*p1 = (*p2<0) ? -*p2 : *p2;"]*4 + 
- ["*p1 = hypot(p2->r, p2->i);"]*2 +
+ ["*p1 = (typec)hypot(p2->r, p2->i);"]*2 +
  ["*p1 = rb_funcall(*p2,na_id_abs,0);"]
 )
 
@@ -324,8 +324,8 @@ $func_body =
 "
 mkfuncs('IndGen',$data_types,[$data_types[3]]*8,
  [nil] +
- ["*p1 = p2;"]*5 +
- ["p1->r = p2;
+ ["*p1 = (typef)p2;"]*5 +
+ ["p1->r = (typef)p2;
    p1->i = 0;"]*2 +
  ["*p1 = INT2FIX(p2);"]
 )

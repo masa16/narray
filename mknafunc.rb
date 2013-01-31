@@ -61,6 +61,7 @@ def mksetfuncs(name,op,id,funcs)
 	    gsub(/p2->/,"((#{td[j]}*)p2)->").
 	    gsub(/\*p1/,"*(#{td[i]}*)p1").
 	    gsub(/\*p2/,"*(#{td[j]}*)p2").
+	    gsub(/ = /," = (#{tr[i]})").
             gsub(/#id/,id).
             gsub(/#op/,op).
 	    gsub(/typed/,td[i]).
@@ -118,6 +119,7 @@ def mkfuncs(name,t1,t2,func)
 	gsub(/\*p2/,"*(#{t2[i]}*)p2").
 	gsub(/\*p3/,"*(#{t2[i]}*)p3").
 	gsub(/type1/,td[i]).
+	gsub(/typec/,t1[i]).
 	gsub(/typef/,tr[i])
       puts $func_body.
 	gsub(/#name/,name).
