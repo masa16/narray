@@ -1,3 +1,8 @@
+2013-02-01  Masahiro TANAKA  <masa16.tanaka@gmail.com>
+
+	* lib/narray_ext.rb: eql? method implemented.
+	* ver 0.6.0.7
+
 2013-01-31  Masahiro TANAKA <masa16.tanaka@gmail.com>
 
 	* na_raondom.c: unuse u_int16_t
