@@ -1,5 +1,5 @@
 
-	Ruby/NArray  ver 0.6.0.0 (2011-08-27)	by Masahiro TANAKA
+	Ruby/NArray  ver 0.6.0.7 (2013-02-01)	by Masahiro TANAKA
 
 
 Class method:
@@ -136,7 +136,7 @@ Bitwise operator (only for integers)
 Comparison
   -- element-wise comparison, results in BYTE-type NArray;
      Note that not true nor false is returned.
-    self.eq other  ( == operator was obsolete after ver 0.5.4 )
+    self.eq other  (distinguish from == operator; see below )
     self.ne other
     self.gt other
     self >  other
@@ -160,6 +160,14 @@ Comparison
 		  where elements are true and false, respectively.
 
 	e.g.: idx_t,idx_f = (a>12).where2
+
+Equivalence
+    NArray[1] == NArray[1]      #=> true
+    NArray[1] == NArray[1.0]    #=> true
+    NArray[1].eql? NArray[1]    #=> true
+    NArray[1].eql? NArray[1.0]  #=> false
+    NArray[1].equal? NArray[1]  #=> false
+    a=b=NArray[1]; a.equal? b   #=> true
 
 Statistics
     self.sum(dim,..)     Summation

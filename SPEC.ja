@@ -1,5 +1,5 @@
 
-	Ruby/NArray  ver 0.6.0.0 (2011-08-27)	by Masahiro TANAKA
+	Ruby/NArray  ver 0.6.0.7 (2013-02-01)	by Masahiro TANAKA
 
 
 クラスメソッド:
@@ -127,7 +127,7 @@
 比較
   -- 要素ごとに値を比較し、結果をBYTE型 NArrayを返す。
      true/falseでないことに注意。
-    self.eq other  ( ver 0.5.4 以降、== 演算子は廃止しました。)
+    self.eq other ( == とは異なることに注意)
     self.ne other
     self.gt other
     self >  other
@@ -150,6 +150,14 @@
     self.where2	  要素が真と偽のインデックス配列を含む(Ruby)配列を返す。
 
 	例: idx_t,idx_f = (a>12).where2
+
+同値性
+    NArray[1] == NArray[1]      #=> true
+    NArray[1] == NArray[1.0]    #=> true
+    NArray[1].eql? NArray[1]    #=> true
+    NArray[1].eql? NArray[1.0]  #=> false
+    NArray[1].equal? NArray[1]  #=> false
+    a=b=NArray[1]; a.equal? b   #=> true
 
 統計
     self.sum(dim,..)	    指定した次元の和

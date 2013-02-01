@@ -37,10 +37,24 @@ class NArray
   end
 
   def eql?(other)
-    other.kind_of?(NArray) &&
+    self.class == other.class &&
       typecode == other.typecode &&
-      shape == other.shape && 
-      eq(other).all?
+      shape == other.shape &&
+      case typecode
+      when NArray::OBJECT
+	to_a.eql? other.to_a
+      else
+	to_s.eql? other.to_s
+      end
+  end
+
+  def hash
+    case typecode
+    when NArray::OBJECT
+      [self.class, to_a].hash
+    else
+      [self.class, typecode, shape, to_s].hash
+    end
   end
 
   def rank_total(*ranks)
