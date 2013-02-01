@@ -31,11 +31,16 @@ class NArray
   end
 
   def ==(other)
-    if other.kind_of?(NArray)
-      (shape == other.shape) && eq(other).all?
-    else
-      false
-    end
+    other.kind_of?(NArray) &&
+      shape == other.shape && 
+      eq(other).all?
+  end
+
+  def eql?(other)
+    other.kind_of?(NArray) &&
+      typecode == other.typecode &&
+      shape == other.shape && 
+      eq(other).all?
   end
 
   def rank_total(*ranks)
