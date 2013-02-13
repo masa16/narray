@@ -8,6 +8,21 @@
 #
 class NArray
 
+  def self.cast(array,type=nil)
+    case array
+    when NArray
+    when Array
+      array = NArray.to_na(array)
+    else
+      raise ArgumentError, "1st argument must be NArray or Array"
+    end
+    type = array.typecode if type.nil?
+    shape = array.shape
+    na = self.new(type,*shape)
+    na[] = array
+    na
+  end
+
   def integer?
     self.typecode==NArray::BYTE ||
     self.typecode==NArray::SINT ||
