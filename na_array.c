@@ -493,6 +493,7 @@ VALUE
 }
 
 
+/* :nodoc: */
 VALUE
  na_to_narray(VALUE obj)
 {
@@ -641,4 +642,9 @@ VALUE
     for (ii=i; ii<rank; ++ii)
       rb_str_cat(val, "  ", 2);
   }
+}
+
+
+void Init_na_array() {
+    rb_define_method(cNArray, "to_a", na_to_array,0); //
 }

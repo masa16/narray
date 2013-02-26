@@ -523,6 +523,12 @@ static int
   return count;
 }
 
+/*
+ *  call-seq:
+ *     narray.count_true  -> int
+ *
+ *  Returns the number of true (non-zero) in narray
+ */
 VALUE
  na_count_true(VALUE self)
 {
@@ -549,12 +555,19 @@ static int
   return count;
 }
 
+/*
+ *  call-seq:
+ *     narray.count_false  -> int
+ *
+ *  Returns the number of false (zero-value) in narray
+ */
 VALUE
  na_count_false(VALUE self)
 {
   return( INT2NUM(na_count_false_body(self)) );
 }
 
+/* :nodoc: */
 VALUE
  na_aref_mask(VALUE self, VALUE mask)
 {
@@ -983,4 +996,16 @@ VALUE
     rb_raise( rb_eArgError, "No value specified" );
 
   return idx[nidx];
+}
+
+
+void Init_na_index() {
+    /* slice */
+    rb_define_method(cNArray, "[]", na_aref,-1);
+    rb_define_method(cNArray, "[]=", na_aset,-1);
+    rb_define_method(cNArray, "slice", na_slice,-1);
+    /* mask */
+    rb_define_method(cNArray, "count_false", na_count_false, 0);
+    rb_define_method(cNArray, "count_true", na_count_true, 0);
+    rb_define_method(cNArray, "mask", na_aref_mask, 1);
 }

@@ -286,6 +286,7 @@ static int
 }
 
 
+/* :nodoc: */
 static VALUE
  na_lu_fact_bang(VALUE self)
 { 
@@ -329,6 +330,7 @@ static VALUE
 }
 
 
+/* :nodoc: */
 static VALUE
  na_lu_fact(VALUE self)
 {
@@ -471,6 +473,15 @@ na_shape_max2(int ndim, int *shape, int n1, int *shape1, int n2, int *shape2)
 }
 
 
+
+/*
+ *  call-seq:
+ *     lu.solve(arg)  -> result
+ *
+ *  Solve with the result of LU factorization.
+ *  arg should be NMatrix or NVector instance.
+ *  Returns an instance of same class with arg.
+ */
 static VALUE
 na_lu_solve(VALUE self, volatile VALUE other)
 {
@@ -526,6 +537,7 @@ na_lu_solve(VALUE self, volatile VALUE other)
 }
 
 
+/* :nodoc: */
 static VALUE
 na_lu_init(VALUE self, VALUE lu, VALUE piv)
 {

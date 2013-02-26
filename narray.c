@@ -58,6 +58,8 @@ static int mem_count = 0;
 static int na_gc_freq = 2500000;   /* Frequency of Garbage Collection */
 #endif
 
+void Init_na_array(void);
+void Init_na_index(void);
 void Init_nmath(void);
 void Init_na_funcs(void);
 void Init_na_linalg(void);
@@ -1173,15 +1175,18 @@ static VALUE
 void
  Init_narray()
 {
-    /* require Complex class */
-    rb_require("complex");
+    ID id_Complex = rb_intern("Complex");
+
+    if (!rb_const_defined( rb_cObject, id_Complex)) {
+	/* require Complex class */
+	rb_require("complex");
+    }
     cComplex = rb_const_get( rb_cObject, rb_intern("Complex") );
 
     /* define NArray class */
     cNArray = rb_define_class("NArray",rb_cObject);
 
     /* class methods */
-    /* rb_define_global_function("NArray",na_to_narray,-1); */
     rb_define_singleton_method(cNArray,"new",na_s_new,-1);
     rb_define_singleton_method(cNArray,"byte",na_s_new_byte,-1);
     rb_define_singleton_method(cNArray,"sint",na_s_new_sint,-1);
@@ -1200,9 +1205,6 @@ void
     rb_define_singleton_method(cNArray,"[]",na_s_bracket,-1);
 
     /* methods */
-    rb_define_method(cNArray, "[]", na_aref,-1);
-    rb_define_method(cNArray, "[]=", na_aset,-1);
-    rb_define_method(cNArray, "slice", na_slice,-1);
     rb_define_method(cNArray, "shape", na_shape,0);
     rb_define_alias(cNArray,  "sizes","shape");
     rb_define_method(cNArray, "size", na_size,0);
@@ -1238,8 +1240,6 @@ void
     rb_define_method(cNArray, "each", na_each,0);
     rb_define_method(cNArray, "collect", na_collect,0);
     rb_define_method(cNArray, "collect!", na_collect_bang,0);
-    /*  rb_define_method(cNArray, "each_index", na_each_index,0); */
-    rb_define_method(cNArray, "to_a", na_to_array,0);
     rb_define_method(cNArray, "to_s", na_to_s, 0);
     rb_define_method(cNArray, "to_f", na_to_float, 0);
     rb_define_method(cNArray, "to_i", na_to_integer, 0);
@@ -1247,10 +1247,6 @@ void
     rb_define_method(cNArray, "to_binary", na_to_binary, 0);
     rb_define_method(cNArray, "to_type_as_binary", na_to_type_as_binary, 1);
     rb_define_method(cNArray, "to_string", na_to_string, 0);
-    /*mask*/
-    rb_define_method(cNArray, "count_false", na_count_false, 0);
-    rb_define_method(cNArray, "count_true", na_count_true, 0);
-    rb_define_method(cNArray, "mask", na_aref_mask, 1);
 
     rb_define_const(cNArray, "NARRAY_VERSION", rb_str_new2(NARRAY_VERSION));
     rb_define_const(cNArray, "BYTE", INT2FIX(NA_BYTE));
@@ -1282,6 +1278,8 @@ void
     rb_define_method(cNArray, "refer", na_refer,0);
     rb_define_method(cNArray, "original", na_original,0);
 
+    Init_na_array();
+    Init_na_index();
     Init_nmath();
     Init_na_funcs();
     Init_na_random();

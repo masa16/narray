@@ -751,6 +751,10 @@ for i in data
   name=bsname
   print <<EOM
 
+/*
+ *  call-seq:
+ *     NMath.#{name}(arg)  -> narray
+ */
 static VALUE na_math_#{bsname}(VALUE obj, VALUE x)
 { return na_math_func(x,#{name}Funcs); }
 EOM
