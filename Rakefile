@@ -11,12 +11,12 @@ GEM = "narray-#{version}.gem"
 
 task :default => GEM
 
-file GEM => "src" do
+file GEM => "ext" do
   sh "gem build narray.gemspec"
 end
 
-file "src" do
-  sh "ln -s . src"
+file "ext" do
+  sh "ln -s . ext"
 end
 
 task :install => GEM do

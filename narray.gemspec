@@ -1,4 +1,4 @@
-open("src/narray.h") do |f|
+open("ext/narray.h") do |f|
   f.each_line do |l|
     if /NARRAY_VERSION "([\d.]+)"/ =~ l
       NARRAY_VERSION = $1
@@ -16,30 +16,30 @@ Gem::Specification.new do |s|
   s.date = Time.now.strftime("%F")
   s.description = "Numerical N-dimensional Array class"
   s.email = "masa16.tanaka@gmail.com"
-  s.extensions = ["src/extconf.rb"]
+  s.extensions = ["ext/extconf.rb"]
   s.files = %w[
-src/ChangeLog
-src/MANIFEST
-src/README.en
-src/README.ja
-src/SPEC.en
-src/SPEC.ja
-src/depend
-src/extconf.rb
-src/mkmath.rb
-src/mknafunc.rb
-src/mkop.rb
-src/na_array.c
-src/na_func.c
-src/na_index.c
-src/na_linalg.c
-src/na_random.c
-src/narray.c
-src/narray.def
-src/narray.h
-src/narray_local.h
-src/lib/narray_ext.rb
-src/lib/nmatrix.rb
+ext/ChangeLog
+ext/MANIFEST
+ext/README.en
+ext/README.ja
+ext/SPEC.en
+ext/SPEC.ja
+ext/depend
+ext/extconf.rb
+ext/mkmath.rb
+ext/mknafunc.rb
+ext/mkop.rb
+ext/na_array.c
+ext/na_func.c
+ext/na_index.c
+ext/na_linalg.c
+ext/na_random.c
+ext/narray.c
+ext/narray.def
+ext/narray.h
+ext/narray_local.h
+ext/lib/narray_ext.rb
+ext/lib/nmatrix.rb
 ]
   s.homepage = "http://narray.rubyforge.org/"
   s.require_paths = ["."]
@@ -47,7 +47,6 @@ src/lib/nmatrix.rb
   s.rubygems_version = "1.8.10"
   s.summary = "N-dimensional Numerical Array class for Ruby"
   s.license = "Ruby"
-  s.has_rdoc = false
 
   if s.respond_to? :specification_version then
     s.specification_version = 2
