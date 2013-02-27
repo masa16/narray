@@ -1,3 +1,19 @@
+2013-02-27  Masahiro TANAKA  <masa16.tanaka@gmail.com>
+
+	* Rakefile: use rubygems/package_task.
+	* narray.gemspec: add --exclude in rdoc_options.
+	* ver 0.6.0.8
+
+2013-02-26  Masahiro TANAKA  <masa16.tanaka@gmail.com>
+
+	* test/ld.rb: add require "rubygems".
+	* narray.gemspec: change gem directory from src to ext.
+	* narray.c: avoid warnings in require "complex" and rdoc parsing.
+
+2013-02-13  Masahiro TANAKA  <masa16.tanaka@gmail.com>
+
+	* lib/narray_ext.rb: new method: NArray.cast
+
 2013-02-01  Masahiro TANAKA  <masa16.tanaka@gmail.com>
 
 	* lib/narray_ext.rb: eql? hash methods implemented.

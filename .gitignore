@@ -13,7 +13,6 @@ na_op.c
 
 pkg/
 src
-ext
 doc
 
 narray-*.gem

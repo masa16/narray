@@ -1,4 +1,4 @@
-open("ext/narray.h") do |f|
+open("src/narray.h") do |f|
   f.each_line do |l|
     if /NARRAY_VERSION "([\d.]+)"/ =~ l
       NARRAY_VERSION = $1
@@ -7,7 +7,7 @@ open("ext/narray.h") do |f|
   end
 end
 
-Gem::Specification.new do |s|
+GEMSPEC = Gem::Specification.new do |s|
   s.name = "narray"
   s.version = NARRAY_VERSION
 
@@ -16,31 +16,42 @@ Gem::Specification.new do |s|
   s.date = Time.now.strftime("%F")
   s.description = "Numerical N-dimensional Array class"
   s.email = "masa16.tanaka@gmail.com"
-  s.extensions = ["ext/extconf.rb"]
+  s.extensions = ["src/extconf.rb"]
   s.files = %w[
-ext/ChangeLog
-ext/MANIFEST
-ext/README.en
-ext/README.ja
-ext/SPEC.en
-ext/SPEC.ja
-ext/depend
-ext/extconf.rb
-ext/mkmath.rb
-ext/mknafunc.rb
-ext/mkop.rb
-ext/na_array.c
-ext/na_func.c
-ext/na_index.c
-ext/na_linalg.c
-ext/na_random.c
-ext/narray.c
-ext/narray.def
-ext/narray.h
-ext/narray_local.h
-ext/lib/narray_ext.rb
-ext/lib/nmatrix.rb
+ChangeLog
+MANIFEST
+README.en
+README.ja
+SPEC.en
+SPEC.ja
+src/depend
+src/extconf.rb
+src/mkmath.rb
+src/mknafunc.rb
+src/mkop.rb
+src/na_array.c
+src/na_func.c
+src/na_index.c
+src/na_linalg.c
+src/na_random.c
+src/narray.c
+src/narray.def
+src/narray.h
+src/narray_local.h
+src/lib/narray_ext.rb
+src/lib/nmatrix.rb
 ]
+  s.rdoc_options = %w[
+    --title NArray
+    --main NArray
+    --exclude mk.*
+    --exclude extconf\.rb
+    --exclude src/.*\.h
+    --exclude src/lib/
+    --exclude .*\.o
+    --exclude narray\.so
+    --exclude libnarray\.*
+  ]
   s.homepage = "http://narray.rubyforge.org/"
   s.require_paths = ["."]
   s.rubyforge_project = "narray"

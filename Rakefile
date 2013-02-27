@@ -1,28 +1,24 @@
+require 'rubygems'
+require 'rubygems/package_task'
 
-def version
-  open("narray.h") do |f|
-    f.each_line do |l|
-      return $1 if /NARRAY_VERSION "([\d.]+)"/ =~ l
-    end
-  end
+FileUtils.ln_s('.', 'src') if !File.symlink?('src')
+
+load './narray.gemspec'
+
+pkgtsk = Gem::PackageTask.new(GEMSPEC) do |pkg|
+  pkg.need_zip = true
+  pkg.need_tar = true
 end
 
-GEM = "narray-#{version}.gem"
+task :default => "gem"
 
-task :default => GEM
+#--
+GEMFILE = File.join(pkgtsk.package_dir, GEMSPEC.file_name)
 
-file GEM => "ext" do
-  sh "gem build narray.gemspec"
+task :install => GEMFILE do
+  sh "gem install -V --backtrace #{GEMFILE}"
 end
 
-file "ext" do
-  sh "ln -s . ext"
-end
-
-task :install => GEM do
-  sh "gem install -V --backtrace #{GEM}"
-end
-
-task :push => GEM do
-  sh "gem push #{GEM}"
+task :push => GEMFILE do
+  sh "gem push #{GEMFILE}"
 end
