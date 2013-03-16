@@ -1,3 +1,8 @@
+2013-03-16  Masahiro TANAKA  <masa16.tanaka@gmail.com>
+
+	* narray.c (Init_narray): add map, map!
+	Thanks to Michael Macias.
+
 2013-02-27  Masahiro TANAKA  <masa16.tanaka@gmail.com>
 
 	* Rakefile: use rubygems/package_task.

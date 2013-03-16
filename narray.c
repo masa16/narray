@@ -1240,6 +1240,8 @@ void
     rb_define_method(cNArray, "each", na_each,0);
     rb_define_method(cNArray, "collect", na_collect,0);
     rb_define_method(cNArray, "collect!", na_collect_bang,0);
+    rb_define_alias(cNArray, "map", "collect");
+    rb_define_alias(cNArray, "map!", "collect!");
     rb_define_method(cNArray, "to_s", na_to_s, 0);
     rb_define_method(cNArray, "to_f", na_to_float, 0);
     rb_define_method(cNArray, "to_i", na_to_integer, 0);
