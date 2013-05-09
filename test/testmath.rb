@@ -4,10 +4,10 @@ include NMath
 def pr x
   x.each{|i|
     if i.kind_of?(Complex)
-      printf("%.3f%+.3fi ",i.real,i.image)
+      printf("%.3f%+.3fi ",i.real,i.imag)
     else
       printf("%.3f ",i)
-    end      
+    end
   }
   print "\n"
 end
@@ -44,5 +44,5 @@ end
 testmath NArray.sfloat(6).indgen.div!(2)
 testmath NArray.float(6).indgen.div!(2)
 
-testmath NArray.scomplex(6).indgen.div!(2)-2 - 1.im
-testmath NArray.complex(6).indgen!/5-0.5# - 0.3.im
+testmath NArray.scomplex(6).indgen.div!(2)-2 - Complex(0,1)
+testmath NArray.complex(6).indgen!/5-0.5# - Complex(0,0.3)

@@ -7,8 +7,8 @@ def test a
   p  a**[[-3],[0],[7]]
   puts 'a**[[-3.0],[0],[7.0]] = '
   p  a**[[-3.0],[0],[7.0]]
-  puts 'a**(1+0.im) = '
-  p  a**(1+0.im)
+  puts 'a**Complex(1,0) = '
+  p  a**Complex(1,0)
   puts 'a**1.0 = '
   p  a**1.0
   puts
