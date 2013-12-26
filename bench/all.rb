@@ -19,15 +19,17 @@ def array_size
   ]
 
   r = 50
-  n = nil
-  i = nil
+  m = nil
+  j = nil
   list.each_with_index do |n,i|
     a = NArray.float(n)
     b = NArray.float(n)
     t = bench_time(r) { c = a+b }
+    j = i
+    m = n
     break if t>0.5
   end
-  [n, mlist[i], r*2]
+  [m, mlist[j], r*2]
 end
 
 def bench_time(n)
@@ -47,42 +49,42 @@ system "ruby   bench.rb          float  mul #{n} #{r}" if ruby_narray
 system "python bench.py numeric  float  mul #{n} #{r}" if python_numeric
 system "python bench.py numarray float  mul #{n} #{r}" if python_numarray
 system "python bench.py numpy    float  mul #{n} #{r}" if python_numpy
-system "octave -qf bench.m       float  mul #{n} #{r}" if octave         
+system "octave -qf bench.m       float  mul #{n} #{r}" if octave
 puts
 
-system "ruby   bench.rb          int  add #{n} #{r}" if ruby_narray	 
-system "python bench.py numeric  int  add #{n} #{r}" if python_numeric 
+system "ruby   bench.rb          int  add #{n} #{r}" if ruby_narray
+system "python bench.py numeric  int  add #{n} #{r}" if python_numeric
 system "python bench.py numarray int  add #{n} #{r}" if python_numarray
-system "python bench.py numpy    int  add #{n} #{r}" if python_numpy	 
-system "octave -qf bench.m       int  add #{n} #{r}" if octave         
+system "python bench.py numpy    int  add #{n} #{r}" if python_numpy
+system "octave -qf bench.m       int  add #{n} #{r}" if octave
 puts
 
-system "ruby   bench.rb          complex  mul #{n} #{r}" if ruby_narray	 
-system "python bench.py numeric  complex  mul #{n} #{r}" if python_numeric 
+system "ruby   bench.rb          complex  mul #{n} #{r}" if ruby_narray
+system "python bench.py numeric  complex  mul #{n} #{r}" if python_numeric
 system "python bench.py numarray complex  mul #{n} #{r}" if python_numarray
-system "python bench.py numpy    complex  mul #{n} #{r}" if python_numpy	 
-system "octave -qf bench.m       complex  mul #{n} #{r}" if octave         
+system "python bench.py numpy    complex  mul #{n} #{r}" if python_numpy
+system "octave -qf bench.m       complex  mul #{n} #{r}" if octave
 puts
 
-system "ruby   bench.rb          float_cross mul    #{m*2} #{r}" if ruby_narray	 
-system "python bench.py numeric  float_cross mul    #{m*2} #{r}" if python_numeric 
+system "ruby   bench.rb          float_cross mul    #{m*2} #{r}" if ruby_narray
+system "python bench.py numeric  float_cross mul    #{m*2} #{r}" if python_numeric
 system "python bench.py numarray float_cross mul    #{m*2} #{r}" if python_numarray
-system "python bench.py numpy    float_cross mul    #{m*2} #{r}" if python_numpy	 
-system "octave -qf bench.m       float_cross matmul #{m*2} #{r}" if octave         
+system "python bench.py numpy    float_cross mul    #{m*2} #{r}" if python_numpy
+system "octave -qf bench.m       float_cross matmul #{m*2} #{r}" if octave
 puts
 
-system "ruby   bench.rb          float_matrix mul    #{m} 4" if ruby_narray	 
-system "python bench.py numeric  float_matrix matmul #{m} 4" if python_numeric 
+system "ruby   bench.rb          float_matrix mul    #{m} 4" if ruby_narray
+system "python bench.py numeric  float_matrix matmul #{m} 4" if python_numeric
 system "python bench.py numarray float_matrix matmul #{m} 4" if python_numarray
-system "python bench.py numpy    float_matrix matmul #{m} 4" if python_numpy	 
-system "octave -qf bench.m       float_matrix matmul #{m} 4" if octave         
+system "python bench.py numpy    float_matrix matmul #{m} 4" if python_numpy
+system "octave -qf bench.m       float_matrix matmul #{m} 4" if octave
 puts
 
-system "ruby   bench.rb          float_solve solve #{m} 2" if ruby_narray	 
-system "python bench.py numeric  float_solve solve #{m} 2" if python_numeric 
+system "ruby   bench.rb          float_solve solve #{m} 2" if ruby_narray
+system "python bench.py numeric  float_solve solve #{m} 2" if python_numeric
 system "python bench.py numarray float_solve solve #{m} 2" if python_numarray
-system "python bench.py numpy    float_solve solve #{m} 2" if python_numpy	 
-system "octave -qf bench.m       float_solve solve #{m} 2" if octave         
+system "python bench.py numpy    float_solve solve #{m} 2" if python_numpy
+system "octave -qf bench.m       float_solve solve #{m} 2" if octave
 puts
 
 exit

@@ -18,11 +18,13 @@ elif MODULE=="numpy":
     from numpy.linalg import solve
 
 def bench_time(func,repeat=REPEAT):
-  start = time.clock()
+  #start = time.clock()
+  start = time.time()
   for i in range(repeat):
     c = func()
-    stop = time.clock()
-  print "Python %s type=%s size=%d op=%s repeat=%d  Time: %.2f sec" % \
+  #stop = time.clock()
+  stop = time.time()
+  print "Python %s type=%s size=%d op=%s repeat=%d  Time: %.6f sec" % \
       (MODULE,TYPE,ARRSZ,OP,REPEAT,stop-start)
   #print shape(c)
 
@@ -31,7 +33,7 @@ n = ARRSZ
 if MODULE=="numpy":
     def bench_array(type=float):
         return arange(ARRSZ,dtype=type)
-    
+
     if TYPE=="float":
         a = bench_array(float)
         b = bench_array(float)
