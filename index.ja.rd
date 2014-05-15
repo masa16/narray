@@ -1,7 +1,7 @@
 =begin
 = Numerical Ruby NArray
 
-((<English|URL:index.html.en>)) / ((<Japanese|URL:index.html.ja>))
+((<English|URL:index.en.html>)) / ((<Japanese|URL:index.ja.html>))
 
 == NArray 開発版
 
@@ -28,10 +28,10 @@
     * Tentative NArray Tutorial, etc.
 
 * 使用例:
-  * ((<マンデルブロ|URL:demo/mandel.html.en>))
-  * ((<画像のリサイズ|URL:demo/image.html.en>))
-  * ((<画像のスムージング(FFTW使用)|URL:demo/smooth.html.en>))
-  * ((<ライフゲーム|URL:demo/lifegame.html.en>))
+  * ((<マンデルブロ|URL:demo/mandel.en.html>))
+  * ((<画像のリサイズ|URL:demo/image.en.html>))
+  * ((<画像のスムージング(FFTW使用)|URL:demo/smooth.en.html>))
+  * ((<ライフゲーム|URL:demo/lifegame.en.html>))
   * ((<NMatrix & NVector - LU分解により線形方程式を解く|URL:matrix-ja.html>))
 
 * インストール

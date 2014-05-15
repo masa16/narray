@@ -1,7 +1,7 @@
 =begin
 = Numerical Ruby NArray
 
-((<English|URL:index.html.en>)) / ((<Japanese|URL:index.html.ja>))
+((<English|URL:index.en.html>)) / ((<Japanese|URL:index.ja.html>))
 
 == NArray development
 
@@ -29,10 +29,10 @@ NArray has features similar to NumPy, but NArray has vector and matrix subclasse
     * Tentative NArray Tutorial, etc.
 
 * Examples
-  * ((<Mandelbrot|URL:demo/mandel.html.en>))
-  * ((<Image shrinking|URL:demo/image.html.en>))
-  * ((<Image smoothing using FFTW|URL:demo/smooth.html.en>))
-  * ((<Life game|URL:demo/lifegame.html.en>))
+  * ((<Mandelbrot|URL:demo/mandel.en.html>))
+  * ((<Image shrinking|URL:demo/image.en.html>))
+  * ((<Image smoothing using FFTW|URL:demo/smooth.en.html>))
+  * ((<Life game|URL:demo/lifegame.en.html>))
   * ((<NMatrix & NVector - solving linear equation|URL:matrix-e.html>))
 
 * Install
