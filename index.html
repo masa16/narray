@@ -1,84 +1,93 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
-	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<?xml version="1.0" ?>
+<!DOCTYPE html 
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-
-	<title>masa16/narray @ GitHub</title>
-	
-	<style type="text/css">
-		body {
-  		margin-top: 1.0em;
-  		background-color: #6baf4d;
-		  font-family: "Helvetica,Arial,FreeSans";
-  		color: #ffffff;
-    }
-    #container {
-      margin: 0 auto;
-      width: 700px;
-    }
-		h1 { font-size: 3.8em; color: #9450b2; margin-bottom: 3px; }
-		h1 .small { font-size: 0.4em; }
-		h1 a { text-decoration: none }
-		h2 { font-size: 1.5em; color: #9450b2; }
-    h3 { text-align: center; color: #9450b2; }
-    a { color: #9450b2; }
-    .description { font-size: 1.2em; margin-bottom: 30px; margin-top: 30px; font-style: italic;}
-    .download { float: right; }
-		pre { background: #000; color: #fff; padding: 15px;}
-    hr { border: 0; width: 80%; border-bottom: 1px solid #aaa}
-    .footer { text-align:center; padding-top:30px; font-style: italic; }
-	</style>
-	
+<title>Numerical Ruby NArray</title>
+<link href="./na.css" type="text/css" rel="stylesheet" />
+<meta name="author" content="Masahiro Tanaka"/>
+<meta name="Keywords" content="NArray,Ruby"/>
 </head>
-
 <body>
-  <a href="http://github.com/masa16/narray"><img style="position: absolute; top: 0; right: 0; border: 0;" src="http://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub" /></a>
+<h1><a name="label-0" id="label-0">Numerical Ruby NArray</a></h1><!-- RDLabel: "Numerical Ruby NArray" -->
+<p><a href="index.html.en">English</a> / <a href="index.html.ja">Japanese</a></p>
+<h2><a name="label-1" id="label-1">NArray development</a></h2><!-- RDLabel: "NArray development" -->
+<p><a href="https://github.com/masa16/narray-devel">GitHub</a></p>
+<p>Next NArray is under development.
+The new version is incompatible but much advanced from the old version.
+Development of the old version ended.
+Comments are welcome.</p>
+<h2><a name="label-2" id="label-2">NArray old version</a></h2><!-- RDLabel: "NArray old version" -->
+<p><a href="https://github.com/masa16/narray">GitHub</a></p>
+<p><em>NArray</em> is an Numerical N-dimensional Array class.
+Supported element types are 1/2/4-byte Integer,
+single/double-precision Real/Complex, and Ruby Object.
+This extension library incorporates fast calculation and easy manipulation
+of large numerical arrays into the Ruby language.
+NArray has features similar to NumPy, but NArray has vector and matrix subclasses.</p>
+<ul>
+<li>Documents
+<ul>
+<li><a href="SPEC.en">NArray method list</a></li>
+<li><a href="https://github.com/princelab/narray/wiki">princelab's NArray documents</a>
+<ul>
+<li>Tentative NArray Tutorial, etc.</li>
+</ul></li>
+</ul></li>
+<li>Examples
+<ul>
+<li><a href="demo/mandel.html.en">Mandelbrot</a></li>
+<li><a href="demo/image.html.en">Image shrinking</a></li>
+<li><a href="demo/smooth.html.en">Image smoothing using FFTW</a></li>
+<li><a href="demo/lifegame.html.en">Life game</a></li>
+<li><a href="matrix-e.html">NMatrix &amp; NVector - solving linear equation</a></li>
+</ul></li>
+<li>Install
+<ul>
+<li>Source code: version 0.6.0.8 (<a href="https://github.com/masa16/narray/tarball/0.6.0.8">.tar.gz</a>|<a href="https://github.com/masa16/narray/zipball/0.6.0.8">.zip</a>) (2013-02-27)</li>
+<li>Gem install (requires compiler):</li>
+</ul></li>
+</ul>
+<pre>gem install narray</pre>
+<h2><a name="label-3" id="label-3">Extension for NArray</a></h2><!-- RDLabel: "Extension for NArray" -->
+<h3><a name="label-4" id="label-4">FFTW3</a></h3><!-- RDLabel: "FFTW3" -->
+<p>A FFTW3 wrapper for NArray.
+<a href="http://www.fftw.org/">FFTW</a> is a fast DFT (Discrete Fourier Transform) library.</p>
+<ul>
+<li>Source code:
+  <a href="http://rubyforge.org/frs/download.php/7661/ruby-fftw3-0.1.0.tar.gz">ver 0.1.0</a>
+  (2003-01-04)</li>
+</ul>
+<h3><a name="label-5" id="label-5">na_geev</a></h3><!-- RDLabel: "na_geev" -->
+<p>Eigenvalue &amp; Eigenvector method for NMatrix
+using dgeev &amp; zgeev routine in <a href="http://www.netlib.org/lapack/">Lapack</a>.
+Effort to wrap other Lapack routines is ongoing very slowly.</p>
+<ul>
+<li>Source code:
+  <a href="http://rubyforge.org/frs/download.php/7660/na_geev-0.1.2.tar.gz">ver 0.1.2</a>
+  (2004-03-01)</li>
+</ul>
+<h3><a name="label-6" id="label-6">Projects using NArray</a></h3><!-- RDLabel: "Projects using NArray" -->
+<ul>
+<li><a href="http://ruby.gfd-dennou.org/">Dennou Ruby Project</a> (RubyDCL, RubyNetCDF, ...)</li>
+<li><a href="http://rb-gsl.rubyforge.org/">Ruby/GSL</a></li>
+<li><a href="http://gridflow.ca/">GridFlow</a></li>
+<li><a href="http://hans.fugal.net/src/ruby-audio/">ruby/audio</a></li>
+<li><a href="http://pgplot.rubyforge.org/">Ruby/PGPLOT</a></li>
+</ul>
+<h2><a name="label-7" id="label-7">Other Tips</a></h2><!-- RDLabel: "Other Tips" -->
+<ul>
+<li><a href="mdary.html">Ruby Multi-dimensional Arrays</a></li>
+</ul>
+<h2><a name="label-8" id="label-8">Link</a></h2><!-- RDLabel: "Link" -->
+<ul>
+<li><a href="http://pub.cozmixng.org/~the-rwiki/rw-cgi.rb?cmd=view;name=Ruby+for+Science">Ruby for Science @ Rwiki</a> (Japanese)</li>
+<li><a href="http://sciruby.codeforpeople.com/sr.cgi/FrontPage">SciRuby Wiki</a></li>
+</ul>
+<h2><a name="label-9" id="label-9">Author</a></h2><!-- RDLabel: "Author" -->
+<p>Masahiro Tanaka</p>
 
-  <div id="container">
-
-    <div class="download">
-      <a href="http://github.com/masa16/narray/zipball/master">
-        <img border="0" width="90" src="http://github.com/images/modules/download/zip.png"></a>
-      <a href="http://github.com/masa16/narray/tarball/master">
-        <img border="0" width="90" src="http://github.com/images/modules/download/tar.png"></a>
-    </div>
-
-    <h1><a href="http://github.com/masa16/narray">narray</a>
-      <span class="small">by <a href="http://github.com/masa16">masa16</a></span></h1>
-
-    <div class="description">
-      Ruby/NArray : N-dimensional Numerical Array for Ruby
-    </div>
-
-    <h2>Authors</h2>
-<p>Masahiro TANAKA (masa16.tanaka@gmail.com)
-<br/>
-<br/>      </p>
-<h2>Contact</h2>
-<p>Masahiro TANAKA (masa16.tanaka@gmail.com)
-<br/>      </p>
-
-
-    <h2>Download</h2>
-    <p>
-      You can download this project in either
-      <a href="http://github.com/masa16/narray/zipball/master">zip</a> or
-      <a href="http://github.com/masa16/narray/tarball/master">tar</a> formats.
-    </p>
-    <p>You can also clone the project with <a href="http://git-scm.com">Git</a>
-      by running:
-      <pre>$ git clone git://github.com/masa16/narray</pre>
-    </p>
-
-    <div class="footer">
-      get the source code on GitHub : <a href="http://github.com/masa16/narray">masa16/narray</a>
-    </div>
-
-  </div>
-
-  
+<div>Last update: Aug 21 2013</div>
 </body>
 </html>
-
