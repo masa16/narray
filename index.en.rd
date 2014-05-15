@@ -24,7 +24,7 @@ of large numerical arrays into the Ruby language.
 NArray has features similar to NumPy, but NArray has vector and matrix subclasses.
 
 * Documents
-  * ((<NArray method list|URL:SPEC.en>))
+  * ((<NArray method list|URL:SPEC.en.txt>))
   * ((<princelab's NArray documents|URL:https://github.com/princelab/narray/wiki>))
     * Tentative NArray Tutorial, etc.
 

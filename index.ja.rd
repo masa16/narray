@@ -22,7 +22,7 @@
 
 * ドキュメント
   * ((<NArray 特徴|URL:feature-ja.html>))
-  * ((<NArray メソッド一覧|URL:SPEC.ja>))
+  * ((<NArray メソッド一覧|URL:SPEC.ja.txt>))
   * ((<大林さんによるNArrayの解説|URL:http://www.kmc.gr.jp/~ohai/narray/refm.html>))
   * ((<princelab's NArray documents|URL:https://github.com/princelab/narray/wiki>))
     * Tentative NArray Tutorial, etc.
