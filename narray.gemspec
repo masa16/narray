@@ -52,9 +52,8 @@ src/lib/nmatrix.rb
     --exclude narray\.so
     --exclude libnarray\.*
   ]
-  s.homepage = "http://narray.rubyforge.org/"
+  s.homepage = "http://masa16.github.io/narray/"
   s.require_paths = ["."]
-  s.rubyforge_project = "narray"
   s.rubygems_version = "1.8.10"
   s.summary = "N-dimensional Numerical Array class for Ruby"
   s.license = "Ruby"
