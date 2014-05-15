@@ -1,0 +1,50 @@
+<?xml version="1.0" ?>
+<!DOCTYPE html 
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<title>NArray demo: Shrink image</title>
+<link href="./na.css" type="text/css" rel="stylesheet" />
+<meta name="author" content="Masahiro Tanaka"/>
+</head>
+<body>
+<h1><a name="label-0" id="label-0">NArray demo: Shrink Image</a></h1><!-- RDLabel: "NArray demo: Shrink Image" -->
+<p>Read <a href="http://fits.gsfc.nasa.gov/fits_home.html">FITS</a>
+image and shrink in different two ways.</p>
+<h3><a name="label-1" id="label-1">Result image</a></h3><!-- RDLabel: "Result image" -->
+<p>Original (M51):</p>
+<p><img src="m51.jpg" alt="m51.jpg"/></p>
+
+<p>After shrink:</p>
+<p><img src="m51_small.jpg" alt="m51_small.jpg"/></p>
+
+<h3><a name="label-2" id="label-2">Code</a></h3><!-- RDLabel: "Code" -->
+<pre>require 'fits'
+require 'nimage'
+
+f = Fits.new
+f.read( $*.shift || 'dss_m51.fits' )
+image = f.data
+
+NImage.show image
+
+nx = image.shape[0]
+ny = image.shape[1]
+
+# re-sampling
+x = NArray.int(nx/2).indgen!*2
+y = NArray.int(ny/2).indgen!*2
+NImage.show image[x,y]
+
+# averaging
+NImage.show image[0...nx/2*2,0...ny/2*2].to_f.
+  reshape!(2,nx/2,2,ny/2).sum(0,2).div!(4).reshape!
+
+print "Hit return key..."
+STDIN.getc</pre>
+<p><a href="../">back</a></p>
+
+<div>Last update: Dec 22 2005</div>
+</body>
+</html>

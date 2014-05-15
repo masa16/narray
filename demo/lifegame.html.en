@@ -1,0 +1,62 @@
+<?xml version="1.0" ?>
+<!DOCTYPE html 
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<title>NArray demo: Life game</title>
+<link href="./na.css" type="text/css" rel="stylesheet" />
+<meta name="author" content="Masahiro Tanaka"/>
+</head>
+<body>
+<h1><a name="label-0" id="label-0">NArray demo: Life game</a></h1><!-- RDLabel: "NArray demo: Life game" -->
+<h3><a name="label-1" id="label-1">Result image in progress</a></h3><!-- RDLabel: "Result image in progress" -->
+<p><img src="lifegame.gif" alt="lifegame.gif"/></p>
+
+<h3><a name="label-2" id="label-2">Code</a></h3><!-- RDLabel: "Code" -->
+<pre>require 'narray'
+require 'nimage'
+
+class LifeGame
+  def initialize(nx,ny)
+    @d = NArray.byte(nx,ny)
+    w = 50
+    @d[nx/2-w,ny/2-w] = NArray.byte(w*2+1,w*2+1).random!(2)
+    @step = 0
+    @win = NImage.show @d
+  end
+
+  def life_step
+    b = NArray.byte(*@d.shape)
+    b[1..-2,1..-2] = 
+      @d[0..-3,0..-3] + @d[0..-3,1..-2] + @d[0..-3,2..-1] +
+      @d[1..-2,0..-3] + @d[1..-2,2..-1] +
+      @d[2..-1,0..-3] + @d[2..-1,1..-2] + @d[2..-1,2..-1]
+    @d[] = (b.eq 3) | ((b.eq 2) &amp; @d)
+    @step += 1
+    @win.update( (@d*(NImage.ncolors-1)).to_s )
+  end
+
+  def close
+    @win.close
+  end
+
+  attr_reader :step
+end
+
+srand(1)
+a = LifeGame.new(200,200)
+
+begin
+  loop{ a.life_step }
+ensure
+  printf "step=%i\n",a.step
+  print "Hit return key..."
+  STDIN.getc
+  a.close
+end</pre>
+<p><a href="../">back</a></p>
+
+<div>Last update: Dec 22 2005</div>
+</body>
+</html>

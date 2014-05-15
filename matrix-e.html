@@ -1,0 +1,191 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-2022-JP">
+<meta name="robots" content="noindex,nofollow">
+<title> NMatrix, NVector </title>
+</head>
+
+<body bgcolor="#FFFFFF">
+<h1> NMatrix, NVector </h1>
+
+<hr>
+<h2>NMatrix</h2>
+
+A subclass of NArray.
+First two dimensions are used for Matrix.
+Following dimensions are regarded as multi-dimensional array
+in the same way as NArray.
+<p>
+Subscript order is reversed in NMatrix
+from the conventional mathematical notation (a<sub>ij</sub> = a[j,i]) ,
+because NArray's dimension order follows FORTRAN style.
+
+<h2>NVector</h2>
+
+A subclass of NArray.
+First one dimension is used for Vector.
+Following dimensions are regarded as multi-dimensional array.
+
+<ul>
+  <li> <a href="#op">Operation</a>
+  <li> <a href="#sl">Slicing</a>
+  <li> <a href="#lu">Solve Linear Equation</a>
+</ul>
+
+<hr>
+<a name="op"><h3>Operation</h3>
+</a>
+In contrast to <font color="#ff0000">Element-wise</font> operation of NArray,
+NMatrix and NVector provide <font color="#ff0000">Matrix/Vector-wise</font>
+operations.
+<p>
+In the operations between NMatrix/NVector and NArray,
+NArray works as <font color="#ff0000">Scalar</font>.
+
+The dimensions following the class dimension(s)
+work in the same way as NArray's dimension.
+
+<p>
+This makes it easy to handle, e.g.,
+a 100x100 two-dimensional array of 3-dimensional Vector.
+(Quiz: How many dimensional array is this?)
+
+<p>
+Example:
+<table><tr><td bgcolor="gray">&nbsp;</td><td>&nbsp;</td><td><pre>
+% irb -r nmatrix
+
+irb(main):001:0> m = NMatrix.float(2,2).indgen!
+NMatrix.float(2,2): 
+[ [ 0.0, 1.0 ], 
+  [ 2.0, 3.0 ] ]
+
+irb(main):002:0> a = NArray.float(2).indgen!+1
+NArray.float(2): 
+[ 1.0, 2.0 ]
+
+irb(main):003:0> a * m
+NMatrix.float(2,2,2): 
+[ [ [ 0.0, 1.0 ], 
+    [ 2.0, 3.0 ] ], 
+  [ [ 0.0, 2.0 ], 
+    [ 4.0, 6.0 ] ] ]
+
+irb(main):004:0> a + m
+TypeError: Illegal operation: NArray + NMatrix
+./nmatrix.rb:109:in `coerce_rev'
+(irb):4:in `+'
+(irb):4:in `irb_binding'
+</pre></td></tr></table>
+
+
+<hr>
+<a name="sl"><h3>Slicing</h3>
+</a>
+Slicing rules for NMatrix/NVector are slightly different from NArray's:
+
+<ul>
+  <li> If all the class dimensions are element indices (Integer),
+    class dimensions are removed and convert to NArray.
+    (Policy: Element extraction makes Scalar.)
+  <li> If at least one non-element index (e.g. Range) appears
+    in the class dimension,
+    all the the class dimensions remain
+    even though there is some element index.
+    (Policy: Class dimensions are saved.)
+  <li> Any dimensions following the class dimension(s) obey
+    the manner of NArray's multi-dimension.
+    (removed if Element indices, remain if non-element indices.
+    If all the indices are element, convert to non-array object (e.g. Float)
+    )
+</ul>
+
+Example:
+<table><tr><td bgcolor="gray">&nbsp;</td><td>&nbsp;</td><td><pre>
+% irb -r nmatrix
+
+irb(main):001:0> m = NMatrix.float(2,2,2).indgen!
+NMatrix.float(2,2,2): 
+[ [ [ 0.0, 1.0 ], 
+    [ 2.0, 3.0 ] ], 
+  [ [ 4.0, 5.0 ], 
+    [ 6.0, 7.0 ] ] ]
+
+irb(main):002:0> m[1,1,true]
+NArray.float(2): 
+[ 3.0, 7.0 ]
+
+irb(main):003:0> m[0..1,1,true] 
+NMatrix.float(2,1,2): 
+[ [ [ 2.0, 3.0 ] ], 
+  [ [ 6.0, 7.0 ] ] ]
+</pre></td></tr></table>
+
+<hr>
+<a name="lu"><h3>Solve Linear Equation</h3>
+</a>
+When <tt>m</tt> is square NMatrix, <tt>x</tt> and <tt>y</tt> are NVector
+and <tt>m</tt> and <tt>y</tt> are given,
+to solve the linear equation
+<table><tr><td bgcolor="gray">&nbsp;</td><td>&nbsp;</td><td><pre>
+  y = m * x
+</pre></td></tr></table>
+to obtain <tt>x</tt>, you simply write
+<table><tr><td bgcolor="gray">&nbsp;</td><td>&nbsp;</td><td><pre>
+  x = y / m
+</pre></td></tr></table>
+This is equivalent to
+<table><tr><td bgcolor="gray">&nbsp;</td><td>&nbsp;</td><td><pre>
+  x = m.lu.solve(y)
+</pre></td></tr></table>
+So this include two steps:
+<ul>
+  <li>LU-factorize <tt>m</tt> with NMatrix#lu method and return
+    an instance of <font color="#ff0000">NMatrixLU</font> class.
+  <li>solve with NMatrixLU#solve method.
+</ul>
+You can save the result of NMatrix#lu to a variable,
+and recycle it
+<p>
+You should pay attention to the order of notation:
+<table><tr><td bgcolor="gray">&nbsp;</td><td>&nbsp;</td><td><pre>
+  x = y / m
+</pre></td></tr></table>
+is mathmatically equivalent to
+<table><tr><td bgcolor="gray">&nbsp;</td><td>&nbsp;</td><td><pre>
+  x = m**-1 * y
+</pre></td></tr></table>
+
+<p>
+You can LU factorize Ruby Object arrays;
+<table><tr><td bgcolor="gray">&nbsp;</td><td>&nbsp;</td><td><pre>
+% irb -r nmatrix -r rational
+
+irb(main):001:0> m = NMatrix.object(4,4).collect!{Rational(rand(10))}
+NMatrix.object(4,4): 
+[ [ Rational(3, 1), Rational(6, 1), Rational(5, 1), Rational(3, 1) ], 
+  [ Rational(1, 1), Rational(6, 1), Rational(2, 1), Rational(0, 1) ], 
+  [ Rational(0, 1), Rational(3, 1), Rational(1, 1), Rational(7, 1) ], 
+  [ Rational(2, 1), Rational(8, 1), Rational(9, 1), Rational(1, 1) ] ]
+
+irb(main):002:0> m/m
+NMatrix.object(4,4): 
+[ [ Rational(1, 1), Rational(0, 1), Rational(0, 1), Rational(0, 1) ], 
+  [ Rational(0, 1), Rational(1, 1), Rational(0, 1), Rational(0, 1) ], 
+  [ Rational(0, 1), Rational(0, 1), Rational(1, 1), Rational(0, 1) ], 
+  [ Rational(0, 1), Rational(0, 1), Rational(0, 1), Rational(1, 1) ] ]
+</pre></td></tr></table>
+
+<hr>
+<a href="../">Back to Numerical Ruby</a>
+<hr>
+<address><a href="/~masa/">
+Masahiro Tanaka</a>
+
+&lt;masa at ir.isas.ac.jp&gt;</address>
+<!-- hhmts start -->
+Last modified: Nov 22, 2000
+<!-- hhmts end -->
+</body>
+</html>

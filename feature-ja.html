@@ -1,0 +1,112 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<html>
+<HEAD>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-2022-JP">
+<meta name="robots" content="noindex,nofollow">
+<TITLE>NArrayの特徴</TITLE>
+</HEAD>
+
+<BODY bgcolor="#ffffff">
+<H1>NArrayの特徴</H1>
+<hr>
+
+NArrayは、大規模な多次元数値配列の計算を、
+簡単かつ高速に実現するRubyのクラスです。
+同様な数値配列には、
+<a href="http://www.python.org/topics/scicomp/numpy.html">Python/NumPy</a>,
+<a href="http://pdl.perl.org/">Perl/PDL</a>,
+<a href="ftp://ftp-icf.llnl.gov/pub/Yorick/yorick-ad.html">Yorick</a>
+などがあります。
+NArrayはそのRuby版で、特徴としては同じなんですが、
+実装は独自です。
+<p>
+
+<ul>
+<li><b>数値およびオブジェクトの多次元配列</b><br/>
+
+NArray は、多次元配列のクラスです。
+配列の要素の型として、
+<ul>
+  <li>8,16,32 bit 整数
+  <li>単精度/倍精度の実数/複素数、
+  <li>Rubyオブジェクト
+</ul>をサポートしています。<p>
+
+1要素の取出しは、<tt>a[ 12, 34 ]</tt> のように各次元のインデックスを指定します。
+部分配列は、<tt>a[ 10..15, 5..-1 ]</tt> のように範囲指定で取り出せます。
+<p>
+
+<li><b>演算の記述</b><br/>
+
+<tt>+,-,*,/,%,**</tt> の演算は、要素ごとに適用します。
+たとえば、2つの NArray クラスのインスタンス a,b があって
+<pre>
+  c = a + b
+</pre>
+と書くと、c は <tt>[a[0]+b[0], a[1]+b[1], ... ]</tt>
+という要素を含む NArray クラスの インスタンスになります。
+<pre>
+  c = a + 1
+</pre>
+とすると、c は <tt>[a[0]+1, a[1]+1, ... ]</tt> となります。
+<p>
+また、sin などの数学関数は
+NMathモジュールで提供しており、
+要素ごとに計算した結果を NArrayで返します。
+<p>
+
+<li><b>高速演算</b><br/>
+
+上記の a + 1 と同じことは 普通の Array クラスでも、
+<pre>
+  c = a.collect{|i| i+1}
+</pre>
+などとすることで実現しますが、スピードは全然違います。
+要素が50万個の整数配列の場合、SPARC 10では、
+NArrayだと 0.3秒ですが、Arrayでは 57秒もかかります。
+<p>
+NArray ver 0.5.0 では、以前より
+<a href="speed.html">速くなりました</a>。
+<p>
+
+<li><b>拡張インデックス</b><br/>
+  IDLにない機能として、サイズ1の次元は演算相手の配列のサイズに合わせて
+  繰返し適用するというものがあります。(NumPyにはあります)。
+  たとえばサイズが[n,1]と[1,m]の配列で演算を行なうと、
+  結果は [n,m] の配列となります。
+  しばしばxとyの関数として2次元の配列を作りたいことがあります。
+  このときx、yをそれぞれ[n,1]と[1,m]という形にしておけば、
+<pre>
+  x**2 + y**2
+</pre>
+  と単に書くだけで、"**"の演算までは1次元で行ない、
+  "+"の演算のところで自動的に[n,m]に拡張されます。
+  IDLでは最初から[n,m]の配列を用意しなければなりません。
+<p>
+<li><b>実装</b><br/>
+NArrayは次の要素を含むC構造体として実現しています。
+<ul>
+  <li> 次元数 (rank)
+  <li> 各次元の要素数 (shape)
+  <li> 全要素数 (total)
+  <li> 型 (type)
+  <li> 要素を格納するメモリーブロック (ptr)
+</ul>
+メモリーブロックはCの配列そのものなので、
+そのまま他のライブラリに渡す、という使い方もできます。
+(例としてFFTWへのインタフェースを備えています。)
+<p>
+ご意見ご提案等がありましたらお知らせ下さい。
+</ul>
+
+<HR>
+<A HREF="/">
+Back to Numerical Ruby</A>
+<HR>
+Masahiro Tanaka
+<br/>
+<!-- hhmts start -->
+Last modified: Dec 18, 2000
+<!-- hhmts end -->
+</BODY>
+</html>

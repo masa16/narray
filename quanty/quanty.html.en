@@ -1,0 +1,127 @@
+<?xml version="1.0" ?>
+<!DOCTYPE html 
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<title>Quanty: unit-math library</title>
+<link href="./na.css" type="text/css" rel="stylesheet" />
+<meta name="author" content="Masahiro Tanaka"/>
+</head>
+<body>
+<h1><a name="label-0" id="label-0">Units-math library `Quanty' was renamed to <a href="https://github.com/masa16/phys-units">Phys-Units</a>.</a></h1><!-- RDLabel: "Units-math library `Quanty' was renamed to ." -->
+<h1><a name="label-1" id="label-1">class Quanty</a></h1><!-- RDLabel: "class Quanty" -->
+<h2><a name="label-2" id="label-2">SYNOPSIS</a></h2><!-- RDLabel: "SYNOPSIS" -->
+<p>A class whose instances consist of "value (physical quantity)" and "unit".
+Featuring:</p>
+<ul>
+<li>Unit conversion like <kbd>units</kbd> command.</li>
+<li>Operation between quantities having different units,
+  like <em>km</em> and <em>mile</em>, with automatic unit conversion.</li>
+</ul>
+<h2><a name="label-3" id="label-3">EXAMPLE</a></h2><!-- RDLabel: "EXAMPLE" -->
+<pre>require 'quanty'
+Quanty(1.23,'km') + Quanty(4.56,'m')    #=&gt; Quanty(1.23456,'km')
+Quanty(123,'mile') / Quanty(2,'hr')     #=&gt; Quanty(61,'mile / hr')
+Quanty(61,'miles/hr').want('m/s')       #=&gt; Quanty(27.26944,'m/s')
+Quanty(1.0,'are') == Quanty(10,'m')**2  #=&gt; true
+Math.cos(Quanty(60,'degree'))           #=&gt; 0.5</pre>
+<h2><a name="label-4" id="label-4">Quanty class</a></h2><!-- RDLabel: "Quanty class" -->
+<h3><a name="label-5" id="label-5">Super Class:</a></h3><!-- RDLabel: "Super Class:" -->
+<p>Object (Numeric is better??)</p>
+<h3><a name="label-6" id="label-6">Class method:</a></h3><!-- RDLabel: "Class method:" -->
+<dl>
+<dt><a name="label-7" id="label-7"><code>Quanty.new([<var>value</var>],[<var>unit</var>])</code></a></dt><!-- RDLabel: "Quanty.new" -->
+<dt><a name="label-8" id="label-8"><code>Quanty([<var>value</var>],[<var>unit</var>])</code></a></dt><!-- RDLabel: "Quanty" -->
+</dl>
+<p>Create Quanty class instance having <var>value</var> and <var>unit</var> (is String).
+If <var>value</var> is omitted,  <var>value</var> = 1 is assumed.
+If <var>unit</var> is omitted,  <var>unit</var> = "" is assumed,
+which is regarded as a quantity with "dimensionless" unit
+(i.e. all dimensions of unit are zero).
+Refer to <a href="#label-28">Notation of unit</a> below.</p>
+<h3><a name="label-9" id="label-9">Methods:</a></h3><!-- RDLabel: "Methods:" -->
+<dl>
+<dt><a name="label-10" id="label-10"><code><var>self</var> + <var>other</var></code></a></dt><!-- RDLabel: "self + other" -->
+<dt><a name="label-11" id="label-11"><code><var>self</var> - <var>other</var></code></a></dt><!-- RDLabel: "self - other" -->
+</dl>
+<p>Addition and subtraction of quantities.
+Operation is made after
+the unit of <var>other</var> is converted to the unit of <var>self</var>.
+Exception is raised if unit conversion is failed.
+Return the Quanty class instance with the unit of <var>self</var>.</p>
+<dl>
+<dt><a name="label-12" id="label-12"><code><var>self</var> * <var>other</var></code></a></dt><!-- RDLabel: "self * other" -->
+</dl>
+<p>Multiplication of quantities.
+Resulting unit is made by concatenating <var>self</var> and <var>other</var>.</p>
+<dl>
+<dt><a name="label-13" id="label-13"><code><var>self</var> / <var>other</var></code></a></dt><!-- RDLabel: "self / other" -->
+</dl>
+<p>Division of quantities.
+Resulting unit is made by placing <code>"/"</code>
+between <var>self</var> and <var>other</var>, and concatenating them.</p>
+<dl>
+<dt><a name="label-14" id="label-14"><code><var>self</var> ** <var>number</var></code></a></dt><!-- RDLabel: "self ** number" -->
+</dl>
+<p>Power of quantities.
+Resulting unit is made by "(unit of self)^<var>number</var>"</p>
+<dl>
+<dt><a name="label-15" id="label-15"><code><var>self</var> == <var>other</var></code></a></dt><!-- RDLabel: "self == other" -->
+<dt><a name="label-16" id="label-16"><code><var>self</var> &lt; <var>other</var></code></a></dt><!-- RDLabel: "self < other" -->
+<dt><a name="label-17" id="label-17"><code><var>self</var> &lt;= <var>other</var></code></a></dt><!-- RDLabel: "self <= other" -->
+<dt><a name="label-18" id="label-18"><code><var>self</var> &gt; <var>other</var></code></a></dt><!-- RDLabel: "self > other" -->
+<dt><a name="label-19" id="label-19"><code><var>self</var> &gt;= <var>other</var></code></a></dt><!-- RDLabel: "self >= other" -->
+</dl>
+<p>Comparison of quantities.</p>
+<dl>
+<dt><a name="label-20" id="label-20"><code>coerce(<var>number</var>)</code></a></dt><!-- RDLabel: "coerce" -->
+</dl>
+<p>Convert <var>number</var> to Quanty class instance with dimensionless unit,
+then return [<var>number</var>, <var>self</var>].</p>
+<dl>
+<dt><a name="label-21" id="label-21"><code>to_si</code></a></dt><!-- RDLabel: "to_si" -->
+<dt><a name="label-22" id="label-22"><code>to_SI</code></a></dt><!-- RDLabel: "to_SI" -->
+</dl>
+<p>Convert <var>self</var> to the SI unit system.</p>
+<dl>
+<dt><a name="label-23" id="label-23"><code>to_f</code></a></dt><!-- RDLabel: "to_f" -->
+</dl>
+<p>If <var>self</var> is a quantity with a dimensionless unit, return its value.
+If <var>self</var> is a quantity with an angular unit,
+return the value converted into radian.
+Otherwise, raise exception.</p>
+<dl>
+<dt><a name="label-24" id="label-24"><code>unit</code></a></dt><!-- RDLabel: "unit" -->
+</dl>
+<p>Return the string of unit.</p>
+<dl>
+<dt><a name="label-25" id="label-25"><code>val</code></a></dt><!-- RDLabel: "val" -->
+<dt><a name="label-26" id="label-26"><code>value</code></a></dt><!-- RDLabel: "value" -->
+</dl>
+<p>Return the value.</p>
+<dl>
+<dt><a name="label-27" id="label-27"><code>want(<var>unit</var>)</code></a></dt><!-- RDLabel: "want" -->
+</dl>
+<p>Convert <var>self</var> to a quantity with <var>unit</var> (is String),
+and return Quanty class instance.</p>
+<h2><a name="label-28" id="label-28">Notation of unit</a></h2><!-- RDLabel: "Notation of unit" -->
+<h4><a name="label-29" id="label-29">Multiplication</a></h4><!-- RDLabel: "Multiplication" -->
+<pre>'N m' == 'N*m'</pre>
+<h4><a name="label-30" id="label-30">Division</a></h4><!-- RDLabel: "Division" -->
+<pre>'/s' , 'm/s'</pre>
+<h4><a name="label-31" id="label-31">Power</a></h4><!-- RDLabel: "Power" -->
+<pre>'m-2' == 'm^-2' == 'm**-2'</pre>
+<h4><a name="label-32" id="label-32">Numerical factor</a></h4><!-- RDLabel: "Numerical factor" -->
+<pre>'12 inch' == 'feet'</pre>
+<h4><a name="label-33" id="label-33">Combination rule</a></h4><!-- RDLabel: "Combination rule" -->
+<pre>'m/s*m' == 'm^2/s'.
+'m/(s*m)' ==  '/s'.</pre>
+<h5><a name="label-34" id="label-34">See <kbd>parse.y</kbd> for more.</a></h5><!-- RDLabel: "See parse.y for more." -->
+<h2><a name="label-35" id="label-35">Author</a></h2><!-- RDLabel: "Author" -->
+<p><a href="http://www.ir.isas.ac.jp/~masa/index-e.html">Masahiro Tanaka</a>
+(2001-04-25)</p>
+
+<div>Last update: Aug 21 2013</div>
+</body>
+</html>

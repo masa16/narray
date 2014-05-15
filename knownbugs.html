@@ -1,0 +1,65 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<html>
+<HEAD>
+<meta name="robots" content="noindex,nofollow">
+<TITLE>NArray known bugs</TITLE>
+</HEAD>
+
+<BODY bgcolor="#ffffff">
+<H1>Known bugs</H1>
+
+<hr>
+<h3><a name="narray">NArray</a></h3>
+<ul>
+
+<li> ver 0.5.8
+<ul>
+<li> nv[1] = nu (subarray set) fails if nv and nu are NVector
+     (fixed in 0.5.9)
+<li> NArray[NaN].eq(NArray[NaN]) returns [true]
+     (fixed in 0.5.9)
+<li> NVector, NMatrix methods `stddev' `mean' fail
+     (fixed in 0.5.9)
+</ul>
+
+<li> ver 0.5.7
+<ul>
+<li> NMath functions return single precision numbers for Float arguments.
+     (fixed in 0.5.8)
+<li> Bug in conversion from empty Array to NArray.
+     (fixed in 0.5.8)
+<li> Infinite loop when random method is applied to Integer NArray. 
+     (fixed in 0.5.7p4)
+<li> 
+<a href="http://blade.nagaokaut.ac.jp/cgi-bin/scat.rb/ruby/ruby-talk/93163">
+[ruby-talk:93163]</a>
+a bug in freeing memory.
+(fixed in 0.5.7p2)
+</ul>
+
+<li> ver 0.5.6
+<ul>
+<li> Correct <a href="narray.def">narray.def</a> for Windows users.
+(fixed in 0.5.6p1)
+<li> a bug in converting Array to NArray.
+(fixed in 0.5.7)
+</ul>
+
+<li> ver 0.5.5
+<ul>
+<li> NArray#to_a; GC fails for large array.
+<a href="http://blade.nagaokaut.ac.jp/cgi-bin/scat.rb/ruby/ruby-talk/32362">Patch</a>
+<li> SEGV when converting recursive Array into NArray. (fixed in 0.5.6)
+</ul>
+</ul>
+
+<hr>
+<a href="/~masa/ruby/">
+Back to Ruby/NArray</a>
+<HR>
+<ADDRESS><A href="http://www.ir.isas.ac.jp/~masa/">
+Masahiro Tanaka</A>
+
+&lt;masa at ir.isas.ac.jp&gt;</ADDRESS>
+</BODY>
+</html>

@@ -1,0 +1,194 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-2022-JP">
+<meta name="robots" content="noindex,nofollow">
+<title> NMatrix, NVector </title>
+</head>
+
+<body bgcolor="#FFFFFF">
+<h1> NMatrix, NVector </h1>
+
+<hr/>
+<h2>NMatrix</h2>
+
+NArrayのサブクラスです。最初の2次元がMatrix用の次元です。
+残りの次元は多次元配列として、NArrayの次元と同様に扱われます
+<p>
+NArrayの次元が FORTRAN style なので、NMatrixの次元の順序は
+数学表記の添字の順序とは逆になります。
+
+<h2>NVector</h2>
+
+NArrayのサブクラスです。最初の1次元がVector用の次元です。
+残りの次元は多次元配列です。
+
+<ul>
+  <li> <a href="#op">演算</a>
+  <li> <a href="#sl">Slicing</a>
+  <li> <a href="#lu">線形方程式を解く</a>
+</ul>
+
+<p><hr/>
+<h3>クラス次元</h3>
+NMatrix および NVector の次元を<font color="#ff0000">クラス次元</font>
+と呼びます。これはサブクラスを作る時に
+クラス定数 <font color="#ff0000"><tt>CLASS_DIMENSION</tt></font>
+で指定します。
+
+<p>
+各クラスのクラス次元は次のようになります。
+<ul>
+  <li> NArray  : クラス次元 = 0
+  <li> NVector : クラス次元 = 1
+  <li> NMatrix : クラス次元 = 2
+</ul>
+
+<hr/>
+<a name="op"><h3>演算</h3>
+</a>
+NArrayの演算は Element-wize ですが、
+NMatrix, NVectorクラスは 当然 Matrix, Vector の演算になります。
+<p>
+NMatrix/NVector と NArray の演算では、NArray は Scalarとして機能します。
+オブジェクトの持つ次元からクラス次元を引いた残りは
+NArrayの多次元配列と同じように機能します。
+(サイズ1の次元の繰り返しなど。)
+<p>
+これにより、3次元 Vector の 100x100 の 2次元配列に
+Matrix を掛けて座標変換、というような場合でも、
+スクリプトでループを書く必要がないので、非常に高速に処理できます。
+<p>
+例:
+<table><tr><td bgcolor="gray">&nbsp;</td><td>&nbsp;</td><td><pre>
+% irb -r nmatrix
+
+irb(main):001:0> m = NMatrix.float(2,2).indgen!
+NMatrix.float(2,2): 
+[ [ 0.0, 1.0 ], 
+  [ 2.0, 3.0 ] ]
+
+irb(main):002:0> a = NArray.float(2).indgen!+1
+NArray.float(2): 
+[ 1.0, 2.0 ]
+
+irb(main):003:0> a * m
+NMatrix.float(2,2,2): 
+[ [ [ 0.0, 1.0 ], 
+    [ 2.0, 3.0 ] ], 
+  [ [ 0.0, 2.0 ], 
+    [ 4.0, 6.0 ] ] ]
+
+irb(main):004:0> a + m
+TypeError: Illegal operation: NArray + NMatrix
+./nmatrix.rb:109:in `coerce_rev'
+(irb):4:in `+'
+(irb):4:in `irb_binding'
+</pre></td></tr></table>
+
+
+<hr/>
+<a name="sl"><h3>Slicing</h3>
+</a>
+NArrayと同様に NMatrix、NVectorも <tt>a[1,2]</tt> というように
+要素または範囲取り出しが出来ます。
+ただし、クラス次元 における取り出しは、
+NArrayの規則とは少し異なります。
+
+<ul>
+  <li> クラス次元がすべて要素指定 (引数がInteger) の時は、
+    クラス次元が取り除かれ、さらにNArray classに変換される
+    (スカラーとみなすため)。
+  <li> クラス次元において範囲指定が1つでもあれば、
+    要素指定があってもその次元は取り除かれず、サイズ1の次元となる。
+    つまり、クラス次元は保存される。
+  <li>  残った次元は NArray と同じ規則。
+    つまり、要素指定の次元は取り除かれ、そうでない次元は残される。
+    クラス次元を含めてすべての次元が要素指定のときは、
+    要素取り出し(Floatなどに変換)となる。
+</ul>
+
+例:
+<table><tr><td bgcolor="gray">&nbsp;</td><td>&nbsp;</td><td><pre>
+% irb -r nmatrix
+
+irb(main):001:0> m = NMatrix.float(2,2,2).indgen!
+NMatrix.float(2,2,2): 
+[ [ [ 0.0, 1.0 ], 
+    [ 2.0, 3.0 ] ], 
+  [ [ 4.0, 5.0 ], 
+    [ 6.0, 7.0 ] ] ]
+
+irb(main):002:0> m[1,1,true]
+NArray.float(2): 
+[ 3.0, 7.0 ]
+
+irb(main):003:0> m[0..1,1,true] 
+NMatrix.float(2,1,2): 
+[ [ [ 2.0, 3.0 ] ], 
+  [ [ 6.0, 7.0 ] ] ]
+</pre></td></tr></table>
+
+<hr/>
+<a name="lu"><h3>線形方程式を解く</h3>
+</a>
+<tt>m</tt> が square NMatrix, <tt>x, y</tt> が NVector で、
+<tt>m, y</tt> が与えられているとき、
+<table><tr><td bgcolor="gray">&nbsp;</td><td>&nbsp;</td><td><pre>
+  y = m * x
+</pre></td></tr></table>
+を解いて <tt>x</tt>を求めたい時は、
+<table><tr><td bgcolor="gray">&nbsp;</td><td>&nbsp;</td><td><pre>
+  x = y / m
+</pre></td></tr></table>
+により答が得られます。これは
+<table><tr><td bgcolor="gray">&nbsp;</td><td>&nbsp;</td><td><pre>
+  x = m.lu.solve(y)
+</pre></td></tr></table>
+と書くのと同等です。つまり、NMatrix#lu メソッドにより <tt>m</tt> をLU分解し、
+その結果を <font color="#ff0000">NMatrixLU</font> クラスのインスタンス
+として返します。さらに NMatrixLU#solve メソッドにより解を計算します。
+もし同じMatrixで複数のVectorを解きたい時は、<tt>/</tt> 演算子を使わず、
+一度だけ <tt>m.lu</tt> を計算して NMatrixLU#solve メソッドを使う方が
+効率的です。
+<p>
+また、
+<table><tr><td bgcolor="gray">&nbsp;</td><td>&nbsp;</td><td><pre>
+  x = y / m
+</pre></td></tr></table>
+は、数学的には
+<table><tr><td bgcolor="gray">&nbsp;</td><td>&nbsp;</td><td><pre>
+  x = m**-1 * y
+</pre></td></tr></table>
+と同等なので、順序が逆になることに注意して下さい。
+(Octaveなどではバックスラッシュを使って同じ順序にしていますが、
+Rubyにはないので ^^;;; )
+<p>
+なお、LU分解は Ruby Object 型 配列でも使えます。
+<table><tr><td bgcolor="gray">&nbsp;</td><td>&nbsp;</td><td><pre>
+% irb -r nmatrix -r rational
+
+irb(main):001:0> m = NMatrix.object(4,4).collect!{Rational(rand(10))}
+NMatrix.object(4,4): 
+[ [ Rational(3, 1), Rational(6, 1), Rational(5, 1), Rational(3, 1) ], 
+  [ Rational(1, 1), Rational(6, 1), Rational(2, 1), Rational(0, 1) ], 
+  [ Rational(0, 1), Rational(3, 1), Rational(1, 1), Rational(7, 1) ], 
+  [ Rational(2, 1), Rational(8, 1), Rational(9, 1), Rational(1, 1) ] ]
+
+irb(main):002:0> m/m
+NMatrix.object(4,4): 
+[ [ Rational(1, 1), Rational(0, 1), Rational(0, 1), Rational(0, 1) ], 
+  [ Rational(0, 1), Rational(1, 1), Rational(0, 1), Rational(0, 1) ], 
+  [ Rational(0, 1), Rational(0, 1), Rational(1, 1), Rational(0, 1) ], 
+  [ Rational(0, 1), Rational(0, 1), Rational(0, 1), Rational(1, 1) ] ]
+</pre></td></tr></table>
+
+<hr/>
+<a href="/">Back to Numerical Ruby</a>
+<hr/>
+Masahiro Tanaka
+<!-- hhmts start -->
+Last modified: May 13, 2001
+<!-- hhmts end -->
+</body>
+</html>

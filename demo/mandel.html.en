@@ -1,0 +1,49 @@
+<?xml version="1.0" ?>
+<!DOCTYPE html 
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<title>NArray demo: Mandelbrot</title>
+<link href="./na.css" type="text/css" rel="stylesheet" />
+<meta name="author" content="Masahiro Tanaka"/>
+</head>
+<body>
+<h1><a name="label-0" id="label-0">NArray demo: Mandelbrot</a></h1><!-- RDLabel: "NArray demo: Mandelbrot" -->
+<h3><a name="label-1" id="label-1">Result image</a></h3><!-- RDLabel: "Result image" -->
+<p><img src="mandel.jpg" alt="mandel.jpg"/></p>
+
+<h3><a name="label-2" id="label-2">Code</a></h3><!-- RDLabel: "Code" -->
+<pre>require 'narray'
+require 'nimage'
+
+def mandel(w,h)
+  zoom=3.5
+
+  z = ( NArray.scomplex(w,1).indgen!/w-0.65 )*zoom + 
+      ( NArray.scomplex(1,h).indgen!/h-0.5 )*(zoom*1.im)
+  c = z.dup
+  a = NArray.sint(h,w)
+  idx = NArray.int(h,w).indgen!
+
+  for i in 1..30
+    z = z**2+c
+    idx_t,idx_f = (z.abs&gt;2).where2
+    a[idx[idx_t]] = i
+    break if idx_f.size==0
+    idx = idx[idx_f]
+    z = z[idx_f]
+    c = c[idx_f]
+  end
+  a
+end
+
+NImage.show mandel(400,400)
+
+print "Hit return key..."
+STDIN.getc</pre>
+<p><a href="../">back</a></p>
+
+<div>Last update: Dec 22 2005</div>
+</body>
+</html>

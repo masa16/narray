@@ -1,0 +1,45 @@
+<?xml version="1.0" ?>
+<!DOCTYPE html 
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<title>NArray benchmark</title>
+<link href="./na.css" type="text/css" rel="stylesheet" />
+<meta name="author" content="Masahiro Tanaka"/>
+</head>
+<body>
+<h1><a name="label-0" id="label-0">Benchmark</a></h1><!-- RDLabel: "Benchmark" -->
+<ul>
+<li>CPU: Pentium 4 Prescott, 2.8GHz</li>
+<li>OS: Linux 2.6.14-1.1644_FC4</li>
+</ul>
+<!-- setup -->
+<table border="1">
+<caption>elapsed time (sec)</caption>
+<!-- setup end -->
+
+<!-- Header -->
+<!-- Header end -->
+
+<!-- Body -->
+<tbody>
+<tr><td align="left" colspan="2"></td><td align="left">array add</td><td align="left">array mul</td><td align="left">matrix dot</td><td align="left">matrix solve</td></tr>
+<tr><td align="left" colspan="2"></td><td align="right" colspan="2">10^6 elm * 100 times</td><td align="right" colspan="2">500x500 elm * 3 tiems</td></tr>
+<tr><td align="left">Ruby 1.8.2</td><td align="left">NArray 0.5.8</td><td align="right">1.56</td><td align="right">1.52</td><td align="right">2.10</td><td align="right">6.54</td></tr>
+<tr><td align="left">Python 2.4.1</td><td align="left">numarray 1.5.0</td><td align="right">5.08</td><td align="right">5.06</td><td align="right">2.10</td><td align="right">3.05</td></tr>
+<tr><td align="left">Python 2.4.1</td><td align="left">Numeric 23.7-2</td><td align="right">5.58</td><td align="right">5.61</td><td align="right">5.34</td><td align="right">6.15</td></tr>
+<tr><td align="left" colspan="2">Octave 2.1.72 (i686-pc-linux-gnu)</td><td align="right">1.43</td><td align="right">1.39</td><td align="right">2.12</td><td align="right">2.96</td></tr>
+</tbody>
+<!-- Body end -->
+
+<!-- teardown -->
+</table>
+<!-- teardown end -->
+
+
+<p><a href="./">back</a></p>
+
+<div>Last update: Dec 20 2005</div>
+</body>
+</html>

@@ -1,0 +1,151 @@
+p {
+	text-indent: 0.75em;
+//	margin:  0.25em 1em 0.25em 1em;
+	margin:  1em 2em 1em 2em;
+}
+
+address { 
+	text-align: right;
+}
+
+dl {
+	margin-left: 1em;
+	margin-right: 2em;
+	padding: 2pt 1em 2pt 0.5em;
+	border-width: thin 0 thin thin;
+	border-color: #aaaaff;
+	color: #000055;
+}
+
+dt {
+	margin-left: 0.5em;
+	margin-right: 2em;
+	padding: 2pt 1em 2pt 0.5em;
+	font-weight: bold;
+	color: #444488;
+	background-color: #eeeeee;
+	border-color: #aaaaaa;
+}
+
+blockquote {
+	background-color: #eeeeee;
+	color: #444444;
+	border-color: #aaaaaa;
+	border-style: dotted;
+	border-width: 2px;
+	padding: 0.5em 0.5em;
+}
+
+
+p.noindent {
+	text-indent: 0em;
+}
+
+p.center {
+	text-indent: 0em;
+	text-align: center;
+}
+
+p.last-modified {
+	text-indent: 0em;
+	font-size: smaller;
+}
+
+
+p.lang-navigator { 
+	text-align: right;
+	font-size: small;
+}
+
+body {
+	background-color: White;
+	margin: 0em 1em 0em 1em;
+}
+
+
+pre {
+	border-style: solid;
+	border-width: 0 0 0 thick;
+	border-color: #7f7f7f; 
+	color: #222222;
+        background-color: #eeeeee;
+	white-space: pre;
+	margin-right: 4em;
+	margin-left: 4em;
+	padding: 0.2em 0.5em;
+}
+
+h1 {
+	padding: 0.2em 0.5em 0.2em 0.5em;
+	border-style: solid;
+//	border-width: thin 12pt thin 12pt;
+	border-width: 0 0 thin 0;
+	border-color: #aaaaaa;
+	color: black;
+//	background-color: #eeeeee;
+}
+
+
+h2 {
+	padding: 0 0.75em 0 0.5em;
+	border-style: solid;
+	text-indent: 0em;
+
+	background-color: #eeeeee;
+	border-color: #bbbbbb;
+
+	color: #444444;
+
+	border-width: thin 7pt thin 7pt;
+	margin: 2em 0em 1em 0em;
+}
+
+h3 {
+	padding: 0 2em 0pt 0.25em;
+	margin: 1.5em 0em 1em 1em;
+	border-style: solid;
+
+	border-color: #bb88ff;
+
+	color: #444444;
+
+	border-width: 0 0 thin thick;
+}
+
+
+h4 {
+	border-style: solid;
+	text-indent: 0.25em;
+	color: #334433;
+	border-color: #88bb88;
+	border-width: 0 0 1px 0;
+	margin-left: 0.5em;
+}
+h5 {
+	margin-left: 1em;
+}
+
+a:link  {
+}
+
+a:visited {
+} 
+
+a:active {
+}
+
+a:hover {
+	background: #ffeecc;
+}
+
+a:focus{
+}
+
+ul {
+	padding-left: 1em;
+}
+
+li {
+	padding-left: 0em;
+	margin:  0.25em 1em 0.25em 1em;
+}

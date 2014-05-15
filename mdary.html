@@ -1,0 +1,122 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<html>
+<head>
+<meta name="robots" content="noindex,nofollow">
+<title> Ruby Multi-dimensional Arrays </title>
+</head>
+
+<body bgcolor="#FFFFFF">
+
+<h1> Ruby Multi-dimensional Arrays </h1>
+English only
+<hr>
+
+<h3><a name="std-dist">In Ruby standard library</a></h3>
+<ul>
+  <li> <b>Matrix</b> class (see document in <tt>lib/matrix.rb</tt>)
+<pre>
+    require 'matrix'
+    Matrix.I(3)
+       #=&gt; Matrix[[1, 0, 0], [0, 1, 0], [0, 0, 1]]
+    Matrix[[0,1],[2,0]] * Vector[1.2,3.4]
+       #=&gt; Vector[3.4, 2.4]
+</pre>
+    
+</ul>
+    
+
+<h3><a name="ext-lib">Extension libraries</a></h3>
+<ul>
+<li> <a href="ftp://ftp.netlab.co.jp/pub/lang/ruby/contrib/mdarray0.1.tar.gz"> <b>MDArray</b> </a><br>
+  Simple extension library for Multi-Dimensional Array.
+  This library is targeted for old versions of Ruby.
+  To compile with the current version, rename function names:
+<pre>
+  mv mdarray.c mdarray.c.bak
+  ruby (ruby_unpacked_dir)/sample/rename.rb mdarray.c.bak &gt; mdarray.c
+  ruby -r mkmf -e 'create_makefile("mdarray")'
+  make
+</pre>
+
+  
+<li> <a href="dist/ndimarray.rb"><b>NdimArray</b></a> <br>
+  Ruby script version of Multi-dimensional Array
+
+<p>
+<li> Numerical Multi-dimensional Arrays (in <a href="http://www.ruby-lang.org/en/raa.html">RAA</a>)<br>
+<ul>
+<li> <b>mathx</b>
+<li> <b>NArray</b>
+<li> <b>NumArray</b>
+</ul>
+</ul>
+
+<h3><a name="in-ml">In ML</a></h3>
+<ul>
+<p>
+  <li> <a href="http://blade.nagaokaut.ac.jp/cgi-bin/scat.rb/ruby/ruby-talk/14470">50-by-50-element matrix with each one equal to "+"?</a> (2001-05-01)<br>
+</p><p>
+  <li> <a href="http://blade.nagaokaut.ac.jp/cgi-bin/scat.rb/ruby/ruby-talk/13397">Multidimensional arrays and hashes like Perl?</a> (2001-04-01)<br>
+    Discussion on auto-vivification follows.
+</p><p>
+  <li> <a href="http://blade.nagaokaut.ac.jp/cgi-bin/scat.rb/~poffice/mail/ruby-talk/12136"> Caution: Array.new fills with an *identical* object </a>
+(2001-03-06)
+<pre>
+    a = Array.new(2,Array.new(2)) #=&gt; [[nil, nil], [nil, nil]]
+    a[0][0] = 1
+    p a                           #=&gt; [[1, nil], [1, nil]]
+</pre>
+</p>
+<p>
+  <li> <a href="http://blade.nagaokaut.ac.jp/cgi-bin/scat.rb/~poffice/mail/ruby-talk/11470"> Resizable multi-dimensional Array </a>
+(2001-02-25)
+</p><p>
+    case: 2-D
+<pre>
+    class Array2D &lt; Array
+      def [](n)
+         self[n]=Array.new if super(n)==nil
+         super(n)
+      end
+    end
+
+    a = Array2D.new
+    a[2][2] = "foo"  #=&gt; [nil, nil, [nil, nil, "foo"]]
+</pre>
+</p><p>
+    case: Multi-D
+<pre>
+    class ArrayMD &lt; Array
+      def [](n)
+         self[n]=ArrayMD.new if super(n)==nil
+         super(n)
+      end
+    end
+
+    a = ArrayMD.new
+    a[1][2][3]="foo"  #=&gt; [nil, [nil, nil, [nil, nil, nil, "foo"]]]
+</pre>
+</p><p>
+  <li> <a href="http://blade.nagaokaut.ac.jp/cgi-bin/scat.rb/~poffice/mail/ruby-talk/10328"> Multi-dimensional array for games? </a> (2001-02-04)<br>
+    A good example is <tt>(ruby_unpacked_dir)/sample/mine.rb</tt>,
+    which is a simple mine sweeper game,
+    although it uses Japanese characters.
+</p><p>
+  <li> <a href="http://blade.nagaokaut.ac.jp/cgi-bin/scat.rb/~poffice/mail/ruby-talk/3194"> 3-D Array example </a>
+(2000-06-08)
+</p>
+</ul>
+
+<hr>
+<A HREF="index-e.html">
+Back to Numerical Ruby</A>
+<HR>
+<ADDRESS><A HREF="http://www.ir.isas.ac.jp/~masa/">
+Masahiro Tanaka</A>
+
+&lt;masa at ir.isas.ac.jp&gt;</ADDRESS>
+<!-- hhmts start -->
+Last modified: May  7, 2001
+<!-- hhmts end -->
+</body>
+</html>

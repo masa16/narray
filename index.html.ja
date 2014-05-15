@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="iso-2022-jp" ?>
+<!DOCTYPE html 
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="ja" xml:lang="ja">
+<head>
+<meta http-equiv="Content-type" content="text/html; charset=iso-2022-jp" />
+<title>Numerical Ruby NArray</title>
+<link href="./na.css" type="text/css" rel="stylesheet" />
+<meta name="author" content="Masahiro Tanaka"/>
+<meta name="Keywords" content="NArray,Ruby"/>
+</head>
+<body>
+<h1><a name="label-0" id="label-0">Numerical Ruby NArray</a></h1><!-- RDLabel: "Numerical Ruby NArray" -->
+<p><a href="index.html.en">English</a> / <a href="index.html.ja">Japanese</a></p>
+<h2><a name="label-1" id="label-1">NArray 開発版</a></h2><!-- RDLabel: "NArray 開発版" -->
+<p><a href="https://github.com/masa16/narray-devel">GitHub</a></p>
+<p>開発中の次期 NArray です。未完成です。
+旧版とは非互換ですが、大幅な機能向上が行われています。
+今後旧版 NArray の開発は行われません。
+ご意見をお待ちしております。</p>
+<ul>
+<li>次期NArrayについての説明がある<a href="http://www.slideshare.net/masa16tanaka/narray-pwrake">スライド</a></li>
+</ul>
+<h2><a name="label-2" id="label-2">NArray 旧バージョン</a></h2><!-- RDLabel: "NArray 旧バージョン" -->
+<p><a href="https://github.com/masa16/narray">GitHub</a></p>
+<p>多次元 数値 配列クラスです。 1,2,4 byte 整数、単/倍 精度 実数/複素数、 およびRubyオブジェクトを要素に持つことができます。 これにより Ruby でも 大量の数値を扱う計算が、簡単かつ高速にできるようになります。</p>
+<ul>
+<li>ドキュメント
+<ul>
+<li><a href="feature-ja.html">NArray 特徴</a></li>
+<li><a href="SPEC.ja">NArray メソッド一覧</a></li>
+<li><a href="http://www.kmc.gr.jp/~ohai/narray/refm.html">大林さんによるNArrayの解説</a></li>
+<li><a href="https://github.com/princelab/narray/wiki">princelab's NArray documents</a>
+<ul>
+<li>Tentative NArray Tutorial, etc.</li>
+</ul></li>
+</ul></li>
+<li>使用例:
+<ul>
+<li><a href="demo/mandel.html.en">マンデルブロ</a></li>
+<li><a href="demo/image.html.en">画像のリサイズ</a></li>
+<li><a href="demo/smooth.html.en">画像のスムージング(FFTW使用)</a></li>
+<li><a href="demo/lifegame.html.en">ライフゲーム</a></li>
+<li><a href="matrix-ja.html">NMatrix &amp; NVector - LU分解により線形方程式を解く</a></li>
+</ul></li>
+<li>インストール
+<ul>
+<li>ソースコード: バージョン 0.6.0.8 (<a href="https://github.com/masa16/narray/tarball/0.6.0.8">.tar.gz</a>|<a href="https://github.com/masa16/narray/zipball/0.6.0.8">.zip</a>) (2013-02-27)</li>
+<li>Gem インストール（要コンパイラ）:</li>
+</ul></li>
+</ul>
+<pre>gem install narray</pre>
+<h2><a name="label-3" id="label-3">NArrayの拡張</a></h2><!-- RDLabel: "NArrayの拡張" -->
+<h3><a name="label-4" id="label-4">FFTW3</a></h3><!-- RDLabel: "FFTW3" -->
+<p><a href="http://www.fftw.org/">FFTW</a>
+(高速 DFT (Discrete Fourier Transform) ライブラリ) ver.3 の NArray インタフェース</p>
+<ul>
+<li>ソース:
+  <a href="http://rubyforge.org/frs/download.php/7661/ruby-fftw3-0.1.0.tar.gz">ver 0.1.0</a>
+  (2003-01-04)</li>
+</ul>
+<h3><a name="label-5" id="label-5">na_geev</a></h3><!-- RDLabel: "na_geev" -->
+<p><a href="http://www.netlib.org/lapack/">Lapack</a>
+dgeev, zgeev ルーチン の NArray インタフェース。
+固有値・固有ベクトルメソッドを NMatrix に追加。</p>
+<ul>
+<li>ソース:
+  <a href="http://rubyforge.org/frs/download.php/7660/na_geev-0.1.2.tar.gz">ver 0.1.2</a>
+  (2004-03-01)</li>
+</ul>
+<h3><a name="label-6" id="label-6">NArrayを利用しているプロジェクト</a></h3><!-- RDLabel: "NArrayを利用しているプロジェクト" -->
+<ul>
+<li><a href="http://ruby.gfd-dennou.org/index-j.htm">電脳Rubyプロジェクト</a> (RubyDCL, RubyNetCDF, ...)</li>
+<li><a href="http://rb-gsl.rubyforge.org/">Ruby/GSL</a></li>
+<li><a href="http://gridflow.ca/">GridFlow</a></li>
+<li><a href="http://hans.fugal.net/src/ruby-audio/">ruby/audio</a></li>
+<li><a href="http://pgplot.rubyforge.org/">Ruby/PGPLOT</a></li>
+</ul>
+<h2><a name="label-7" id="label-7">Other Tips</a></h2><!-- RDLabel: "Other Tips" -->
+<ul>
+<li><a href="mdary.html">Ruby Multi-dimensional Arrays</a></li>
+</ul>
+<h2><a name="label-8" id="label-8">Link</a></h2><!-- RDLabel: "Link" -->
+<ul>
+<li><a href="http://pub.cozmixng.org/~the-rwiki/rw-cgi.rb?cmd=view;name=Ruby+for+Science">Ruby for Science @ Rwiki</a></li>
+<li><a href="http://sciruby.codeforpeople.com/sr.cgi/FrontPage">SciRuby Wiki</a></li>
+</ul>
+<h2><a name="label-9" id="label-9">Author</a></h2><!-- RDLabel: "Author" -->
+<p>Masahiro Tanaka</p>
+
+<div>Last update: Mar 27 2014</div>
+</body>
+</html>
