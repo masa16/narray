@@ -1,7 +1,7 @@
 =begin
 = Numerical Ruby NArray
 
-((<English|URL:index.en.html>)) / ((<Japanese|URL:index.ja.html>))
+((<English|URL:index.html>)) / ((<Japanese|URL:index.ja.html>))
 
 == NArray development
 
