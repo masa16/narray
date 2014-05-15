@@ -1,1 +1,93 @@
-index.html.en
+<?xml version="1.0" ?>
+<!DOCTYPE html 
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<title>Numerical Ruby NArray</title>
+<link href="./na.css" type="text/css" rel="stylesheet" />
+<meta name="author" content="Masahiro Tanaka"/>
+<meta name="Keywords" content="NArray,Ruby"/>
+</head>
+<body>
+<h1><a name="label-0" id="label-0">Numerical Ruby NArray</a></h1><!-- RDLabel: "Numerical Ruby NArray" -->
+<p><a href="index.html.en">English</a> / <a href="index.html.ja">Japanese</a></p>
+<h2><a name="label-1" id="label-1">NArray development</a></h2><!-- RDLabel: "NArray development" -->
+<p><a href="https://github.com/masa16/narray-devel">GitHub</a></p>
+<p>Next NArray is under development.
+The new version is incompatible but much advanced from the old version.
+Development of the old version ended.
+Comments are welcome.</p>
+<h2><a name="label-2" id="label-2">NArray old version</a></h2><!-- RDLabel: "NArray old version" -->
+<p><a href="https://github.com/masa16/narray">GitHub</a></p>
+<p><em>NArray</em> is an Numerical N-dimensional Array class.
+Supported element types are 1/2/4-byte Integer,
+single/double-precision Real/Complex, and Ruby Object.
+This extension library incorporates fast calculation and easy manipulation
+of large numerical arrays into the Ruby language.
+NArray has features similar to NumPy, but NArray has vector and matrix subclasses.</p>
+<ul>
+<li>Documents
+<ul>
+<li><a href="SPEC.en">NArray method list</a></li>
+<li><a href="https://github.com/princelab/narray/wiki">princelab's NArray documents</a>
+<ul>
+<li>Tentative NArray Tutorial, etc.</li>
+</ul></li>
+</ul></li>
+<li>Examples
+<ul>
+<li><a href="demo/mandel.html.en">Mandelbrot</a></li>
+<li><a href="demo/image.html.en">Image shrinking</a></li>
+<li><a href="demo/smooth.html.en">Image smoothing using FFTW</a></li>
+<li><a href="demo/lifegame.html.en">Life game</a></li>
+<li><a href="matrix-e.html">NMatrix &amp; NVector - solving linear equation</a></li>
+</ul></li>
+<li>Install
+<ul>
+<li>Source code: version 0.6.0.8 (<a href="https://github.com/masa16/narray/tarball/0.6.0.8">.tar.gz</a>|<a href="https://github.com/masa16/narray/zipball/0.6.0.8">.zip</a>) (2013-02-27)</li>
+<li>Gem install (requires compiler):</li>
+</ul></li>
+</ul>
+<pre>gem install narray</pre>
+<h2><a name="label-3" id="label-3">Extension for NArray</a></h2><!-- RDLabel: "Extension for NArray" -->
+<h3><a name="label-4" id="label-4">FFTW3</a></h3><!-- RDLabel: "FFTW3" -->
+<p>A FFTW3 wrapper for NArray.
+<a href="http://www.fftw.org/">FFTW</a> is a fast DFT (Discrete Fourier Transform) library.</p>
+<ul>
+<li>Source code:
+  <a href="http://rubyforge.org/frs/download.php/7661/ruby-fftw3-0.1.0.tar.gz">ver 0.1.0</a>
+  (2003-01-04)</li>
+</ul>
+<h3><a name="label-5" id="label-5">na_geev</a></h3><!-- RDLabel: "na_geev" -->
+<p>Eigenvalue &amp; Eigenvector method for NMatrix
+using dgeev &amp; zgeev routine in <a href="http://www.netlib.org/lapack/">Lapack</a>.
+Effort to wrap other Lapack routines is ongoing very slowly.</p>
+<ul>
+<li>Source code:
+  <a href="http://rubyforge.org/frs/download.php/7660/na_geev-0.1.2.tar.gz">ver 0.1.2</a>
+  (2004-03-01)</li>
+</ul>
+<h3><a name="label-6" id="label-6">Projects using NArray</a></h3><!-- RDLabel: "Projects using NArray" -->
+<ul>
+<li><a href="http://ruby.gfd-dennou.org/">Dennou Ruby Project</a> (RubyDCL, RubyNetCDF, ...)</li>
+<li><a href="http://rb-gsl.rubyforge.org/">Ruby/GSL</a></li>
+<li><a href="http://gridflow.ca/">GridFlow</a></li>
+<li><a href="http://hans.fugal.net/src/ruby-audio/">ruby/audio</a></li>
+<li><a href="http://pgplot.rubyforge.org/">Ruby/PGPLOT</a></li>
+</ul>
+<h2><a name="label-7" id="label-7">Other Tips</a></h2><!-- RDLabel: "Other Tips" -->
+<ul>
+<li><a href="mdary.html">Ruby Multi-dimensional Arrays</a></li>
+</ul>
+<h2><a name="label-8" id="label-8">Link</a></h2><!-- RDLabel: "Link" -->
+<ul>
+<li><a href="http://pub.cozmixng.org/~the-rwiki/rw-cgi.rb?cmd=view;name=Ruby+for+Science">Ruby for Science @ Rwiki</a> (Japanese)</li>
+<li><a href="http://sciruby.codeforpeople.com/sr.cgi/FrontPage">SciRuby Wiki</a></li>
+</ul>
+<h2><a name="label-9" id="label-9">Author</a></h2><!-- RDLabel: "Author" -->
+<p>Masahiro Tanaka</p>
+
+<div>Last update: Aug 21 2013</div>
+</body>
+</html>
