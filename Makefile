@@ -8,7 +8,8 @@ rd2=ruby myrd2html.rb
 .ja.rd.ja.html:
 	$(rd2) --lang=ja $(opt) $< > $@
 
-all: index.en.html \
+all: index.html \
+ index.en.html \
  index.ja.html \
  demo/mandel.en.html \
  demo/image.en.html \
@@ -27,6 +28,9 @@ demo/lifegame.en.html: opt= --title="NArray demo: Life game"
 bench.en.html: opt= --title="NArray benchmark" --rt
 quanty/quanty.en.html: opt= --title="Quanty: unit-math library"
 quanty/quanty.ja.html: opt= --title="Quanty: 単位変換ライブラリ"
+
+index.html: index.en.html
+	cp index.en.html index.html
 
 clean:
 	rm -f *~ */*~ *.en.html *.ja.html */*.en.html */*.ja.html
