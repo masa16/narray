@@ -1,7 +1,7 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-2022-JP">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <meta name="robots" content="noindex,nofollow">
 <title> NMatrix, NVector </title>
 </head>
@@ -12,71 +12,71 @@
 <hr/>
 <h2>NMatrix</h2>
 
-NArray$B$N%5%V%/%i%9$G$9!#:G=i$N(B2$B<!85$,(BMatrix$BMQ$N<!85$G$9!#(B
-$B;D$j$N<!85$OB?<!85G[Ns$H$7$F!"(BNArray$B$N<!85$HF1MM$K07$o$l$^$9(B
+NArrayのサブクラスです。最初の2次元がMatrix用の次元です。
+残りの次元は多次元配列として、NArrayの次元と同様に扱われます
 <p>
-NArray$B$N<!85$,(B FORTRAN style $B$J$N$G!"(BNMatrix$B$N<!85$N=g=x$O(B
-$B?t3XI=5-$NE:;z$N=g=x$H$O5U$K$J$j$^$9!#(B
+NArrayの次元が FORTRAN style なので、NMatrixの次元の順序は
+数学表記の添字の順序とは逆になります。
 
 <h2>NVector</h2>
 
-NArray$B$N%5%V%/%i%9$G$9!#:G=i$N(B1$B<!85$,(BVector$BMQ$N<!85$G$9!#(B
-$B;D$j$N<!85$OB?<!85G[Ns$G$9!#(B
+NArrayのサブクラスです。最初の1次元がVector用の次元です。
+残りの次元は多次元配列です。
 
 <ul>
-  <li> <a href="#op">$B1i;;(B</a>
+  <li> <a href="#op">演算</a>
   <li> <a href="#sl">Slicing</a>
-  <li> <a href="#lu">$B@~7AJ}Dx<0$r2r$/(B</a>
+  <li> <a href="#lu">線形方程式を解く</a>
 </ul>
 
 <p><hr/>
-<h3>$B%/%i%9<!85(B</h3>
-NMatrix $B$*$h$S(B NVector $B$N<!85$r(B<font color="#ff0000">$B%/%i%9<!85(B</font>
-$B$H8F$S$^$9!#$3$l$O%5%V%/%i%9$r:n$k;~$K(B
-$B%/%i%9Dj?t(B <font color="#ff0000"><tt>CLASS_DIMENSION</tt></font>
-$B$G;XDj$7$^$9!#(B
+<h3>クラス次元</h3>
+NMatrix および NVector の次元を<font color="#ff0000">クラス次元</font>
+と呼びます。これはサブクラスを作る時に
+クラス定数 <font color="#ff0000"><tt>CLASS_DIMENSION</tt></font>
+で指定します。
 
 <p>
-$B3F%/%i%9$N%/%i%9<!85$O<!$N$h$&$K$J$j$^$9!#(B
+各クラスのクラス次元は次のようになります。
 <ul>
-  <li> NArray  : $B%/%i%9<!85(B = 0
-  <li> NVector : $B%/%i%9<!85(B = 1
-  <li> NMatrix : $B%/%i%9<!85(B = 2
+  <li> NArray  : クラス次元 = 0
+  <li> NVector : クラス次元 = 1
+  <li> NMatrix : クラス次元 = 2
 </ul>
 
 <hr/>
-<a name="op"><h3>$B1i;;(B</h3>
+<a name="op"><h3>演算</h3>
 </a>
-NArray$B$N1i;;$O(B Element-wize $B$G$9$,!"(B
-NMatrix, NVector$B%/%i%9$O(B $BEvA3(B Matrix, Vector $B$N1i;;$K$J$j$^$9!#(B
+NArrayの演算は Element-wize ですが、
+NMatrix, NVectorクラスは 当然 Matrix, Vector の演算になります。
 <p>
-NMatrix/NVector $B$H(B NArray $B$N1i;;$G$O!"(BNArray $B$O(B Scalar$B$H$7$F5!G=$7$^$9!#(B
-$B%*%V%8%'%/%H$N;}$D<!85$+$i%/%i%9<!85$r0z$$$?;D$j$O(B
-NArray$B$NB?<!85G[Ns$HF1$8$h$&$K5!G=$7$^$9!#(B
-($B%5%$%:(B1$B$N<!85$N7+$jJV$7$J$I!#(B)
+NMatrix/NVector と NArray の演算では、NArray は Scalarとして機能します。
+オブジェクトの持つ次元からクラス次元を引いた残りは
+NArrayの多次元配列と同じように機能します。
+(サイズ1の次元の繰り返しなど。)
 <p>
-$B$3$l$K$h$j!"(B3$B<!85(B Vector $B$N(B 100x100 $B$N(B 2$B<!85G[Ns$K(B
-Matrix $B$r3]$1$F:BI8JQ49!"$H$$$&$h$&$J>l9g$G$b!"(B
-$B%9%/%j%W%H$G%k!<%W$r=q$/I,MW$,$J$$$N$G!"Hs>o$K9bB.$K=hM}$G$-$^$9!#(B
+これにより、3次元 Vector の 100x100 の 2次元配列に
+Matrix を掛けて座標変換、というような場合でも、
+スクリプトでループを書く必要がないので、非常に高速に処理できます。
 <p>
-$BNc(B:
+例:
 <table><tr><td bgcolor="gray">&nbsp;</td><td>&nbsp;</td><td><pre>
 % irb -r nmatrix
 
 irb(main):001:0> m = NMatrix.float(2,2).indgen!
-NMatrix.float(2,2): 
-[ [ 0.0, 1.0 ], 
+NMatrix.float(2,2):
+[ [ 0.0, 1.0 ],
   [ 2.0, 3.0 ] ]
 
 irb(main):002:0> a = NArray.float(2).indgen!+1
-NArray.float(2): 
+NArray.float(2):
 [ 1.0, 2.0 ]
 
 irb(main):003:0> a * m
-NMatrix.float(2,2,2): 
-[ [ [ 0.0, 1.0 ], 
-    [ 2.0, 3.0 ] ], 
-  [ [ 0.0, 2.0 ], 
+NMatrix.float(2,2,2):
+[ [ [ 0.0, 1.0 ],
+    [ 2.0, 3.0 ] ],
+  [ [ 0.0, 2.0 ],
     [ 4.0, 6.0 ] ] ]
 
 irb(main):004:0> a + m
@@ -90,96 +90,96 @@ TypeError: Illegal operation: NArray + NMatrix
 <hr/>
 <a name="sl"><h3>Slicing</h3>
 </a>
-NArray$B$HF1MM$K(B NMatrix$B!"(BNVector$B$b(B <tt>a[1,2]</tt> $B$H$$$&$h$&$K(B
-$BMWAG$^$?$OHO0O<h$j=P$7$,=PMh$^$9!#(B
-$B$?$@$7!"%/%i%9<!85(B $B$K$*$1$k<h$j=P$7$O!"(B
-NArray$B$N5,B'$H$O>/$70[$J$j$^$9!#(B
+NArrayと同様に NMatrix、NVectorも <tt>a[1,2]</tt> というように
+要素または範囲取り出しが出来ます。
+ただし、クラス次元 における取り出しは、
+NArrayの規則とは少し異なります。
 
 <ul>
-  <li> $B%/%i%9<!85$,$9$Y$FMWAG;XDj(B ($B0z?t$,(BInteger) $B$N;~$O!"(B
-    $B%/%i%9<!85$,<h$j=|$+$l!"$5$i$K(BNArray class$B$KJQ49$5$l$k(B
-    ($B%9%+%i!<$H$_$J$9$?$a(B)$B!#(B
-  <li> $B%/%i%9<!85$K$*$$$FHO0O;XDj$,(B1$B$D$G$b$"$l$P!"(B
-    $BMWAG;XDj$,$"$C$F$b$=$N<!85$O<h$j=|$+$l$:!"%5%$%:(B1$B$N<!85$H$J$k!#(B
-    $B$D$^$j!"%/%i%9<!85$OJ]B8$5$l$k!#(B
-  <li>  $B;D$C$?<!85$O(B NArray $B$HF1$85,B'!#(B
-    $B$D$^$j!"MWAG;XDj$N<!85$O<h$j=|$+$l!"$=$&$G$J$$<!85$O;D$5$l$k!#(B
-    $B%/%i%9<!85$r4^$a$F$9$Y$F$N<!85$,MWAG;XDj$N$H$-$O!"(B
-    $BMWAG<h$j=P$7(B(Float$B$J$I$KJQ49(B)$B$H$J$k!#(B
+  <li> クラス次元がすべて要素指定 (引数がInteger) の時は、
+    クラス次元が取り除かれ、さらにNArray classに変換される
+    (スカラーとみなすため)。
+  <li> クラス次元において範囲指定が1つでもあれば、
+    要素指定があってもその次元は取り除かれず、サイズ1の次元となる。
+    つまり、クラス次元は保存される。
+  <li>  残った次元は NArray と同じ規則。
+    つまり、要素指定の次元は取り除かれ、そうでない次元は残される。
+    クラス次元を含めてすべての次元が要素指定のときは、
+    要素取り出し(Floatなどに変換)となる。
 </ul>
 
-$BNc(B:
+例:
 <table><tr><td bgcolor="gray">&nbsp;</td><td>&nbsp;</td><td><pre>
 % irb -r nmatrix
 
 irb(main):001:0> m = NMatrix.float(2,2,2).indgen!
-NMatrix.float(2,2,2): 
-[ [ [ 0.0, 1.0 ], 
-    [ 2.0, 3.0 ] ], 
-  [ [ 4.0, 5.0 ], 
+NMatrix.float(2,2,2):
+[ [ [ 0.0, 1.0 ],
+    [ 2.0, 3.0 ] ],
+  [ [ 4.0, 5.0 ],
     [ 6.0, 7.0 ] ] ]
 
 irb(main):002:0> m[1,1,true]
-NArray.float(2): 
+NArray.float(2):
 [ 3.0, 7.0 ]
 
-irb(main):003:0> m[0..1,1,true] 
-NMatrix.float(2,1,2): 
-[ [ [ 2.0, 3.0 ] ], 
+irb(main):003:0> m[0..1,1,true]
+NMatrix.float(2,1,2):
+[ [ [ 2.0, 3.0 ] ],
   [ [ 6.0, 7.0 ] ] ]
 </pre></td></tr></table>
 
 <hr/>
-<a name="lu"><h3>$B@~7AJ}Dx<0$r2r$/(B</h3>
+<a name="lu"><h3>線形方程式を解く</h3>
 </a>
-<tt>m</tt> $B$,(B square NMatrix, <tt>x, y</tt> $B$,(B NVector $B$G!"(B
-<tt>m, y</tt> $B$,M?$($i$l$F$$$k$H$-!"(B
+<tt>m</tt> が square NMatrix, <tt>x, y</tt> が NVector で、
+<tt>m, y</tt> が与えられているとき、
 <table><tr><td bgcolor="gray">&nbsp;</td><td>&nbsp;</td><td><pre>
   y = m * x
 </pre></td></tr></table>
-$B$r2r$$$F(B <tt>x</tt>$B$r5a$a$?$$;~$O!"(B
+を解いて <tt>x</tt>を求めたい時は、
 <table><tr><td bgcolor="gray">&nbsp;</td><td>&nbsp;</td><td><pre>
   x = y / m
 </pre></td></tr></table>
-$B$K$h$jEz$,F@$i$l$^$9!#$3$l$O(B
+により答が得られます。これは
 <table><tr><td bgcolor="gray">&nbsp;</td><td>&nbsp;</td><td><pre>
   x = m.lu.solve(y)
 </pre></td></tr></table>
-$B$H=q$/$N$HF1Ey$G$9!#$D$^$j!"(BNMatrix#lu $B%a%=%C%I$K$h$j(B <tt>m</tt> $B$r(BLU$BJ,2r$7!"(B
-$B$=$N7k2L$r(B <font color="#ff0000">NMatrixLU</font> $B%/%i%9$N%$%s%9%?%s%9(B
-$B$H$7$FJV$7$^$9!#$5$i$K(B NMatrixLU#solve $B%a%=%C%I$K$h$j2r$r7W;;$7$^$9!#(B
-$B$b$7F1$8(BMatrix$B$GJ#?t$N(BVector$B$r2r$-$?$$;~$O!"(B<tt>/</tt> $B1i;;;R$r;H$o$:!"(B
-$B0lEY$@$1(B <tt>m.lu</tt> $B$r7W;;$7$F(B NMatrixLU#solve $B%a%=%C%I$r;H$&J}$,(B
-$B8zN(E*$G$9!#(B
+と書くのと同等です。つまり、NMatrix#lu メソッドにより <tt>m</tt> をLU分解し、
+その結果を <font color="#ff0000">NMatrixLU</font> クラスのインスタンス
+として返します。さらに NMatrixLU#solve メソッドにより解を計算します。
+もし同じMatrixで複数のVectorを解きたい時は、<tt>/</tt> 演算子を使わず、
+一度だけ <tt>m.lu</tt> を計算して NMatrixLU#solve メソッドを使う方が
+効率的です。
 <p>
-$B$^$?!"(B
+また、
 <table><tr><td bgcolor="gray">&nbsp;</td><td>&nbsp;</td><td><pre>
   x = y / m
 </pre></td></tr></table>
-$B$O!"?t3XE*$K$O(B
+は、数学的には
 <table><tr><td bgcolor="gray">&nbsp;</td><td>&nbsp;</td><td><pre>
   x = m**-1 * y
 </pre></td></tr></table>
-$B$HF1Ey$J$N$G!"=g=x$,5U$K$J$k$3$H$KCm0U$7$F2<$5$$!#(B
-(Octave$B$J$I$G$O%P%C%/%9%i%C%7%e$r;H$C$FF1$8=g=x$K$7$F$$$^$9$,!"(B
-Ruby$B$K$O$J$$$N$G(B ^^;;; )
+と同等なので、順序が逆になることに注意して下さい。
+(Octaveなどではバックスラッシュを使って同じ順序にしていますが、
+Rubyにはないので ^^;;; )
 <p>
-$B$J$*!"(BLU$BJ,2r$O(B Ruby Object $B7?(B $BG[Ns$G$b;H$($^$9!#(B
+なお、LU分解は Ruby Object 型 配列でも使えます。
 <table><tr><td bgcolor="gray">&nbsp;</td><td>&nbsp;</td><td><pre>
 % irb -r nmatrix -r rational
 
 irb(main):001:0> m = NMatrix.object(4,4).collect!{Rational(rand(10))}
-NMatrix.object(4,4): 
-[ [ Rational(3, 1), Rational(6, 1), Rational(5, 1), Rational(3, 1) ], 
-  [ Rational(1, 1), Rational(6, 1), Rational(2, 1), Rational(0, 1) ], 
-  [ Rational(0, 1), Rational(3, 1), Rational(1, 1), Rational(7, 1) ], 
+NMatrix.object(4,4):
+[ [ Rational(3, 1), Rational(6, 1), Rational(5, 1), Rational(3, 1) ],
+  [ Rational(1, 1), Rational(6, 1), Rational(2, 1), Rational(0, 1) ],
+  [ Rational(0, 1), Rational(3, 1), Rational(1, 1), Rational(7, 1) ],
   [ Rational(2, 1), Rational(8, 1), Rational(9, 1), Rational(1, 1) ] ]
 
 irb(main):002:0> m/m
-NMatrix.object(4,4): 
-[ [ Rational(1, 1), Rational(0, 1), Rational(0, 1), Rational(0, 1) ], 
-  [ Rational(0, 1), Rational(1, 1), Rational(0, 1), Rational(0, 1) ], 
-  [ Rational(0, 1), Rational(0, 1), Rational(1, 1), Rational(0, 1) ], 
+NMatrix.object(4,4):
+[ [ Rational(1, 1), Rational(0, 1), Rational(0, 1), Rational(0, 1) ],
+  [ Rational(0, 1), Rational(1, 1), Rational(0, 1), Rational(0, 1) ],
+  [ Rational(0, 1), Rational(0, 1), Rational(1, 1), Rational(0, 1) ],
   [ Rational(0, 1), Rational(0, 1), Rational(0, 1), Rational(1, 1) ] ]
 </pre></td></tr></table>
 

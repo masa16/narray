@@ -1,102 +1,102 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
 <html>
 <HEAD>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-2022-JP">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <meta name="robots" content="noindex,nofollow">
-<TITLE>NArray$B$NFCD'(B</TITLE>
+<TITLE>NArrayの特徴</TITLE>
 </HEAD>
 
 <BODY bgcolor="#ffffff">
-<H1>NArray$B$NFCD'(B</H1>
+<H1>NArrayの特徴</H1>
 <hr>
 
-NArray$B$O!"Bg5,LO$JB?<!85?tCMG[Ns$N7W;;$r!"(B
-$B4JC1$+$D9bB.$K<B8=$9$k(BRuby$B$N%/%i%9$G$9!#(B
-$BF1MM$J?tCMG[Ns$K$O!"(B
+NArrayは、大規模な多次元数値配列の計算を、
+簡単かつ高速に実現するRubyのクラスです。
+同様な数値配列には、
 <a href="http://www.python.org/topics/scicomp/numpy.html">Python/NumPy</a>,
 <a href="http://pdl.perl.org/">Perl/PDL</a>,
 <a href="ftp://ftp-icf.llnl.gov/pub/Yorick/yorick-ad.html">Yorick</a>
-$B$J$I$,$"$j$^$9!#(B
-NArray$B$O$=$N(BRuby$BHG$G!"FCD'$H$7$F$OF1$8$J$s$G$9$,!"(B
-$B<BAu$OFH<+$G$9!#(B
+などがあります。
+NArrayはそのRuby版で、特徴としては同じなんですが、
+実装は独自です。
 <p>
 
 <ul>
-<li><b>$B?tCM$*$h$S%*%V%8%'%/%H$NB?<!85G[Ns(B</b><br/>
+<li><b>数値およびオブジェクトの多次元配列</b><br/>
 
-NArray $B$O!"B?<!85G[Ns$N%/%i%9$G$9!#(B
-$BG[Ns$NMWAG$N7?$H$7$F!"(B
+NArray は、多次元配列のクラスです。
+配列の要素の型として、
 <ul>
-  <li>8,16,32 bit $B@0?t(B
-  <li>$BC1@:EY(B/$BG\@:EY$N<B?t(B/$BJ#AG?t!"(B
-  <li>Ruby$B%*%V%8%'%/%H(B
-</ul>$B$r%5%]!<%H$7$F$$$^$9!#(B<p>
+  <li>8,16,32 bit 整数
+  <li>単精度/倍精度の実数/複素数、
+  <li>Rubyオブジェクト
+</ul>をサポートしています。<p>
 
-1$BMWAG$N<h=P$7$O!"(B<tt>a[ 12, 34 ]</tt> $B$N$h$&$K3F<!85$N%$%s%G%C%/%9$r;XDj$7$^$9!#(B
-$BItJ,G[Ns$O!"(B<tt>a[ 10..15, 5..-1 ]</tt> $B$N$h$&$KHO0O;XDj$G<h$j=P$;$^$9!#(B
+1要素の取出しは、<tt>a[ 12, 34 ]</tt> のように各次元のインデックスを指定します。
+部分配列は、<tt>a[ 10..15, 5..-1 ]</tt> のように範囲指定で取り出せます。
 <p>
 
-<li><b>$B1i;;$N5-=R(B</b><br/>
+<li><b>演算の記述</b><br/>
 
-<tt>+,-,*,/,%,**</tt> $B$N1i;;$O!"MWAG$4$H$KE,MQ$7$^$9!#(B
-$B$?$H$($P!"(B2$B$D$N(B NArray $B%/%i%9$N%$%s%9%?%s%9(B a,b $B$,$"$C$F(B
+<tt>+,-,*,/,%,**</tt> の演算は、要素ごとに適用します。
+たとえば、2つの NArray クラスのインスタンス a,b があって
 <pre>
   c = a + b
 </pre>
-$B$H=q$/$H!"(Bc $B$O(B <tt>[a[0]+b[0], a[1]+b[1], ... ]</tt>
-$B$H$$$&MWAG$r4^$`(B NArray $B%/%i%9$N(B $B%$%s%9%?%s%9$K$J$j$^$9!#(B
+と書くと、c は <tt>[a[0]+b[0], a[1]+b[1], ... ]</tt>
+という要素を含む NArray クラスの インスタンスになります。
 <pre>
   c = a + 1
 </pre>
-$B$H$9$k$H!"(Bc $B$O(B <tt>[a[0]+1, a[1]+1, ... ]</tt> $B$H$J$j$^$9!#(B
+とすると、c は <tt>[a[0]+1, a[1]+1, ... ]</tt> となります。
 <p>
-$B$^$?!"(Bsin $B$J$I$N?t3X4X?t$O(B
-NMath$B%b%8%e!<%k$GDs6!$7$F$*$j!"(B
-$BMWAG$4$H$K7W;;$7$?7k2L$r(B NArray$B$GJV$7$^$9!#(B
+また、sin などの数学関数は
+NMathモジュールで提供しており、
+要素ごとに計算した結果を NArrayで返します。
 <p>
 
-<li><b>$B9bB.1i;;(B</b><br/>
+<li><b>高速演算</b><br/>
 
-$B>e5-$N(B a + 1 $B$HF1$8$3$H$O(B $BIaDL$N(B Array $B%/%i%9$G$b!"(B
+上記の a + 1 と同じことは 普通の Array クラスでも、
 <pre>
   c = a.collect{|i| i+1}
 </pre>
-$B$J$I$H$9$k$3$H$G<B8=$7$^$9$,!"%9%T!<%I$OA4A30c$$$^$9!#(B
-$BMWAG$,(B50$BK|8D$N@0?tG[Ns$N>l9g!"(BSPARC 10$B$G$O!"(B
-NArray$B$@$H(B 0.3$BIC$G$9$,!"(BArray$B$G$O(B 57$BIC$b$+$+$j$^$9!#(B
+などとすることで実現しますが、スピードは全然違います。
+要素が50万個の整数配列の場合、SPARC 10では、
+NArrayだと 0.3秒ですが、Arrayでは 57秒もかかります。
 <p>
-NArray ver 0.5.0 $B$G$O!"0JA0$h$j(B
-<a href="speed.html">$BB.$/$J$j$^$7$?(B</a>$B!#(B
+NArray ver 0.5.0 では、以前より
+<a href="speed.html">速くなりました</a>。
 <p>
 
-<li><b>$B3HD%%$%s%G%C%/%9(B</b><br/>
-  IDL$B$K$J$$5!G=$H$7$F!"%5%$%:(B1$B$N<!85$O1i;;Aj<j$NG[Ns$N%5%$%:$K9g$o$;$F(B
-  $B7+JV$7E,MQ$9$k$H$$$&$b$N$,$"$j$^$9!#(B(NumPy$B$K$O$"$j$^$9(B)$B!#(B
-  $B$?$H$($P%5%$%:$,(B[n,1]$B$H(B[1,m]$B$NG[Ns$G1i;;$r9T$J$&$H!"(B
-  $B7k2L$O(B [n,m] $B$NG[Ns$H$J$j$^$9!#(B
-  $B$7$P$7$P(Bx$B$H(By$B$N4X?t$H$7$F(B2$B<!85$NG[Ns$r:n$j$?$$$3$H$,$"$j$^$9!#(B
-  $B$3$N$H$-(Bx$B!"(By$B$r$=$l$>$l(B[n,1]$B$H(B[1,m]$B$H$$$&7A$K$7$F$*$1$P!"(B
+<li><b>拡張インデックス</b><br/>
+  IDLにない機能として、サイズ1の次元は演算相手の配列のサイズに合わせて
+  繰返し適用するというものがあります。(NumPyにはあります)。
+  たとえばサイズが[n,1]と[1,m]の配列で演算を行なうと、
+  結果は [n,m] の配列となります。
+  しばしばxとyの関数として2次元の配列を作りたいことがあります。
+  このときx、yをそれぞれ[n,1]と[1,m]という形にしておけば、
 <pre>
   x**2 + y**2
 </pre>
-  $B$HC1$K=q$/$@$1$G!"(B"**"$B$N1i;;$^$G$O(B1$B<!85$G9T$J$$!"(B
-  "+"$B$N1i;;$N$H$3$m$G<+F0E*$K(B[n,m]$B$K3HD%$5$l$^$9!#(B
-  IDL$B$G$O:G=i$+$i(B[n,m]$B$NG[Ns$rMQ0U$7$J$1$l$P$J$j$^$;$s!#(B
+  と単に書くだけで、"**"の演算までは1次元で行ない、
+  "+"の演算のところで自動的に[n,m]に拡張されます。
+  IDLでは最初から[n,m]の配列を用意しなければなりません。
 <p>
-<li><b>$B<BAu(B</b><br/>
-NArray$B$O<!$NMWAG$r4^$`(BC$B9=B$BN$H$7$F<B8=$7$F$$$^$9!#(B
+<li><b>実装</b><br/>
+NArrayは次の要素を含むC構造体として実現しています。
 <ul>
-  <li> $B<!85?t(B (rank)
-  <li> $B3F<!85$NMWAG?t(B (shape)
-  <li> $BA4MWAG?t(B (total)
-  <li> $B7?(B (type)
-  <li> $BMWAG$r3JG<$9$k%a%b%j!<%V%m%C%/(B (ptr)
+  <li> 次元数 (rank)
+  <li> 各次元の要素数 (shape)
+  <li> 全要素数 (total)
+  <li> 型 (type)
+  <li> 要素を格納するメモリーブロック (ptr)
 </ul>
-$B%a%b%j!<%V%m%C%/$O(BC$B$NG[Ns$=$N$b$N$J$N$G!"(B
-$B$=$N$^$^B>$N%i%$%V%i%j$KEO$9!"$H$$$&;H$$J}$b$G$-$^$9!#(B
-($BNc$H$7$F(BFFTW$B$X$N%$%s%?%U%'!<%9$rHw$($F$$$^$9!#(B)
+メモリーブロックはCの配列そのものなので、
+そのまま他のライブラリに渡す、という使い方もできます。
+(例としてFFTWへのインタフェースを備えています。)
 <p>
-$B$40U8+$4Ds0FEy$,$"$j$^$7$?$i$*CN$i$;2<$5$$!#(B
+ご意見ご提案等がありましたらお知らせ下さい。
 </ul>
 
 <HR>

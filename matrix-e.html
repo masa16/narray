@@ -1,7 +1,7 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-2022-JP">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <meta name="robots" content="noindex,nofollow">
 <title> NMatrix, NVector </title>
 </head>
@@ -57,19 +57,19 @@ Example:
 % irb -r nmatrix
 
 irb(main):001:0> m = NMatrix.float(2,2).indgen!
-NMatrix.float(2,2): 
-[ [ 0.0, 1.0 ], 
+NMatrix.float(2,2):
+[ [ 0.0, 1.0 ],
   [ 2.0, 3.0 ] ]
 
 irb(main):002:0> a = NArray.float(2).indgen!+1
-NArray.float(2): 
+NArray.float(2):
 [ 1.0, 2.0 ]
 
 irb(main):003:0> a * m
-NMatrix.float(2,2,2): 
-[ [ [ 0.0, 1.0 ], 
-    [ 2.0, 3.0 ] ], 
-  [ [ 0.0, 2.0 ], 
+NMatrix.float(2,2,2):
+[ [ [ 0.0, 1.0 ],
+    [ 2.0, 3.0 ] ],
+  [ [ 0.0, 2.0 ],
     [ 4.0, 6.0 ] ] ]
 
 irb(main):004:0> a + m
@@ -106,19 +106,19 @@ Example:
 % irb -r nmatrix
 
 irb(main):001:0> m = NMatrix.float(2,2,2).indgen!
-NMatrix.float(2,2,2): 
-[ [ [ 0.0, 1.0 ], 
-    [ 2.0, 3.0 ] ], 
-  [ [ 4.0, 5.0 ], 
+NMatrix.float(2,2,2):
+[ [ [ 0.0, 1.0 ],
+    [ 2.0, 3.0 ] ],
+  [ [ 4.0, 5.0 ],
     [ 6.0, 7.0 ] ] ]
 
 irb(main):002:0> m[1,1,true]
-NArray.float(2): 
+NArray.float(2):
 [ 3.0, 7.0 ]
 
-irb(main):003:0> m[0..1,1,true] 
-NMatrix.float(2,1,2): 
-[ [ [ 2.0, 3.0 ] ], 
+irb(main):003:0> m[0..1,1,true]
+NMatrix.float(2,1,2):
+[ [ [ 2.0, 3.0 ] ],
   [ [ 6.0, 7.0 ] ] ]
 </pre></td></tr></table>
 
@@ -163,17 +163,17 @@ You can LU factorize Ruby Object arrays;
 % irb -r nmatrix -r rational
 
 irb(main):001:0> m = NMatrix.object(4,4).collect!{Rational(rand(10))}
-NMatrix.object(4,4): 
-[ [ Rational(3, 1), Rational(6, 1), Rational(5, 1), Rational(3, 1) ], 
-  [ Rational(1, 1), Rational(6, 1), Rational(2, 1), Rational(0, 1) ], 
-  [ Rational(0, 1), Rational(3, 1), Rational(1, 1), Rational(7, 1) ], 
+NMatrix.object(4,4):
+[ [ Rational(3, 1), Rational(6, 1), Rational(5, 1), Rational(3, 1) ],
+  [ Rational(1, 1), Rational(6, 1), Rational(2, 1), Rational(0, 1) ],
+  [ Rational(0, 1), Rational(3, 1), Rational(1, 1), Rational(7, 1) ],
   [ Rational(2, 1), Rational(8, 1), Rational(9, 1), Rational(1, 1) ] ]
 
 irb(main):002:0> m/m
-NMatrix.object(4,4): 
-[ [ Rational(1, 1), Rational(0, 1), Rational(0, 1), Rational(0, 1) ], 
-  [ Rational(0, 1), Rational(1, 1), Rational(0, 1), Rational(0, 1) ], 
-  [ Rational(0, 1), Rational(0, 1), Rational(1, 1), Rational(0, 1) ], 
+NMatrix.object(4,4):
+[ [ Rational(1, 1), Rational(0, 1), Rational(0, 1), Rational(0, 1) ],
+  [ Rational(0, 1), Rational(1, 1), Rational(0, 1), Rational(0, 1) ],
+  [ Rational(0, 1), Rational(0, 1), Rational(1, 1), Rational(0, 1) ],
   [ Rational(0, 1), Rational(0, 1), Rational(0, 1), Rational(1, 1) ] ]
 </pre></td></tr></table>
 

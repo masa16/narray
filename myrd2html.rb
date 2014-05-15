@@ -19,7 +19,7 @@ $date  = File.mtime(rdfile).strftime("%b %d %Y")
 
 case $lang
 when 'ja'
-  rd2 = 'rd2 -r ./rd2html-img-lib.rb --html-lang=ja --with-css=./na.css --out-code=jis'
+  rd2 = 'rd2 -r ./rd2html-img-lib.rb --html-lang=ja --with-css=./na.css --out-code=utf8'
 else
   rd2 = 'rd2 -r ./rd2html-img-lib.rb --html-lang=en --with-css=./na.css'
 end

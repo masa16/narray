@@ -1,66 +1,66 @@
-<?xml version="1.0" encoding="iso-2022-jp" ?>
+<?xml version="1.0" encoding="utf-8" ?>
 <!DOCTYPE html 
   PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="ja" xml:lang="ja">
 <head>
-<meta http-equiv="Content-type" content="text/html; charset=iso-2022-jp" />
-<title>Quanty: $BC10LJQ49%i%$%V%i%j(B</title>
+<meta http-equiv="Content-type" content="text/html; charset=utf-8" />
+<title>Quanty: 単位変換ライブラリ</title>
 <link href="./na.css" type="text/css" rel="stylesheet" />
 <meta name="author" content="Masahiro Tanaka"/>
 </head>
 <body>
-<h1><a name="label-0" id="label-0">$BC10LJQ49%i%$%V%i%j(B Quanty $B$O(B <a href="https://github.com/masa16/phys-units">Phys-Units</a> $B$KJQ99$5$l$^$7$?!#(B</a></h1><!-- RDLabel: "$BC10LJQ49%i%$%V%i%j(B Quanty $B$O(B  $B$KJQ99$5$l$^$7$?!#(B" -->
+<h1><a name="label-0" id="label-0">単位変換ライブラリ Quanty は <a href="https://github.com/masa16/phys-units">Phys-Units</a> に変更されました。</a></h1><!-- RDLabel: "単位変換ライブラリ Quanty は  に変更されました。" -->
 <h1><a name="label-1" id="label-1">class Quanty</a></h1><!-- RDLabel: "class Quanty" -->
-<h2><a name="label-2" id="label-2">$B35MW(B</a></h2><!-- RDLabel: "$B35MW(B" -->
-<p>$B!VCM(B ($BJ*M}NL(B)$B!W$H!VC10L!W$rJ;$;;}$D%/%i%9!#(B
-<kbd>units</kbd> $B%3%^%s%I$N$h$&$JC10LJQ495!G=$NB>!"(B
-<em>km</em> $B$H(B <em>mile</em> $B$J$I!"0[$J$kC10L$r;}$DNL$N1i;;$b2DG=!#(B</p>
-<h2><a name="label-3" id="label-3">$BNc(B</a></h2><!-- RDLabel: "$BNc(B" -->
+<h2><a name="label-2" id="label-2">概要</a></h2><!-- RDLabel: "概要" -->
+<p>「値 (物理量)」と「単位」を併せ持つクラス。
+<kbd>units</kbd> コマンドのような単位変換機能の他、
+<em>km</em> と <em>mile</em> など、異なる単位を持つ量の演算も可能。</p>
+<h2><a name="label-3" id="label-3">例</a></h2><!-- RDLabel: "例" -->
 <pre>require 'quanty'
 Quanty(1.23,'km') + Quanty(4.56,'m')    #=&gt; Quanty(1.23456,'km')
 Quanty(123,'mile') / Quanty(2,'hr')     #=&gt; Quanty(61,'mile / hr')
 Quanty(61,'miles/hr').want('m/s')       #=&gt; Quanty(27.26944,'m/s')
 Quanty(1.0,'are') == Quanty(10,'m')**2  #=&gt; true
 Math.cos(Quanty(60,'degree'))           #=&gt; 0.5</pre>
-<h2><a name="label-4" id="label-4">Quanty $B%/%i%9(B</a></h2><!-- RDLabel: "Quanty $B%/%i%9(B" -->
-<h3><a name="label-5" id="label-5">$B%9!<%Q!<%/%i%9(B:</a></h3><!-- RDLabel: "$B%9!<%Q!<%/%i%9(B:" -->
-<pre>$B$H$j$"$($:(B Object$B!#(B(Numeric$B$N$[$&$,$h$$$+$b(B)</pre>
-<h3><a name="label-6" id="label-6">$B%/%i%9%a%=%C%I(B:</a></h3><!-- RDLabel: "$B%/%i%9%a%=%C%I(B:" -->
+<h2><a name="label-4" id="label-4">Quanty クラス</a></h2><!-- RDLabel: "Quanty クラス" -->
+<h3><a name="label-5" id="label-5">スーパークラス:</a></h3><!-- RDLabel: "スーパークラス:" -->
+<pre>とりあえず Object。(Numericのほうがよいかも)</pre>
+<h3><a name="label-6" id="label-6">クラスメソッド:</a></h3><!-- RDLabel: "クラスメソッド:" -->
 <dl>
 <dt><a name="label-7" id="label-7"><code>Quanty.new([<var>value</var>],[<var>unit</var>])</code></a></dt><!-- RDLabel: "Quanty.new" -->
 <dt><a name="label-8" id="label-8"><code>Quanty([<var>value</var>],[<var>unit</var>])</code></a></dt><!-- RDLabel: "Quanty" -->
 </dl>
-<p>$BNL$NCM$r(B<var>value</var>$B!"C10L$r(B<var>unit</var> ($BJ8;zNs(B)$B$H$9$k(B
-Unit $B%/%i%9$N%$%s%9%?%s%9$r@8@.$9$k!#(B
-<var>value</var>$B$,>JN,$5$l$?;~$O!"(B1$B$,;XDj$5$l$?>l9g$HF1$8!#(B
-<var>unit</var>$B$,>JN,$5$l$?;~$O!"(B""$B$,;XDj$5$l$?>l9g$HF1$8$G!"C10L$J$7NL$K$J$k!#(B
-$BC10L$N=q$-J}$O!"2<$N(B<a href="#label-28">$BC10LI=5-K!(B</a>$B$r;2>H!#(B</p>
-<h3><a name="label-9" id="label-9">$B%a%=%C%I(B:</a></h3><!-- RDLabel: "$B%a%=%C%I(B:" -->
+<p>量の値を<var>value</var>、単位を<var>unit</var> (文字列)とする
+Unit クラスのインスタンスを生成する。
+<var>value</var>が省略された時は、1が指定された場合と同じ。
+<var>unit</var>が省略された時は、""が指定された場合と同じで、単位なし量になる。
+単位の書き方は、下の<a href="#label-28">単位表記法</a>を参照。</p>
+<h3><a name="label-9" id="label-9">メソッド:</a></h3><!-- RDLabel: "メソッド:" -->
 <dl>
 <dt><a name="label-10" id="label-10"><code><var>self</var> + <var>other</var></code></a></dt><!-- RDLabel: "self + other" -->
 <dt><a name="label-11" id="label-11"><code><var>self</var> - <var>other</var></code></a></dt><!-- RDLabel: "self - other" -->
 </dl>
-<p>$BNL$N2C;;!&8:;;!#(B
-<var>other</var>$B$NC10L$r(B<var>self</var>$B$NC10L$KJQ49$7$F1i;;$9$k!#(B
-$BC10LJQ49$,$G$-$J$1$l$PNc30$,H/@8$9$k!#(B
-$B7k2L$r!"(B<var>self</var>$B$rC10L$K$7$?(B Quanty $B%/%i%9$N%$%s%9%?%s%9$GJV$9!#(B</p>
+<p>量の加算・減算。
+<var>other</var>の単位を<var>self</var>の単位に変換して演算する。
+単位変換ができなければ例外が発生する。
+結果を、<var>self</var>を単位にした Quanty クラスのインスタンスで返す。</p>
 <dl>
 <dt><a name="label-12" id="label-12"><code><var>self</var> * <var>other</var></code></a></dt><!-- RDLabel: "self * other" -->
 </dl>
-<p>$BNL$N>h;;!#(B
-$B7k2L$NC10L$O!"(B<var>self</var>$B$H(B<var>other</var>$B$NC10L$rO"7k$7$F:n$k!#(B</p>
+<p>量の乗算。
+結果の単位は、<var>self</var>と<var>other</var>の単位を連結して作る。</p>
 <dl>
 <dt><a name="label-13" id="label-13"><code><var>self</var> / <var>other</var></code></a></dt><!-- RDLabel: "self / other" -->
 </dl>
-<p>$BNL$N=|;;!#(B
-$B7k2L$NC10L$O!"(B
-<var>self</var>$B$H(B<var>other</var>$B$NC10L$r(B<code>"/"</code>$B$r$O$5$s$GO"7k$7$F:n$k!#(B</p>
+<p>量の除算。
+結果の単位は、
+<var>self</var>と<var>other</var>の単位を<code>"/"</code>をはさんで連結して作る。</p>
 <dl>
 <dt><a name="label-14" id="label-14"><code><var>self</var> ** <var>number</var></code></a></dt><!-- RDLabel: "self ** number" -->
 </dl>
-<p>$BNL$NQQ>h!#(B
-$B7k2L$NC10L$O!"(B"(<var>self</var>$B$NC10L(B)^<var>number</var>" $B$H$7$F:n$k!#(B</p>
+<p>量の冪乗。
+結果の単位は、"(<var>self</var>の単位)^<var>number</var>" として作る。</p>
 <dl>
 <dt><a name="label-15" id="label-15"><code><var>self</var> == <var>other</var></code></a></dt><!-- RDLabel: "self == other" -->
 <dt><a name="label-16" id="label-16"><code><var>self</var> &lt; <var>other</var></code></a></dt><!-- RDLabel: "self < other" -->
@@ -68,49 +68,49 @@ Unit $B%/%i%9$N%$%s%9%?%s%9$r@8@.$9$k!#(B
 <dt><a name="label-18" id="label-18"><code><var>self</var> &gt; <var>other</var></code></a></dt><!-- RDLabel: "self > other" -->
 <dt><a name="label-19" id="label-19"><code><var>self</var> &gt;= <var>other</var></code></a></dt><!-- RDLabel: "self >= other" -->
 </dl>
-<p>$BNL$NHf3S!#(B</p>
+<p>量の比較。</p>
 <dl>
 <dt><a name="label-20" id="label-20"><code>coerce(<var>number</var>)</code></a></dt><!-- RDLabel: "coerce" -->
 </dl>
-<p><var>number</var>$B$rC10L$J$7(BQuanty$B%/%i%9$N%$%s%9%?%s%9$K$7!"(B
-[<var>number</var>,<var>self</var>]$B$H$7$FJV$9!#(B</p>
+<p><var>number</var>を単位なしQuantyクラスのインスタンスにし、
+[<var>number</var>,<var>self</var>]として返す。</p>
 <dl>
 <dt><a name="label-21" id="label-21"><code>to_si</code></a></dt><!-- RDLabel: "to_si" -->
 <dt><a name="label-22" id="label-22"><code>to_SI</code></a></dt><!-- RDLabel: "to_SI" -->
 </dl>
-<p><var>self</var>$B$r(BSI$BC10L7O$KJQ49$9$k!#(B</p>
+<p><var>self</var>をSI単位系に変換する。</p>
 <dl>
 <dt><a name="label-23" id="label-23"><code>to_f</code></a></dt><!-- RDLabel: "to_f" -->
 </dl>
-<p><var>self</var>$B$,C10L$J$7NL$N>l9g$O!"<+?H$NCM$rJV$9!#(B
-<var>self</var>$B$,3QEY$N>l9g$O!"(Bradian$B$KJQ49$7$?CM$rJV$9!#(B
-$B$=$l0J30$NC10L$N>l9g$O!"Nc30$,H/@8$9$k!#(B</p>
+<p><var>self</var>が単位なし量の場合は、自身の値を返す。
+<var>self</var>が角度の場合は、radianに変換した値を返す。
+それ以外の単位の場合は、例外が発生する。</p>
 <dl>
 <dt><a name="label-24" id="label-24"><code>unit</code></a></dt><!-- RDLabel: "unit" -->
 </dl>
-<p>$BC10L$NJ8;zNs$rJV$9!#(B</p>
+<p>単位の文字列を返す。</p>
 <dl>
 <dt><a name="label-25" id="label-25"><code>val</code></a></dt><!-- RDLabel: "val" -->
 <dt><a name="label-26" id="label-26"><code>value</code></a></dt><!-- RDLabel: "value" -->
 </dl>
-<p>$BNL$NCM$rJV$9!#(B</p>
+<p>量の値を返す。</p>
 <dl>
 <dt><a name="label-27" id="label-27"><code>want(<var>unit</var>)</code></a></dt><!-- RDLabel: "want" -->
 </dl>
-<p><var>self</var>$B$r(B <var>unit</var> ($BJ8;zNs(B) $B$rC10L$H$7$?NL$KJQ49$9$k!#(B</p>
-<h2><a name="label-28" id="label-28">$BC10LI=5-K!(B</a></h2><!-- RDLabel: "$BC10LI=5-K!(B" -->
-<h4><a name="label-29" id="label-29">$B>hK!(B</a></h4><!-- RDLabel: "$B>hK!(B" -->
+<p><var>self</var>を <var>unit</var> (文字列) を単位とした量に変換する。</p>
+<h2><a name="label-28" id="label-28">単位表記法</a></h2><!-- RDLabel: "単位表記法" -->
+<h4><a name="label-29" id="label-29">乗法</a></h4><!-- RDLabel: "乗法" -->
 <pre>'N m' == 'N*m'</pre>
-<h4><a name="label-30" id="label-30">$B=|K!(B</a></h4><!-- RDLabel: "$B=|K!(B" -->
+<h4><a name="label-30" id="label-30">除法</a></h4><!-- RDLabel: "除法" -->
 <pre>'/s' , 'm/s'</pre>
-<h4><a name="label-31" id="label-31">$B$Y$-(B</a></h4><!-- RDLabel: "$B$Y$-(B" -->
+<h4><a name="label-31" id="label-31">べき</a></h4><!-- RDLabel: "べき" -->
 <pre>'m-2' == 'm^-2' == 'm**-2'</pre>
-<h4><a name="label-32" id="label-32">$B?tCMG\(B</a></h4><!-- RDLabel: "$B?tCMG\(B" -->
+<h4><a name="label-32" id="label-32">数値倍</a></h4><!-- RDLabel: "数値倍" -->
 <pre>'12 inch' == 'feet'</pre>
-<h4><a name="label-33" id="label-33">$B7k9g=g(B</a></h4><!-- RDLabel: "$B7k9g=g(B" -->
+<h4><a name="label-33" id="label-33">結合順</a></h4><!-- RDLabel: "結合順" -->
 <pre>'m/s*m' == 'm^2/s'.
 'm/(s*m)' ==  '/s'.</pre>
-<h5><a name="label-34" id="label-34">$B>\:Y$O(B <kbd>parse.y</kbd> $B$r;2>H$N$3$H!#(B</a></h5><!-- RDLabel: "$B>\:Y$O(B parse.y $B$r;2>H$N$3$H!#(B" -->
+<h5><a name="label-34" id="label-34">詳細は <kbd>parse.y</kbd> を参照のこと。</a></h5><!-- RDLabel: "詳細は parse.y を参照のこと。" -->
 <h2><a name="label-35" id="label-35">Author</a></h2><!-- RDLabel: "Author" -->
 <p><a href="http://www.ir.isas.ac.jp/~masa/index-e.html">Masahiro Tanaka</a>
 (2001-04-25)</p>
