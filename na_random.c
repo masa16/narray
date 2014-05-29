@@ -9,7 +9,7 @@
   NO WARRANTY.
 */
 
-/* 
+/*
 This is based on trimmed version of MT19937.  To get the original version,
 contact <http://www.math.keio.ac.jp/~matumoto/emt.html>.
 
@@ -20,11 +20,11 @@ The original copyright notice follows.
    This is a faster version by taking Shawn Cokus's optimization,
    Matthe Bellew's simplification, Isaku Wada's real version.
 
-   Before using, initialize the state by using init_genrand(seed) 
+   Before using, initialize the state by using init_genrand(seed)
    or init_by_array(init_key, key_length).
 
    Copyright (C) 1997 - 2002, Makoto Matsumoto and Takuji Nishimura,
-   All rights reserved.                          
+   All rights reserved.
 
    Redistribution and use in source and binary forms, with or without
    modification, are permitted provided that the following conditions
@@ -37,8 +37,8 @@ The original copyright notice follows.
         notice, this list of conditions and the following disclaimer in the
         documentation and/or other materials provided with the distribution.
 
-     3. The names of its contributors may not be used to endorse or promote 
-        products derived from this software without specific prior written 
+     3. The names of its contributors may not be used to endorse or promote
+        products derived from this software without specific prior written
         permission.
 
    THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
@@ -62,7 +62,7 @@ The original copyright notice follows.
 #include "narray.h"
 #include "narray_local.h"
 
-/* Period parameters */  
+/* Period parameters */
 #define N 624
 #define M 397
 #define MATRIX_A 0x9908b0dfUL   /* constant vector a */
@@ -83,7 +83,7 @@ static void
     int j;
     state[0]= s & 0xffffffffUL;
     for (j=1; j<N; ++j) {
-        state[j] = (1812433253UL * (state[j-1] ^ (state[j-1] >> 30)) + j); 
+        state[j] = (1812433253UL * (state[j-1] ^ (state[j-1] >> 30)) + j);
         /* See Knuth TAOCP Vol2. 3rd Ed. P.106 for multiplier. */
         /* In the previous versions, MSBs of the seed affect   */
         /* only MSBs of the array state[].                        */
@@ -105,11 +105,11 @@ static void
 
     left = N;
     next = state;
-    
-    for (j=N-M+1; --j; ++p) 
+
+    for (j=N-M+1; --j; ++p)
         *p = p[M] ^ TWIST(p[0], p[1]);
 
-    for (j=M; --j; ++p) 
+    for (j=M; --j; ++p)
         *p = p[M-N] ^ TWIST(p[0], p[1]);
 
     *p = p[M-N] ^ TWIST(p[0], state[0]);
@@ -161,7 +161,7 @@ static VALUE
     VALUE sd;
     u_int32_t seed, old;
 
-    rb_secure(4);
+    //rb_secure(4);
     if (rb_scan_args(argc, argv, "01", &sd) == 0) {
 	seed = random_seed();
     }
