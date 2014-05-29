@@ -1,6 +1,10 @@
-# Ruby/NArray  ver 0.6.0.9 (2014-05-29)	by Masahiro TANAKA
+# Ruby/NArray 
 
-## NArray properties:
+* ver 0.6.0.9 (2014-05-29)
+* [Home](http://masa16.github.io/narray/)
+* [Repository](https://github.com/masa16/narray)
+
+## NArray Features:
 
 * Fast and easy calculation for large numerical array.
 * Accepting Elements:
@@ -13,20 +17,16 @@
 * Ruby/PGPLOT: Graphics library interface (separately distributed)
   X-Y Graph, Histogram, Contour map, Image map, etc.
 
-## NArray is similar to:
+* NArray is similar to:
+  * Python/NumPy, Perl/PDL, Yorick, IDL
 
-* Python/NumPy, Perl/PDL, Yorick, IDL
-
-## NArray is far from completed!
-
-* Experimental!  Specification may be changed.
-* Far from completed.
-* Bugs may be included.
-* No document.
+* NArray is far from completed!
+  * Experimental!  Specification may be changed.
+  * Far from completed.
+  * Bugs may be included.
+  * No document.
 
 ## Installation
-
-* Compile & Install NArray
 
     ruby extconf.rb
     make
@@ -46,4 +46,4 @@
 
 ## Author
 
-Masahiro TANAKA <masa16.tanaka@gmail.com>
+Masahiro TANAKA
