@@ -20,10 +20,10 @@ GEMSPEC = Gem::Specification.new do |s|
   s.files = %w[
 ChangeLog
 MANIFEST
-README.en
-README.ja
-SPEC.en
-SPEC.ja
+README.md
+README.ja.md
+SPEC.en.txt
+SPEC.ja.txt
 src/depend
 src/extconf.rb
 src/mkmath.rb

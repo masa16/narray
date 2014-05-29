@@ -1,9 +1,9 @@
 ChangeLog
 MANIFEST
-README.en
-README.ja
-SPEC.en
-SPEC.ja
+README.md
+README.ja.md
+SPEC.en.txt
+SPEC.ja.txt
 depend
 extconf.rb
 mkmath.rb
