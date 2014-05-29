@@ -1,8 +1,9 @@
 # Ruby/NArray
 
 * ver 0.6.0.9 (2014-05-29)
-* [Home page](http://masa16.github.io/narray/)
-* [Repository](https://github.com/masa16/narray)
+* [Home page](http://masa16.github.io/narray/index.ja.html)
+* [リポジトリ](https://github.com/masa16/narray)
+* [NArrayメソッド一覧](https://github.com/masa16/narray/blob/master/SPEC.ja.txt)
 
 ## Ruby/NArrayの特徴:
 
