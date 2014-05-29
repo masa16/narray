@@ -931,8 +931,6 @@ static void
 
   if (argc==0)
     rb_raise(rb_eArgError, "Argument required");
-  if (ary->rank + argc > NA_MAX_RANK-1)
-    rb_raise(rb_eArgError, "Exceed maximum ranks");
   if (ary->total==0)
     rb_raise(rb_eRuntimeError, "cannot extend empty array");
 

@@ -110,8 +110,6 @@ extern VALUE cNArray;
 extern const int na_sizeof[NA_NTYPES+1];
 #endif
 
-#define NA_MAX_RANK 15
-
 #define GetNArray(obj,var)  Data_Get_Struct(obj, struct NARRAY, var)
 #define IsNArray(obj) (rb_obj_is_kind_of(obj,cNArray)==Qtrue)
 

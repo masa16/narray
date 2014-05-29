@@ -1037,6 +1037,7 @@ static int
   int i, j, c=0;
   long r, n;
   VALUE v;
+  volatile VALUE s;
 
   if (flag==0)
     MEMZERO(rankv,int,rankc);
@@ -1061,8 +1062,10 @@ static int
     else
     if (CLASS_OF(v)==rb_cRange) {
       rb_range_beg_len( v, &r, &n, rankc, 1 );
-      if ( c+n > rankc )
-	rb_raise(rb_eArgError, "too many ranks");
+      if ( c+n > rankc ) {
+        s = rb_inspect(v);
+        rb_raise(rb_eArgError,"invalid dimension range: %s",StringValueCStr(s));
+      }
       if (flag) {
 	for(j=0; j<n; ++j)
 	  rankv[c++] = r++;
@@ -1123,11 +1126,9 @@ static VALUE
   GetNArray(self,a2);
 
   /* Parse Argument */
-  rankv = ALLOC_N( int, NA_MAX_RANK*2 );
-  shape = &rankv[NA_MAX_RANK];
+  rankv = ALLOC_N( int, a2->rank*2 );
+  shape = &rankv[a2->rank];
   rankc = na_arg_to_rank( argc, argv, a2->rank, rankv, 1 );
-  if (rankc > a2->rank)
-    rb_raise(rb_eArgError, "too many args");
   for ( ;rankc<a2->rank; ++rankc)
     rankv[rankc] = rankc;
 
