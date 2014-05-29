@@ -13,7 +13,6 @@
   using assignment with number, range, array index.
 * Operator: +,-,*,/,%,**, etc.
 * FFTW version 2 or 3 is separately supported.
-* NImage: Image viewer class.
 * Ruby/PGPLOT: Graphics library interface (separately distributed)
   X-Y Graph, Histogram, Contour map, Image map, etc.
 
