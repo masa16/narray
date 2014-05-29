@@ -11,7 +11,8 @@
   8,16,32 bit integer, single/double float/complex, Ruby Object.
 * Easy extraction/substitution of array subset,
   using assignment with number, range, array index.
-* Operator: +,-,*,/,%,**, etc.
+* Operator: +, -, *, /, %, **, etc.
+* NMath: Mathematics functions.
 * FFTW version 2 or 3 is separately supported.
 * Ruby/PGPLOT: Graphics library interface (separately distributed)
   X-Y Graph, Histogram, Contour map, Image map, etc.
