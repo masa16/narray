@@ -1,8 +1,9 @@
 # Ruby/NArray
 
-* ver 0.6.0.9 (2014-05-29)
+* ver 0.6.1.0 (2014-06-02)
 * [Home page](http://masa16.github.io/narray/)
-* [Repository](https://github.com/masa16/narray)
+* [GitHub Repository](https://github.com/masa16/narray)
+* [RubyGems](https://rubygems.org/gems/narray)
 * [NArray method list](https://github.com/masa16/narray/blob/master/SPEC.en.txt)
 
 ## NArray Features:
