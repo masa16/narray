@@ -1096,18 +1096,22 @@ static VALUE
   char *p;
   void (*func)();
 
-  GetNArray(obj,ary);
+  if (rb_block_given_p()) {
+    GetNArray(obj,ary);
 
-  p  = ary->ptr;
-  sz = na_sizeof[ary->type];
-  func = SetFuncs[NA_ROBJ][ary->type];
+    p  = ary->ptr;
+    sz = na_sizeof[ary->type];
+    func = SetFuncs[NA_ROBJ][ary->type];
 
-  for ( i=ary->total; i-->0; ) {
-    (*func)( 1, &v, 0, p, 0 );
-    rb_yield(v);
-    p += sz;
+    for ( i=ary->total; i-->0; ) {
+      (*func)( 1, &v, 0, p, 0 );
+      rb_yield(v);
+      p += sz;
+    }
+    return Qnil;
+  } else {
+    return rb_funcall(obj, rb_intern("to_enum"), 0);
   }
-  return Qnil;
 }
 
 
