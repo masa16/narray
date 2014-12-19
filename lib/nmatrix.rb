@@ -91,7 +91,7 @@ class NMatrix < NArray
       (2..n).each{ m *= self }
       m
     else
-      raise TypeError,"Illegal operation: NMatrix ** %s" % other.class
+      raise TypeError,"Illegal operation: NMatrix ** %s" % n.class
     end
   end
 
