@@ -9,7 +9,6 @@
 
 開発中の次期 NArray です。未完成です。
 旧版とは非互換ですが、大幅な機能向上が行われています。
-今後旧版 NArray の開発は行われません。
 ご意見をお待ちしております。
 
 * 次期NArrayについての説明がある((<スライド|URL:http://www.slideshare.net/masa16tanaka/narray-pwrake>))
@@ -19,6 +18,8 @@
 ((<GitHub|URL:https://github.com/masa16/narray>))
 
 多次元 数値 配列クラスです。 1,2,4 byte 整数、単/倍 精度 実数/複素数、 およびRubyオブジェクトを要素に持つことができます。 これにより Ruby でも 大量の数値を扱う計算が、簡単かつ高速にできるようになります。
+
+今後旧版に新機能は加えられません。上記の新版に移行する予定です。
 
 * ドキュメント
   * ((<NArray 特徴|URL:feature-ja.html>))

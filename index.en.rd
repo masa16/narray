@@ -9,7 +9,6 @@
 
 Next NArray is under development.
 The new version is incompatible but much advanced from the old version.
-Development of the old version ended.
 Comments are welcome.
 
 == NArray old version
@@ -22,6 +21,8 @@ single/double-precision Real/Complex, and Ruby Object.
 This extension library incorporates fast calculation and easy manipulation
 of large numerical arrays into the Ruby language.
 NArray has features similar to NumPy, but NArray has vector and matrix subclasses.
+
+No new feature will be added to the old version. Please check the new version above.
 
 * Documents
   * ((<NArray method list|URL:SPEC.en.txt>))
