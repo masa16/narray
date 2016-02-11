@@ -18,8 +18,8 @@ narray.c
 narray.def
 narray.h
 narray_local.h
-lib/narray_ext.rb
-lib/nmatrix.rb
+lib/narray/narray_ext.rb
+lib/narray/nmatrix.rb
 test/statistics.rb
 test/testarray.rb
 test/testbit.rb

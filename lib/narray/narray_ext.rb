@@ -47,7 +47,7 @@ class NArray
 
   def ==(other)
     other.kind_of?(NArray) &&
-      shape == other.shape && 
+      shape == other.shape &&
       eq(other).all?
   end
 
@@ -359,4 +359,4 @@ module FFTW
   module_function :convol
 end
 
-require 'nmatrix'
+require 'narray/nmatrix'

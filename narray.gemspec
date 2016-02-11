@@ -38,8 +38,8 @@ src/narray.c
 src/narray.def
 src/narray.h
 src/narray_local.h
-src/lib/narray_ext.rb
-src/lib/nmatrix.rb
+src/lib/narray/narray_ext.rb
+src/lib/narray/nmatrix.rb
 ]
   s.rdoc_options = %w[
     --title NArray

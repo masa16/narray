@@ -1319,5 +1319,5 @@ void
     Init_na_linalg();
 
     /* NArray extention script */
-    rb_require("narray_ext.rb");
+    rb_require("narray/narray_ext");
 }

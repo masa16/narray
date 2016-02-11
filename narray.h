@@ -23,8 +23,8 @@
 # include <sys/types.h>
 #endif
 
-#define NARRAY_VERSION "0.6.1.1"
-#define NARRAY_VERSION_CODE 611
+#define NARRAY_VERSION "0.6.1.2"
+#define NARRAY_VERSION_CODE 612
 
 /*
   Data types used in NArray :
