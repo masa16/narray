@@ -37,7 +37,7 @@ No new feature will be added to the old version. Please check the new version ab
   * ((<NMatrix & NVector - solving linear equation|URL:matrix-e.html>))
 
 * Install
-  * Source code: version _narray_version_ (((<.tar.gz|URL:https://github.com/masa16/narray/tarball/_narray_version_>))|((<.zip|URL:https://github.com/masa16/narray/zipball/_narray_version_>))) (_narray_release_date_)
+  * Source code: version _narray_version_ (((<.tar.gz|URL:https://github.com/masa16/narray/archive/_narray_version_.tar.gz>))|((<.zip|URL:https://github.com/masa16/narray/archive/_narray_version_.zip>))) (_narray_release_date_)
   * Gem install (requires compiler):
  gem install narray
 

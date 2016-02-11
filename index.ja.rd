@@ -36,7 +36,7 @@
   * ((<NMatrix & NVector - LU分解により線形方程式を解く|URL:matrix-ja.html>))
 
 * インストール
-  * ソースコード: バージョン _narray_version_ (((<.tar.gz|URL:https://github.com/masa16/narray/tarball/_narray_version_>))|((<.zip|URL:https://github.com/masa16/narray/zipball/_narray_version_>))) (_narray_release_date_)
+  * ソースコード: バージョン: _narray_version_ (((<.tar.gz|URL:https://github.com/masa16/narray/archive/_narray_version_.tar.gz>))|((<.zip|URL:https://github.com/masa16/narray/archive/_narray_version_.zip>))) (_narray_release_date_)
   * Gem インストール（要コンパイラ）:
  gem install narray
 
