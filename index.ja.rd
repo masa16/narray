@@ -49,7 +49,7 @@
 
 * ソース:
   ((<ver 0.1.0|URL:http://rubyforge.org/frs/download.php/7661/ruby-fftw3-0.1.0.tar.gz>))
-  (2003-01-04)
+  (リンク切れ) (2003-01-04)
 
 === na_geev
 
@@ -59,7 +59,7 @@ dgeev, zgeev ルーチン の NArray インタフェース。
 
 * ソース:
   ((<ver 0.1.2|URL:http://rubyforge.org/frs/download.php/7660/na_geev-0.1.2.tar.gz>))
-  (2004-03-01)
+  (リンク切れ) (2004-03-01)
 
 === NArrayを利用しているプロジェクト
 
@@ -75,7 +75,7 @@ dgeev, zgeev ルーチン の NArray インタフェース。
 
 == Link
 
-* ((<Ruby for Science @ Rwiki|URL:http://pub.cozmixng.org/~the-rwiki/rw-cgi.rb?cmd=view;name=Ruby+for+Science>))
+* ((<Ruby for Science @ Rwiki|URL:ruby4science.ja.html>)) - 2000年代の古い情報
 * ((<SciRuby Wiki|URL:http://sciruby.codeforpeople.com/sr.cgi/FrontPage>))
 
 == Author

@@ -7,6 +7,7 @@ put index.html.en
 put index.html.ja
 put SPEC.en
 put SPEC.ja
+put ruby4science.ja.html
 cd quanty
 lcd quanty
 put na.css
