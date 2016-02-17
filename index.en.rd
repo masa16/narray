@@ -76,7 +76,7 @@ Effort to wrap other Lapack routines is ongoing very slowly.
 
 == Link
 
-* ((<Ruby for Science @ Rwiki|URL:http://pub.cozmixng.org/~the-rwiki/rw-cgi.rb?cmd=view;name=Ruby+for+Science>)) (Japanese)
+* ((<Ruby for Science @ Rwiki|URL:ruby4science.ja.html>)) (old information, in Japanese)
 * ((<SciRuby Wiki|URL:http://sciruby.codeforpeople.com/sr.cgi/FrontPage>))
 
 == Author

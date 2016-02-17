@@ -75,7 +75,7 @@ Rubyで科学計算する例の紹介です。
 * ((<ComputationGraph|URL:http://www.tinyforest.gr.jp/memo/ruby/readme.html>))
   - Rubyグラフ処理エンジン。
 * ((<Ruby GP|URL:http://raa.ruby-lang.org/project/ruby-gp/>))（リンク切れ）
-  - 遺伝的アルゴリズム・ライブラリ。 - homepage lost?
+  - 遺伝的アルゴリズム・ライブラリ。
 * ((<Ruby@RjpWiki|URL:http://www.okada.jp.org/RWiki/index.php?Ruby>))（リンク切れ）
   - Rubyからの統計解析システムRの利用
 
@@ -87,7 +87,7 @@ Rubyで科学計算する例の紹介です。
 * ((<linalg|URL:http://linalg.rubyforge.org/>))
   - DMatrix。LAPACKへのインタフェース。
 * ((<NumArray|URL:http://www.kurasc.kyoto-u.ac.jp/radar-group/members/kawanabe/numarray.html>))（リンク切れ）
-  - 多次元数値配列。欠損値処理。 - abandoned?
+  - 多次元数値配列。欠損値処理。
 
 === 数値クラス
 * ((<Ruby-GMP|URL:http://raa.ruby-lang.org/project/libgmp-ruby/>))（リンク切れ）
@@ -125,7 +125,7 @@ Rubyで科学計算する例の紹介です。
 
 === 計測・制御
 * ((<Ruby for research|URL:http://yueda.issp.u-tokyo.ac.jp/weda/ruby/ruby.html>)) - gpib.rb (for GPIB)
-  * ((<gpib-rb|URL:http://www.ruby-lang.org/en/raa-list.rhtml?name=gpib-rb>))（リンク切れ） - old one by another person; lost?
+  * ((<gpib-rb|URL:http://www.ruby-lang.org/en/raa-list.rhtml?name=gpib-rb>))（リンク切れ）
 * ((<IO Port Access|URL:http://raa.ruby-lang.org/project/i-o_port_access/>))（リンク切れ）
 * ((<HornetsEye|URL:http://www.wedesoft.de/hornetseye-api/>)) is a Ruby real-time computer vision extension.
 
