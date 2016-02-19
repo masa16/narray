@@ -12,7 +12,7 @@ Rubyの科学計算における応用例の紹介です。
 * ((<SciRuby|URL:http://sciruby.codeforpeople.com/sr.cgi/FrontPage>))
   - Since June 2005, by Ara T. Howard.
 * ((<るびま0006 Ruby Library Report [第5回] 数値計算と可視化|URL:http://jp.rubyist.net/magazine/?0006-RLR>))
-  - 著者： 堀之内 武
+  - 著者: 堀之内武さん
 
 == 各分野での利用
 === Mathmatics - 数学
