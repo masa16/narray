@@ -1,10 +1,12 @@
 # -*- coding: utf-8 -*-
 = Ruby for Scientific Computing
 
-Rubyで科学計算する例の紹介です。
+Rubyの科学計算における応用例の紹介です。
 
 このページは、((<RWiki:Ruby for Science|URL:https://web.archive.org/web/20101221083022/http://pub.cozmixng.org/~the-rwiki/rw-cgi.rb?cmd=view;name=Ruby+for+Science>)) に記載した古い情報の転載です。
-新規作成は2000年頃、最終更新2010年12月15日です。変更リンク先がわかるものは直しています。
+最初のページ作成は2000年頃、最終更新は2010年12月15日です。
+それ以降に登場した情報は掲載していません。
+リンクの変更先がわかるものについては直しています。
 
 == Ruby科学計算関連総合
 * ((<SciRuby|URL:http://sciruby.codeforpeople.com/sr.cgi/FrontPage>))
