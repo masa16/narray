@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-= Ruby for Scientific Computing
+= Ruby for Scientific Computing (before 2010)
 
 Rubyの科学計算における応用例の紹介です。
 

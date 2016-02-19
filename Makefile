@@ -26,7 +26,7 @@ demo/mandel.en.html: opt= --title="NArray demo: Mandelbrot"
 demo/image.en.html: opt= --title="NArray demo: Shrink image"
 demo/smooth.en.html: opt= --title="NArray demo: Smooth image"
 demo/lifegame.en.html: opt= --title="NArray demo: Life game"
-ruby4science.ja.html: opt= --title="Ruby for Science"
+ruby4science.ja.html: opt= --title="Ruby for Science (before 2010)"
 bench.en.html: opt= --title="NArray benchmark" --rt
 quanty/quanty.en.html: opt= --title="Quanty: unit-math library"
 quanty/quanty.ja.html: opt= --title="Quanty: 単位変換ライブラリ"
