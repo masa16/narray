@@ -1,3 +1,7 @@
+* 新しい NArray が以下のレポジトリで開発中:
+[Ruby/Numo::NArray](https://github.com/ruby-numo/narray)
+* このレポジトリはメンテナンスのみ行われています。
+
 # Ruby/NArray
 
 * ver 0.6.1.0 (2014-06-02)

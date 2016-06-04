@@ -1,3 +1,7 @@
+* New version of NArray is under development:
+[Ruby/Numo::NArray](https://github.com/ruby-numo/narray)
+* This old version of NArray is only maintenanced.
+
 # Ruby/NArray
 
 * ver 0.6.1.0 (2014-06-02)
