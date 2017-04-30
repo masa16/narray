@@ -1,5 +1,5 @@
-* New version of NArray is under development -> [Ruby/Numo::NArray](https://github.com/ruby-numo/narray)
-* This package is old version, maintenance only.
+# This package is OLD version, maintenance only.
+## New version is under development -> [Ruby/Numo::NArray](https://github.com/ruby-numo/narray)
 
 # Ruby/NArray
 
