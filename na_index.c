@@ -61,7 +61,7 @@ static int
       ++len;
       step = 1;  /* or 0 ? depend on whether removing rank */
     }
-  } 
+  }
 
   if ( beg<0 || beg>=size || end<0 || end>=size )
     rb_raise(rb_eIndexError, "index out of range");
@@ -270,7 +270,7 @@ VALUE
 
   if (ary->rank < class_dim)
     return obj;
-  
+
   for (j=i=0; i<class_dim; ++i) {
     if (ary->shape[i]!=1 || shrink[i]==0) /* not trim */
       ++j;
@@ -581,7 +581,7 @@ VALUE
   if (a1->total != am->total)
     rb_raise(rb_eTypeError,"self.size(=%i) != mask.size(=%i)",
 	     a1->total, am->total);
-  if (a1->rank != am->rank) 
+  if (a1->rank != am->rank)
     rb_raise(rb_eTypeError,"self.rank(=%i) != mask.rank(=%i)",
 	     a1->rank, am->rank);
   for (i=0; i<a1->rank; ++i)
@@ -666,7 +666,7 @@ static void
 		    struct slice *s1, struct slice *s2, int *src_shape)
 {
   int  i, j, idx_end;
-  
+
   /* count range index */
   for (j=i=0; i<dst->rank; ++i) {
 
@@ -758,7 +758,7 @@ void
 static void
  na_aset_array_index( VALUE self, volatile VALUE idx, volatile VALUE val )
 {
-  int i, total;
+  int i;
   struct NARRAY *aidx, *src, *dst;
   struct slice *sl;
 
@@ -783,8 +783,8 @@ static void
 		i, aidx->shape[i], i, src->shape[i] );
 
   /* make Slice from index */
-  sl    = ALLOCA_N(struct slice,2);
-  total = na_ary_to_index( NA_STRUCT(idx), dst->total, sl );
+  sl = ALLOCA_N(struct slice,2);
+  na_ary_to_index( NA_STRUCT(idx), dst->total, sl );
 
   /* 1-dimensionize */
   if (dst->rank > 1) {
@@ -898,7 +898,7 @@ static void
   na_aset_slice( dst, src, sl );
 
   na_free_slice_index(sl,nidx); /* free index memory */
-  xfree(sl); 
+  xfree(sl);
 }
 
 
@@ -941,7 +941,7 @@ void
   if (a1->total != am->total)
     rb_raise(rb_eTypeError,"self.size(=%i) != mask.size(=%i)",
 	     a1->total, am->total);
-  if (a1->rank != am->rank) 
+  if (a1->rank != am->rank)
     rb_raise(rb_eTypeError,"self.rank(=%i) != mask.rank(=%i)",
 	     a1->rank, am->rank);
   for (i=0; i<a1->rank; ++i)
@@ -955,7 +955,7 @@ void
   GetNArray( val, a2 );
   if (a2->total == 1) {
     step = 0;
-  } else if (a2->total == size) { 
+  } else if (a2->total == size) {
     step = na_sizeof[a2->type];
   } else {
     rb_raise(rb_eTypeError,"val.length != mask.count_true");

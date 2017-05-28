@@ -191,14 +191,14 @@ static VALUE
 
 static int n_bits(int32_t a)
 {
-  int i, x, xu, xl, n=4;
+  int i, x, xl, n=4;
   int32_t m;
 
   if (a==0) return 0;
   if (a<0) a=-a;
 
   x  = 1<<n;
-  xu = 1<<(n+1);
+  //xu = 1<<(n+1);
   xl = 0;
 
   for (i=n; i>=0; --i) {
@@ -208,7 +208,7 @@ static int n_bits(int32_t a)
       xl = x;
       x += 1<<(i-1);
     } else {
-      xu = x;
+      //xu = x;
       x -= 1<<(i-1);
     }
     /* printf("%3i, [%3i, %3i], %x\n", i, xu, xl, m1); */
